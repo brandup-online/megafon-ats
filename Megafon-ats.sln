@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32526.322
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3D6CCEF8-A984-4870-99EF-D415E2D36D25}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MegafonATS.Client", "src\MegafonATS.Client\MegafonATS.Client.csproj", "{0CF393D0-BF3F-40AE-B9B0-833777743A13}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MegafonATS.Webhooks", "src\MegafonATS.Webhooks\MegafonATS.Webhooks.csproj", "{DC5E643F-024A-4F14-8BDC-C6953493760E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MegafonATS.Models", "src\MegafonATS.Models\MegafonATS.Models.csproj", "{591681BE-2760-494B-8430-34E05AED2226}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MegafonATS.Tests", "test\MegafonATS.Tests\MegafonATS.Tests.csproj", "{9E90D361-0747-4CD7-A42E-D2FC8F249F87}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleWebSite", "example\ExampleWebSite\ExampleWebSite.csproj", "{85DAC56D-40F9-4C0B-85AA-B20F5E83A1B3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0CF393D0-BF3F-40AE-B9B0-833777743A13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CF393D0-BF3F-40AE-B9B0-833777743A13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CF393D0-BF3F-40AE-B9B0-833777743A13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CF393D0-BF3F-40AE-B9B0-833777743A13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC5E643F-024A-4F14-8BDC-C6953493760E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC5E643F-024A-4F14-8BDC-C6953493760E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC5E643F-024A-4F14-8BDC-C6953493760E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC5E643F-024A-4F14-8BDC-C6953493760E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{591681BE-2760-494B-8430-34E05AED2226}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{591681BE-2760-494B-8430-34E05AED2226}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{591681BE-2760-494B-8430-34E05AED2226}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{591681BE-2760-494B-8430-34E05AED2226}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E90D361-0747-4CD7-A42E-D2FC8F249F87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E90D361-0747-4CD7-A42E-D2FC8F249F87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E90D361-0747-4CD7-A42E-D2FC8F249F87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E90D361-0747-4CD7-A42E-D2FC8F249F87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85DAC56D-40F9-4C0B-85AA-B20F5E83A1B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85DAC56D-40F9-4C0B-85AA-B20F5E83A1B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85DAC56D-40F9-4C0B-85AA-B20F5E83A1B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85DAC56D-40F9-4C0B-85AA-B20F5E83A1B3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B73AF188-2292-47C6-AF03-8D5A89D4E89A}
+	EndGlobalSection
+EndGlobal

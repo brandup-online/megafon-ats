@@ -1,0 +1,42 @@
+﻿@page
+@model ExampleWebSite.Pages.GroupsModel
+@{
+}
+
+<form method="post" >
+    <div class="form-group">
+    <label for="exampleFormControlSelect1">Example select</label>
+    <select class="form-control" name="Caller" id="Caller">
+        @foreach (var user in Model.Users)
+        {
+            <option>@user.RealName</option>
+        }
+    </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Показать</button>
+</form>
+<table>
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">RealName</th>
+            <th scope="col">Ext</th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+     
+            @foreach(var group in Model.Groups)
+            {
+                <tr>
+                    <td>@group.Id</td>
+                    <td>@group.RealName</td>
+                    <td>@group.Ext</td>
+                </tr>
+            }
+
+       
+        
+    </tbody>
+</table>

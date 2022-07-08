@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<TargetFramework>net6.0</TargetFramework>
+	<UserSecretsId>7a911a7b-3944-4ef8-ae89-85832c29c0e9</UserSecretsId>
+	<RootNamespace>MATS.Client.Tests</RootNamespace>
+	<ImplicitUsings>enable</ImplicitUsings>
+	<Nullable>disable</Nullable>
+
+	<IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.5" />
+	<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
+	<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+	<PackageReference Include="xunit" Version="2.4.1" />
+	<PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+	  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  <PrivateAssets>all</PrivateAssets>
+	</PackageReference>
+	<PackageReference Include="coverlet.collector" Version="3.1.2">
+	  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  <PrivateAssets>all</PrivateAssets>
+	</PackageReference>
+	<DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<ProjectReference Include="..\..\example\ExampleWebSite\ExampleWebSite.csproj" />
+	<ProjectReference Include="..\..\src\MegafonATS.Client\MegafonATS.Client.csproj" />
+	<ProjectReference Include="..\..\src\MegafonATS.Models\MegafonATS.Models.csproj" />
+	<ProjectReference Include="..\..\src\MegafonATS.Webhooks\MegafonATS.Webhooks.csproj" />
+
+  </ItemGroup>
+
+</Project>
