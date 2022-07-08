@@ -1,6 +1,6 @@
 using BrandUp.Website.Pages;
-using MefafonATS.Model;
-using MefafonATS.Model.ClientModels;
+using MegafonATS.Client;
+using MegafonATS.Models.Client;
 
 namespace ExampleWebSite.Pages
 {
@@ -8,7 +8,7 @@ namespace ExampleWebSite.Pages
     {
         public override string Title => "История звонков";
 
-        public IEnumerable<MATSCallModel> Calls { get; set; }
+        public IEnumerable<CallModel> Calls { get; set; }
 
         private IMegafonAtsClient _client;
 
@@ -19,15 +19,13 @@ namespace ExampleWebSite.Pages
 
         protected override async Task OnPageRequestAsync(PageRequestContext context)
         {
-
             var clientResult = await _client.HistoryAsync(EPeriod.today, ECallType.All);
             if (clientResult.IsSuccess == true)
                 Calls = clientResult.Result;
 
-
-
-            //return base.OnPageRequestAsync(context);
+            await base.OnPageRequestAsync(context);
         }
+
         public async Task OnPost()
         {
             var start = Request.Form["StartDate"];
@@ -45,8 +43,9 @@ namespace ExampleWebSite.Pages
                 result = await _client.HistoryAsync(Convert.ToDateTime(start), Convert.ToDateTime(end), Enum.Parse<ECallType>(type));
             }
             if (result.IsSuccess == true)
-                Calls = (IEnumerable<MATSCallModel>)result.Result;
+                Calls = (IEnumerable<CallModel>)result.Result;
         }
+
         public void OnGet()
         {
         }

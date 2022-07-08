@@ -1,6 +1,7 @@
-﻿using MefafonATS.Webhooks;
+﻿using MegafonATS.Fakes;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace MefafonATS.Model.Tests
+namespace MegafonATS
 {
     public class MegafonAtsControllerTests
     {
@@ -41,25 +42,25 @@ namespace MefafonATS.Model.Tests
             var content = new FormUrlEncodedContent(values);
 
             var result = await client.PostAsync("megafon/callback", content);
-
-            var ev = (MyTestService)factory.Services.GetService(typeof(IMegafonAtsEvents));
-
             Assert.True(result.IsSuccessStatusCode);
-            Assert.NotNull(ev);
-            Assert.Equal(MyTestService.History.Type, values["type"]);
-            Assert.Equal(MyTestService.History.User, values["user"]);
-            Assert.Equal(MyTestService.History.Ext, values["ext"]);
-            Assert.Equal(MyTestService.History.groupRealName, values["groupRealName"]);
-            Assert.Equal(MyTestService.History.Telnum, values["telnum"]);
-            Assert.Equal(MyTestService.History.Phone, values["phone"]);
-            Assert.Equal(MyTestService.History.Diversion, values["diversion"]);
-            Assert.Equal(MyTestService.History.Start.ToString("yyyyMMddThhmmss"), values["start"]);
-            Assert.Equal(MyTestService.History.Duration.ToString(), values["duration"]);
-            Assert.Equal(MyTestService.History.Callid, values["callid"]);
-            Assert.Equal(MyTestService.History.Link, values["link"]);
-            Assert.Equal(MyTestService.History.Rating.ToString(), values["rating"]);
-            Assert.Equal(MyTestService.History.Status, values["status"]);
+
+            var results = factory.Services.GetRequiredService<FakeMegafonAtsEventsResults>();
+
+            Assert.Equal(results.History.Type, values["type"]);
+            Assert.Equal(results.History.User, values["user"]);
+            Assert.Equal(results.History.Ext, values["ext"]);
+            Assert.Equal(results.History.groupRealName, values["groupRealName"]);
+            Assert.Equal(results.History.Telnum, values["telnum"]);
+            Assert.Equal(results.History.Phone, values["phone"]);
+            Assert.Equal(results.History.Diversion, values["diversion"]);
+            Assert.Equal(results.History.Start.ToString("yyyyMMddThhmmss"), values["start"]);
+            Assert.Equal(results.History.Duration.ToString(), values["duration"]);
+            Assert.Equal(results.History.Callid, values["callid"]);
+            Assert.Equal(results.History.Link, values["link"]);
+            Assert.Equal(results.History.Rating.ToString(), values["rating"]);
+            Assert.Equal(results.History.Status, values["status"]);
         }
+
         [Fact]
         public async Task TestController_EventCommand()
         {
@@ -79,25 +80,25 @@ namespace MefafonATS.Model.Tests
                         { "status", "Success" },
                         { "crm_token", secretKey }
                     };
-
             var content = new FormUrlEncodedContent(values);
 
             var result = await client.PostAsync("megafon/callback", content);
-
-            var ev = (MyTestService)factory.Services.GetService(typeof(IMegafonAtsEvents));
-
             Assert.True(result.IsSuccessStatusCode);
-            Assert.Equal(MyTestService.Event.Type, values["type"]);
-            Assert.Equal(MyTestService.Event.Phone, values["phone"]);
-            Assert.Equal(MyTestService.Event.Diversion, values["diversion"]);
-            Assert.Equal(MyTestService.Event.User, values["user"]);
-            Assert.Equal(MyTestService.Event.GroupRealName, values["groupRealName"]);
-            Assert.Equal(MyTestService.Event.Ext, values["ext"]);
-            Assert.Equal(MyTestService.Event.Telnum, values["telnum"]);
-            Assert.Equal(MyTestService.Event.Direction, values["direction"]);
-            Assert.Equal(MyTestService.Event.Callid, values["callid"]);
+
+            var results = factory.Services.GetRequiredService<FakeMegafonAtsEventsResults>();
+
+            Assert.Equal(results.Event.Type, values["type"]);
+            Assert.Equal(results.Event.Phone, values["phone"]);
+            Assert.Equal(results.Event.Diversion, values["diversion"]);
+            Assert.Equal(results.Event.User, values["user"]);
+            Assert.Equal(results.Event.GroupRealName, values["groupRealName"]);
+            Assert.Equal(results.Event.Ext, values["ext"]);
+            Assert.Equal(results.Event.Telnum, values["telnum"]);
+            Assert.Equal(results.Event.Direction, values["direction"]);
+            Assert.Equal(results.Event.Callid, values["callid"]);
 
         }
+
         [Fact]
         public async Task TestController_ContactCommand()
         {
@@ -110,16 +111,16 @@ namespace MefafonATS.Model.Tests
                         { "crm_token", secretKey }
                     };
 
-            var content = new FormUrlEncodedContent(values);
+            var result = await client.PostAsync("megafon/callback", new FormUrlEncodedContent(values));
+            Assert.True(result.IsSuccessStatusCode == true);
 
-            var result = await client.PostAsync("megafon/callback", content);
+            var results = factory.Services.GetRequiredService<FakeMegafonAtsEventsResults>();
 
-            var ev = (MyTestService)factory.Services.GetService(typeof(IMegafonAtsEvents));
-
-            Assert.NotNull(ev);
-            Assert.Equal(MyTestService.Contact.Phone, values["phone"]);
-            Assert.Equal(MyTestService.Contact.Callid, values["callid"]); ;
+            Assert.NotNull(results.Contact);
+            Assert.Equal(results.Contact.Phone, values["phone"]);
+            Assert.Equal(results.Contact.Callid, values["callid"]); ;
         }
+
         [Fact]
         public async Task TestController_RatingCommand()
         {
@@ -138,28 +139,17 @@ namespace MefafonATS.Model.Tests
             var content = new FormUrlEncodedContent(values);
 
             var result = await client.PostAsync("megafon/callback", content);
-
-            var ev = (MyTestService)factory.Services.GetService(typeof(IMegafonAtsEvents));
-
             Assert.True(result.IsSuccessStatusCode == true);
-            Assert.NotNull(ev);
-            Assert.Equal(MyTestService.Rating.Callid, values["callid"]);
-            Assert.Equal(MyTestService.Rating.Rating, values["rating"]);
-            Assert.Equal(MyTestService.Rating.User, values["user"]);
-            Assert.Equal(MyTestService.Rating.Phone, values["phone"]);
-            Assert.Equal(MyTestService.Rating.Ext, values["ext"]);
+
+            var results = factory.Services.GetRequiredService<FakeMegafonAtsEventsResults>();
+
+            Assert.Equal(results.Rating.Callid, values["callid"]);
+            Assert.Equal(results.Rating.Rating, values["rating"]);
+            Assert.Equal(results.Rating.User, values["user"]);
+            Assert.Equal(results.Rating.Phone, values["phone"]);
+            Assert.Equal(results.Rating.Ext, values["ext"]);
         }
-
     }
 
-    public static class StringExtensions
-    {
-        public static string FirstCharToUpper(this string input) =>
-            input switch
-            {
-                null => throw new ArgumentNullException(nameof(input)),
-                "" => throw new ArgumentException($"{nameof(input)} cannot be empty", nameof(input)),
-                _ => string.Concat(input[0].ToString().ToUpper(), input.AsSpan(1))
-            };
-    }
+
 }

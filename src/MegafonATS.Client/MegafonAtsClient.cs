@@ -1,13 +1,13 @@
-﻿using MefafonATS.Model.ClientModels;
+﻿using MegafonATS.Models.Client;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace MefafonATS.Model
+namespace MegafonATS.Client
 {
     public class MegafonAtsClient : IMegafonAtsClient
     {
-        readonly HttpClient _httpClient;
+        readonly HttpClient httpClient;
         readonly MegafonAtsOptions options;
         readonly static JsonSerializerOptions jsonSerializerOptions;
 
@@ -23,10 +23,15 @@ namespace MefafonATS.Model
 
         public MegafonAtsClient(HttpClient httpClient, MegafonAtsOptions options)
         {
-            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+            this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             this.options = options ?? throw new ArgumentNullException(nameof(options));
 
-            _httpClient.BaseAddress = new Uri($"https://{this.options.AtsName}.megapbx.ru/sys/crm_api.wcgp");
+            if (options.Name == null)
+                throw new ArgumentNullException(nameof(options.Name));
+            if (options.Token == null)
+                throw new ArgumentNullException(nameof(options.Token));
+
+            this.httpClient.BaseAddress = new Uri($"https://{this.options.Name}.megapbx.ru/sys/crm_api.wcgp");
         }
 
         #region IMegafonAtsClient member
@@ -36,8 +41,8 @@ namespace MefafonATS.Model
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns>Коллекцию отделов</returns>
-        public async Task<ClientResult<IEnumerable<MATSUserModel>>> AccountsAsync(CancellationToken cancellationToken = default) =>
-            await ProcessResponseAsync<IEnumerable<MATSUserModel>>(ECommand.accounts, new Dictionary<string, string>() { }, cancellationToken);
+        public async Task<ClientResult<IEnumerable<UserModel>>> AccountsAsync(CancellationToken cancellationToken = default) =>
+            await ProcessResponseAsync<IEnumerable<UserModel>>(ECommand.accounts, new Dictionary<string, string>() { }, cancellationToken);
 
 
         /// <summary>
@@ -46,16 +51,16 @@ namespace MefafonATS.Model
         /// <param name="user">идентификатор сотрудника Виртуальной АТС</param>
         /// <param name="cancellationToken">Коллекцию отделов</param>
         /// <returns>Коллекцию отделов</returns>
-        public async Task<ClientResult<IEnumerable<MATSGroupModel>>> GroupsAsync(string user, CancellationToken cancellationToken = default) =>
-            await ProcessResponseAsync<IEnumerable<MATSGroupModel>>(ECommand.groups, new Dictionary<string, string>() { { "user", user } }, cancellationToken);
+        public async Task<ClientResult<IEnumerable<GroupModel>>> GroupsAsync(string user, CancellationToken cancellationToken = default) =>
+            await ProcessResponseAsync<IEnumerable<GroupModel>>(ECommand.groups, new Dictionary<string, string>() { { "user", user } }, cancellationToken);
 
         /// <summary>
         /// Запрос от CRM к Виртуальной АТС для получения отделов
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns>Коллекцию отделов</returns>
-        public async Task<ClientResult<IEnumerable<MATSGroupModel>>> GroupsAsync(CancellationToken cancellationToken = default) =>
-            await ProcessResponseAsync<IEnumerable<MATSGroupModel>>(ECommand.groups, new Dictionary<string, string>(), cancellationToken);
+        public async Task<ClientResult<IEnumerable<GroupModel>>> GroupsAsync(CancellationToken cancellationToken = default) =>
+            await ProcessResponseAsync<IEnumerable<GroupModel>>(ECommand.groups, new Dictionary<string, string>(), cancellationToken);
 
         /// <summary>
         /// Команда необходима для того, чтобы получить из Виртуальной АТС историю звонков за нужный период времени.
@@ -65,8 +70,8 @@ namespace MefafonATS.Model
         /// <param name="limit">результат должен содержать не более, чем limit записей </param>
         /// <param name="cancellationToken"></param>
         /// <returns>Коллекцию объектов с информацией о звонках</returns>
-        public async Task<ClientResult<IEnumerable<MATSCallModel>>> HistoryAsync(EPeriod period, ECallType type, int limit = int.MaxValue, CancellationToken cancellationToken = default) =>
-             await ProcessResponseAsync<IEnumerable<MATSCallModel>>(ECommand.history,
+        public async Task<ClientResult<IEnumerable<CallModel>>> HistoryAsync(EPeriod period, ECallType type, int limit = int.MaxValue, CancellationToken cancellationToken = default) =>
+             await ProcessResponseAsync<IEnumerable<CallModel>>(ECommand.history,
                  new Dictionary<string, string>()
             {
                 { "period", period.ToString().ToLower() },
@@ -83,8 +88,8 @@ namespace MefafonATS.Model
         /// <param name="limit">результат должен содержать не более, чем limit записей</param>
         /// <param name="cancellationToken"></param>
         /// <returns>Коллекцию объектов с информацией о звонках</returns>
-        public async Task<ClientResult<IEnumerable<MATSCallModel>>> HistoryAsync(DateTime start, DateTime end, ECallType type, int limit = int.MaxValue, CancellationToken cancellationToken = default) =>
-            await ProcessResponseAsync<IEnumerable<MATSCallModel>>(ECommand.history,
+        public async Task<ClientResult<IEnumerable<CallModel>>> HistoryAsync(DateTime start, DateTime end, ECallType type, int limit = int.MaxValue, CancellationToken cancellationToken = default) =>
+            await ProcessResponseAsync<IEnumerable<CallModel>>(ECommand.history,
                 new Dictionary<string, string>()
             {
                 { "start", start.ToString("yyyymmddThhmmssZ") },
@@ -103,8 +108,8 @@ namespace MefafonATS.Model
         /// <param name="phoneNumber">"номер телефона клиента"</param>
         /// <param name="cancellationToken"></param>
         /// <returns>Уникальный идентификатор звонка</returns>
-        public async Task<ClientResult<MATSCurrentCallModel>> MakeCallAsync(string user, string phoneNumber, CancellationToken cancellationToken = default) =>
-            await ProcessResponseAsync<MATSCurrentCallModel>(ECommand.makeCall, new Dictionary<string, string>() { { "user", user }, { "phone", phoneNumber } }, cancellationToken);
+        public async Task<ClientResult<CurrentCallModel>> MakeCallAsync(string user, string phoneNumber, CancellationToken cancellationToken = default) =>
+            await ProcessResponseAsync<CurrentCallModel>(ECommand.makeCall, new Dictionary<string, string>() { { "user", user }, { "phone", phoneNumber } }, cancellationToken);
 
         /// <summary>
         /// Запрос от CRM к Виртуальной АТС для включения / выключения приема звонков сотрудником во всех
@@ -147,9 +152,9 @@ namespace MefafonATS.Model
         /// <param name="user">идентификатор сотрудника Виртуальной АТС</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<ClientResult<MATSDnDModel>> GetDnDAsync(string user, CancellationToken cancellationToken = default)
+        public async Task<ClientResult<DnDModel>> GetDnDAsync(string user, CancellationToken cancellationToken = default)
         {
-            return await ProcessResponseAsync<MATSDnDModel>(ECommand.get_dnd, new Dictionary<string, string>() { { "user", user } }, cancellationToken);
+            return await ProcessResponseAsync<DnDModel>(ECommand.get_dnd, new Dictionary<string, string>() { { "user", user } }, cancellationToken);
         }
 
         #endregion
@@ -167,56 +172,25 @@ namespace MefafonATS.Model
             set_dnd,
             get_dnd
         }
-        async Task<HttpResponseMessage> GetResponseAsync(string methodName, Dictionary<string, string> parameters, CancellationToken cancellationToken)
+
+        async Task<HttpResponseMessage> GetResponseAsync(ECommand command, Dictionary<string, string> parameters, CancellationToken cancellationToken)
         {
-            var values = MakeRequestBody(methodName, parameters);
-            var tmp = await values.ReadAsStringAsync();
-            return await _httpClient.PostAsync(_httpClient.BaseAddress, values, cancellationToken);
+            var values = MakeRequestBody(command, parameters);
+            return await httpClient.PostAsync(httpClient.BaseAddress, values, cancellationToken);
         }
-
-        //async Task<ClientResult<IEnumerable<MATSCallModel>>> ProcessResponseHistoryAsync(Dictionary<string, string> parameters, CancellationToken cancellationToken)
-        //{
-        //    if (parameters["limit"] == "0")
-        //    {
-        //        parameters.Remove("limit");
-        //    }
-        //    var response = await GetResponseAsync("history", parameters, cancellationToken);
-        //    switch (response.StatusCode)
-        //    {
-        //        case System.Net.HttpStatusCode.OK:
-        //            {
-        //                var str = await response.Content.ReadAsStringAsync();
-        //                return ClientResult<IEnumerable<MATSCallModel>>.Success(MATSCallModel.CreateListOfCalls(str));
-        //            }
-        //        case System.Net.HttpStatusCode.BadRequest:
-        //            {
-        //                var result = await response.Content.ReadFromJsonAsync<ErrorResponse>(jsonSerializerOptions, cancellationToken);
-        //                return ClientResult<IEnumerable<MATSCallModel>>.SetError(result.Errror);
-        //            }
-        //        default:
-        //            throw new InvalidOperationException("Unknown response status.");
-        //    }
-
-        //}
-
-
 
         async Task<ClientResult<TResponse>> ProcessResponseAsync<TResponse>(ECommand command, Dictionary<string, string> parameters, CancellationToken cancellationToken) where TResponse : class
         {
-            var methodName = command.ToString();
-            if (methodName == null)
-                throw new ArgumentNullException(nameof(methodName));
-
-            var response = await GetResponseAsync(methodName, parameters, cancellationToken);
+            var response = await GetResponseAsync(command, parameters, cancellationToken);
 
             switch (response.StatusCode)
             {
                 case System.Net.HttpStatusCode.OK:
                     {
-                        if (typeof(TResponse) == typeof(IEnumerable<MATSCallModel>))
+                        if (typeof(TResponse) == typeof(IEnumerable<CallModel>))
                         {
                             var str = await response.Content.ReadAsStringAsync();
-                            var result = ClientResult<IEnumerable<MATSCallModel>>.Success(CreateListOfCalls(str));
+                            var result = ClientResult<IEnumerable<CallModel>>.Success(CreateListOfCalls(str));
 
 
                             return (ClientResult<TResponse>)Convert.ChangeType(result, typeof(ClientResult<TResponse>));
@@ -240,12 +214,7 @@ namespace MefafonATS.Model
 
         async Task<ClientResult> ProcessResponseAsync(ECommand command, Dictionary<string, string> parameters, CancellationToken cancellationToken)
         {
-            var methodName = command.ToString();
-
-            if (methodName == null)
-                throw new ArgumentNullException(nameof(methodName));
-
-            var response = await GetResponseAsync(methodName, parameters, cancellationToken);
+            var response = await GetResponseAsync(command, parameters, cancellationToken);
 
             switch (response.StatusCode)
             {
@@ -255,7 +224,6 @@ namespace MefafonATS.Model
                     }
                 case System.Net.HttpStatusCode.BadRequest:
                     {
-                        var result2 = await response.Content.ReadAsStringAsync();
                         var result = await response.Content.ReadFromJsonAsync<ErrorResponse>(jsonSerializerOptions, cancellationToken);
                         return ClientResult.SetError(result.Error);
                     }
@@ -264,13 +232,11 @@ namespace MefafonATS.Model
             }
         }
 
-
-
-        FormUrlEncodedContent MakeRequestBody(string cmd, Dictionary<string, string> args = null)
+        FormUrlEncodedContent MakeRequestBody(ECommand command, Dictionary<string, string> args = null)
         {
             var defaultParams = new Dictionary<string, string>
                     {
-                        { "cmd", cmd },
+                        { "cmd", command.ToString() },
                         { "token", options.Token }
                     };
             IEnumerable<KeyValuePair<string, string>> parameters;
@@ -283,9 +249,9 @@ namespace MefafonATS.Model
             return content;
         }
 
-        IEnumerable<MATSCallModel> CreateListOfCalls(string content)
+        static IEnumerable<CallModel> CreateListOfCalls(string content)
         {
-            List<MATSCallModel> result = new();
+            List<CallModel> result = new();
             var rows = content.Split("\n");
             foreach (var line in rows)
             {
@@ -293,7 +259,7 @@ namespace MefafonATS.Model
                 {
                     var arr = line.Split(",");
 
-                    result.Add(new MATSCallModel()
+                    result.Add(new CallModel()
                     {
                         UID = arr[0],
                         Type = arr[1],
@@ -312,5 +278,4 @@ namespace MefafonATS.Model
 
         #endregion
     }
-
 }

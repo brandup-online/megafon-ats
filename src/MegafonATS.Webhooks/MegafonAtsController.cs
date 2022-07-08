@@ -1,16 +1,17 @@
-﻿using MefafonATS.Model.WebhooksModel;
+﻿using MegafonATS.Models.Webhooks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MefafonATS.Webhooks
+namespace MegafonATS.Webhooks
 {
     [Route("megafon")]
     [ApiController]
     public class MegafonAtsController : Controller
     {
-        readonly IMegafonAtsEvents _megafonAtsEvents;
+        readonly IMegafonAtsEvents megafonAtsEvents;
+
         public MegafonAtsController(IMegafonAtsEvents megafonAtsEvents)
         {
-            _megafonAtsEvents = megafonAtsEvents;
+            this.megafonAtsEvents = megafonAtsEvents ?? throw new ArgumentNullException(nameof(megafonAtsEvents));
         }
 
         [HttpPost("callback")]
@@ -31,40 +32,33 @@ namespace MefafonATS.Webhooks
                                                 System.Globalization.DateTimeStyles.None,
                                                 out DateTime tmp);
                         model.Start = tmp;
-                        await _megafonAtsEvents.HistoryAsync(model);
+                        await megafonAtsEvents.HistoryAsync(model);
                         return Ok("history");
                     }
                 case "event":
                     {
                         EventModel model = new();
                         _ = await TryUpdateModelAsync(model);
-                        await _megafonAtsEvents.EventAsync(model);
+                        await megafonAtsEvents.EventAsync(model);
                         return Ok("event");
                     }
                 case "contact":
                     {
                         ContactModel model = new();
                         _ = await TryUpdateModelAsync(model);
-                        await _megafonAtsEvents.ContactAsync(model);
+                        await megafonAtsEvents.ContactAsync(model);
                         return Ok("contact");
                     }
                 case "rating":
                     {
                         RatingModel model = new();
                         _ = await TryUpdateModelAsync(model);
-                        await _megafonAtsEvents.RatingAsync(model);
+                        await megafonAtsEvents.RatingAsync(model);
                         return Ok("rating");
                     }
                 default:
                     return BadRequest();
             }
-
-
-
-
-
         }
-
     }
-
 }

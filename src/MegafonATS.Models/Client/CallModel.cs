@@ -1,6 +1,6 @@
-﻿namespace MefafonATS.Model.ClientModels
+﻿namespace MegafonATS.Models.Client
 {
-    public class MATSCallModel
+    public class CallModel
     {
         public string UID { get; set; }
         public string Type { get; set; }
@@ -11,10 +11,5 @@
         public string Wait { get; set; }
         public string Duration { get; set; }
         public string Record { get; set; }
-        //api не возвращает контроль качества
-        //public string QualityControl { get; set; }
-
-
-
     }
 }

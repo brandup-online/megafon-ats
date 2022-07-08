@@ -1,6 +1,6 @@
-﻿namespace MefafonATS.Model.ClientModels
+﻿namespace MegafonATS.Models.Client
 {
-    public class MATSUserModel
+    public class UserModel
     {
 
         public string Name { get; set; }

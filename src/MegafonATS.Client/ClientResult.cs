@@ -1,4 +1,4 @@
-﻿namespace MefafonATS.Model
+﻿namespace MegafonATS.Client
 {
     public class ClientResult<T> : IClientResult
     {
@@ -14,6 +14,7 @@
         public static ClientResult<T> Success(T result) => new() { IsSuccess = true, Result = result };
         public static ClientResult<T> SetError(string errorMessage) => new() { IsSuccess = false, Error = errorMessage };
     }
+
     public class ClientResult : IClientResult
     {
         private ClientResult() { }
@@ -24,7 +25,7 @@
         public bool Result { get; set; }
         object IClientResult.Result => Result;
 
-        public static ClientResult Success() => new() { IsSuccess = true, Result = true};
+        public static ClientResult Success() => new() { IsSuccess = true, Result = true };
         public static ClientResult SetError(string errorMessage) => new() { IsSuccess = false, Error = errorMessage, Result = false };
     }
 }

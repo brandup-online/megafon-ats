@@ -1,4 +1,4 @@
-﻿namespace MefafonATS.Model.ClientModels
+﻿namespace MegafonATS.Models.Client
 {
     public class StatusModel
     {

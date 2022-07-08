@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MefafonATS.Model
+﻿namespace MegafonATS.Client
 {
     public class ErrorResponse
     {
-
         public string Error { get; set; }
     }
 }

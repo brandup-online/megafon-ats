@@ -1,34 +1,36 @@
-﻿using MefafonATS.Model.WebhooksModel;
-using MefafonATS.Webhooks;
+﻿using MegafonATS.Models.Webhooks;
+using MegafonATS.Webhooks;
 
 namespace ExampleWebSite.Core
 {
     public class WebHookService : IMegafonAtsEvents
     {
-        WebSiteDbContext _context;
+        readonly WebSiteDbContext context;
+
         public WebHookService(WebSiteDbContext context)
         {
-            _context = context;
+            this.context = context ?? throw new ArgumentNullException(nameof(context));
         }
-        public async Task ContactAsync(ContactModel contact)
+
+        public Task ContactAsync(ContactModel contact)
         {
             throw new NotImplementedException();
         }
 
-        public async Task EventAsync(EventModel _event) =>
-            await _context.Events.InsertOneAsync(ParseToEventDocument(_event));
+        public Task EventAsync(EventModel _event) =>
+            context.Events.InsertOneAsync(ParseToEventDocument(_event));
 
 
-        public async Task HistoryAsync(HistoryModel history) =>
-            await _context.History.InsertOneAsync(ParseToHistoryDocument(history));
+        public Task HistoryAsync(HistoryModel history) =>
+            context.History.InsertOneAsync(ParseToHistoryDocument(history));
 
-        public async Task RatingAsync(RatingModel rating)
+        public Task RatingAsync(RatingModel rating)
         {
             throw new NotImplementedException();
         }
 
-        HistoryDocument ParseToHistoryDocument(HistoryModel history) =>
-            new HistoryDocument()
+        static HistoryDocument ParseToHistoryDocument(HistoryModel history) =>
+            new()
             {
                 Id = new Guid(),
                 Created = DateTime.UtcNow,
@@ -44,12 +46,11 @@ namespace ExampleWebSite.Core
                 Callid = history.Callid,
                 Link = history.Link,
                 Rating = history.Rating,
-                Status = history.Status,
-
+                Status = history.Status
             };
 
-        EventDocument ParseToEventDocument(EventModel eventModel) =>
-            new EventDocument()
+        static EventDocument ParseToEventDocument(EventModel eventModel) =>
+            new()
             {
                 Id = new Guid(),
                 Created = DateTime.UtcNow,
@@ -61,10 +62,7 @@ namespace ExampleWebSite.Core
                 Ext = eventModel.Ext,
                 Telnum = eventModel.Telnum,
                 Direction = eventModel.Direction,
-                Callid = eventModel.Callid,
-
+                Callid = eventModel.Callid
             };
-
-
     }
 }

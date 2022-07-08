@@ -1,14 +1,12 @@
-﻿using MefafonATS.Model.WebhooksModel;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace MefafonATS.Webhooks.Extensions
+namespace MegafonATS.Webhooks
 {
     public static class IServiceCollectionExtensions
     {
         public static void AddMegafonWebHooks<TService>(this IServiceCollection services) where TService : class, IMegafonAtsEvents
         {
-            services.AddTransient<IMegafonAtsEvents, TService>();
+            services.AddScoped<IMegafonAtsEvents, TService>();
         }
     }
-
 }

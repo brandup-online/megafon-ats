@@ -1,6 +1,6 @@
-﻿namespace MefafonATS.Model.ClientModels
+﻿namespace MegafonATS.Models.Client
 {
-    public class MATSGroupModel
+    public class GroupModel
     {
 
         public string Id { get; set; }

@@ -1,6 +1,6 @@
 using BrandUp.Website.Pages;
-using MefafonATS.Model;
-using MefafonATS.Model.ClientModels;
+using MegafonATS.Client;
+using MegafonATS.Models.Client;
 
 namespace ExampleWebSite.Pages
 {
@@ -8,23 +8,24 @@ namespace ExampleWebSite.Pages
     {
         public override string Title => "Сделать звонок";
 
-        private IMegafonAtsClient _client;
-        public IEnumerable<MATSUserModel> Users { get; set; }
+        private IMegafonAtsClient client;
+        public IEnumerable<UserModel> Users { get; set; }
 
         public MakeCallModel(IMegafonAtsClient client)
         {
-            _client = client;
+            this.client = client ?? throw new ArgumentNullException(nameof(client));
         }
 
         protected override async Task OnPageRequestAsync(PageRequestContext context)
         {
 
-            var clientResult = await _client.AccountsAsync();
+            var clientResult = await client.AccountsAsync();
             if (clientResult.IsSuccess == true)
                 Users = clientResult.Result;
 
             //return base.OnPageRequestAsync(context);
         }
+
         public void OnGet()
         {
         }
@@ -34,7 +35,7 @@ namespace ExampleWebSite.Pages
             var user = Users.FirstOrDefault(u => u.RealName == Request.Form["Caller"]);
             var number = Request.Form["PhoneNumber"];
 
-            _client.MakeCallAsync(user.Name, number);
+            client.MakeCallAsync(user.Name, number);
         }
     }
 }

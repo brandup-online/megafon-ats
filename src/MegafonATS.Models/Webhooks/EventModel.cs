@@ -1,4 +1,4 @@
-﻿namespace MefafonATS.Model.WebhooksModel
+﻿namespace MegafonATS.Models.Webhooks
 {
     public class EventModel
     {

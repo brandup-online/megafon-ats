@@ -1,16 +1,14 @@
-﻿namespace MefafonATS.Model
+﻿namespace MegafonATS.Client
 {
     public class MegafonAtsOptions
     {
-        public string AtsName { get; set; }
+        /// <summary>
+        /// Name of your Megafon ATS.
+        /// </summary>
+        public string Name { get; set; }
+        /// <summary>
+        /// Access token to your Megafon ATS.
+        /// </summary>
         public string Token { get; set; }
-
-        //public void Validation()
-        //{
-        //    if (ApiUrl == null)
-        //        throw new ArgumentNullException(nameof(ApiUrl));
-        //    if (!ApiUrl.IsAbsoluteUri)
-        //        throw new InvalidOperationException($"Propery value is {nameof(ApiUrl)} require absolute url.");
-        //}
     }
 }

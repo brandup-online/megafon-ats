@@ -4,7 +4,7 @@ using BrandUp.Website;
 using BrandUp.Website.Infrastructure;
 using ExampleWebSite.Core;
 using ExampleWebSite.Migrations;
-using MefafonATS.Model.Extensions;
+using MegafonATS.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,9 +69,6 @@ services.Configure<IISServerOptions>(options =>
 
 services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
-var megafonOptions = builder.Configuration.GetSection("MegafonAtsOptions");
-
-
 services.AddMongoDbContext<WebSiteDbContext>(builder =>
 {
     builder.ConnectionString = "mongodb://localhost:27017";
@@ -84,11 +81,7 @@ services.AddMongoDbContext<WebSiteDbContext>(builder =>
 
 services.AddMongoDbContextExension<WebSiteDbContext, IWebHooksContext>();
 
-services.AddMegafonAtsClient(options =>
-    {
-        options.AtsName = megafonOptions["AtsName"];
-        options.Token = megafonOptions["Token"];
-    });
+services.AddMegafonAtsClient();
 
 services.AddWebsite(options =>
     {

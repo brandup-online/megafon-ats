@@ -1,4 +1,0 @@
-﻿namespace MefafonATS.Model.ClientModels
-{
-
-}

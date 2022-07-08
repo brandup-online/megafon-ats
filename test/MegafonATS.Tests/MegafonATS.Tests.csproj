@@ -3,7 +3,7 @@
   <PropertyGroup>
 	<TargetFramework>net6.0</TargetFramework>
 	<UserSecretsId>7a911a7b-3944-4ef8-ae89-85832c29c0e9</UserSecretsId>
-	<RootNamespace>MATS.Client.Tests</RootNamespace>
+	<RootNamespace>MegafonATS</RootNamespace>
 	<ImplicitUsings>enable</ImplicitUsings>
 	<Nullable>disable</Nullable>
 

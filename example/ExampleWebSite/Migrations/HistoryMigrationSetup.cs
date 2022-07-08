@@ -1,8 +1,7 @@
 ﻿using BrandUp.Extensions.Migrations;
 using ExampleWebSite.Core;
-using MefafonATS.Model;
-using MefafonATS.Model.ClientModels;
-
+using MegafonATS.Client;
+using MegafonATS.Models.Client;
 
 namespace ExampleWebSite.Migrations
 {

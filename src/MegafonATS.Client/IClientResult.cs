@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace MefafonATS.Model
+﻿namespace MegafonATS.Client
 {
     public interface IClientResult
     {
-        bool IsSuccess {get;}
+        bool IsSuccess { get; }
         string Error { get; }
-        object Result {get;}
+        object Result { get; }
     }
 }

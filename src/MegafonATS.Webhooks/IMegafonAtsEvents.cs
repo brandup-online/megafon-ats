@@ -1,12 +1,12 @@
-﻿using MefafonATS.Model.WebhooksModel;
+﻿using MegafonATS.Models.Webhooks;
 
-namespace MefafonATS.Webhooks
+namespace MegafonATS.Webhooks
 {
     public interface IMegafonAtsEvents
     {
-        public Task HistoryAsync(HistoryModel history);
-        public Task EventAsync(EventModel _event);
-        public Task ContactAsync(ContactModel contact);
-        public Task RatingAsync(RatingModel rating);
+        Task HistoryAsync(HistoryModel history);
+        Task EventAsync(EventModel _event);
+        Task ContactAsync(ContactModel contact);
+        Task RatingAsync(RatingModel rating);
     }
 }

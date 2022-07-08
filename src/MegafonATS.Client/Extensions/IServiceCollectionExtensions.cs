@@ -1,21 +1,13 @@
-﻿using MefafonATS.Model.Services;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace MefafonATS.Model.Extensions
+namespace MegafonATS.Client
 {
     public static class IServiceCollectionExtensions
     {
-        public static void AddMegafonAtsClient(this IServiceCollection services, Action<MegafonAtsOptions> configure)
+        public static void AddMegafonAtsClient(this IServiceCollection services)
         {
-            services.Configure(configure);
             services.AddHttpClient();
-
-            services.AddScoped<IMegafonClientFactoryService, MegafonClientFactoryService>();
-
-            services.PostConfigure<MegafonAtsOptions>(options =>
-            {
-                //options.Validation();
-            });
+            services.AddScoped<IMegafonAtsClientFactory, MegafonAtsClientFactory>();
         }
     }
 }

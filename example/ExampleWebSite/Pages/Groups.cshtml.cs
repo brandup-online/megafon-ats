@@ -1,14 +1,14 @@
 using BrandUp.Website.Pages;
-using MefafonATS.Model;
-using MefafonATS.Model.ClientModels;
+using MegafonATS.Client;
+using MegafonATS.Models.Client;
 
 namespace ExampleWebSite.Pages
 {
     public class GroupsModel : AppPageModel
     {
         public override string Title => "Ãğóïïû";
-        public IEnumerable<MATSGroupModel> Groups { get; set; }
-        public IEnumerable<MATSUserModel> Users { get; set; }
+        public IEnumerable<GroupModel> Groups { get; set; }
+        public IEnumerable<UserModel> Users { get; set; }
 
         private IMegafonAtsClient _client;
 
