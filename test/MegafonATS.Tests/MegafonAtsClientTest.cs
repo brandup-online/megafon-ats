@@ -13,7 +13,7 @@ namespace MegafonATS
 
         public MegafonAtsClientTest()
         {
-            config = new ConfigurationBuilder().AddJsonFile("..\\example\\ExampleWebSite\\appsetings.json").AddUserSecrets(typeof(MegafonAtsClientTest).Assembly).Build();
+            config = new ConfigurationBuilder().AddUserSecrets(typeof(MegafonAtsClientTest).Assembly).Build();
             var services = new ServiceCollection();
 
             options.Name = config["MegafonAts:Options:AtsName"];
