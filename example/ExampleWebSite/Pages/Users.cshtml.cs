@@ -1,6 +1,7 @@
 using BrandUp.Website.Pages;
 using MegafonATS.Client;
 using MegafonATS.Models.Client;
+using Microsoft.Extensions.Options;
 
 namespace ExampleWebSite.Pages
 {
@@ -10,16 +11,19 @@ namespace ExampleWebSite.Pages
 
         public IEnumerable<UserModel> Users { get; set; }
 
-        private IMegafonAtsClientFactory factory;
+        IMegafonAtsClientFactory factory;
+        IOptions<MegafonAtsOptions> options;
 
-        public UsersModel(IMegafonAtsClientFactory factory)
+        public UsersModel(IMegafonAtsClientFactory factory, IOptions<MegafonAtsOptions> options
+            )
         {
             this.factory = factory;
+            this.options = options;
         }
 
         protected override async Task OnPageRequestAsync(PageRequestContext context)
         {
-            var client = factory.Create(new MegafonAtsOptions { Name = "vats370633", Token = "89244060-639b-45fa-b8cc-6fdf01fab820" });
+            IMegafonAtsClient client = factory.Create(new MegafonAtsOptions { Name = options.Value.Name, Token = options.Value.Token });
             var clientResult = await client.AccountsAsync();
             if (clientResult.IsSuccess == true)
                 Users = clientResult.Result;

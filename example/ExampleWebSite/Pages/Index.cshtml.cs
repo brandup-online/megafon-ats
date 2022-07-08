@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using BrandUp.Website.Pages;
+﻿using BrandUp.Website.Pages;
 namespace ExampleWebSite.Pages
 {
     public class IndexModel : AppPageModel

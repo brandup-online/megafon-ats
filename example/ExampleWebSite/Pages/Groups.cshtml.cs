@@ -26,9 +26,6 @@ namespace ExampleWebSite.Pages
             var UserResult = await _client.AccountsAsync();
             if (clientResult.IsSuccess == true)
                 Users = UserResult.Result;
-
-
-            //return base.OnPageRequestAsync(context);
         }
         public async Task OnPost()
         {

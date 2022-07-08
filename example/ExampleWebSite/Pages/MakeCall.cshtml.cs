@@ -23,12 +23,8 @@ namespace ExampleWebSite.Pages
             if (clientResult.IsSuccess == true)
                 Users = clientResult.Result;
 
-            //return base.OnPageRequestAsync(context);
         }
 
-        public void OnGet()
-        {
-        }
 
         public void OnPost()
         {
