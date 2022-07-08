@@ -4,6 +4,5 @@
     {
         public string Phone { get; set; }
         public string Callid { get; set; }
-
     }
 }

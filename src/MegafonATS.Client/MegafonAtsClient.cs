@@ -1,4 +1,5 @@
-﻿using MegafonATS.Models.Client;
+﻿using MegafonATS.Models;
+using MegafonATS.Models.Client;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -13,11 +14,7 @@ namespace MegafonATS.Client
 
         static MegafonAtsClient()
         {
-            jsonSerializerOptions = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-
-            };
+            jsonSerializerOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
             jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         }
 
@@ -42,7 +39,7 @@ namespace MegafonATS.Client
         /// <param name="cancellationToken"></param>
         /// <returns>Коллекцию отделов</returns>
         public async Task<ClientResult<IEnumerable<UserModel>>> AccountsAsync(CancellationToken cancellationToken = default) =>
-            await ProcessResponseAsync<IEnumerable<UserModel>>(ECommand.accounts, new Dictionary<string, string>() { }, cancellationToken);
+            await ProcessResponseAsync<IEnumerable<UserModel>>(AtsCommand.accounts, new Dictionary<string, string>() { }, cancellationToken);
 
 
         /// <summary>
@@ -52,7 +49,7 @@ namespace MegafonATS.Client
         /// <param name="cancellationToken">Коллекцию отделов</param>
         /// <returns>Коллекцию отделов</returns>
         public async Task<ClientResult<IEnumerable<GroupModel>>> GroupsAsync(string user, CancellationToken cancellationToken = default) =>
-            await ProcessResponseAsync<IEnumerable<GroupModel>>(ECommand.groups, new Dictionary<string, string>() { { "user", user } }, cancellationToken);
+            await ProcessResponseAsync<IEnumerable<GroupModel>>(AtsCommand.groups, new Dictionary<string, string>() { { "user", user } }, cancellationToken);
 
         /// <summary>
         /// Запрос от CRM к Виртуальной АТС для получения отделов
@@ -60,7 +57,7 @@ namespace MegafonATS.Client
         /// <param name="cancellationToken"></param>
         /// <returns>Коллекцию отделов</returns>
         public async Task<ClientResult<IEnumerable<GroupModel>>> GroupsAsync(CancellationToken cancellationToken = default) =>
-            await ProcessResponseAsync<IEnumerable<GroupModel>>(ECommand.groups, new Dictionary<string, string>(), cancellationToken);
+            await ProcessResponseAsync<IEnumerable<GroupModel>>(AtsCommand.groups, new Dictionary<string, string>(), cancellationToken);
 
         /// <summary>
         /// Команда необходима для того, чтобы получить из Виртуальной АТС историю звонков за нужный период времени.
@@ -70,8 +67,8 @@ namespace MegafonATS.Client
         /// <param name="limit">результат должен содержать не более, чем limit записей </param>
         /// <param name="cancellationToken"></param>
         /// <returns>Коллекцию объектов с информацией о звонках</returns>
-        public async Task<ClientResult<IEnumerable<CallModel>>> HistoryAsync(EPeriod period, ECallType type, int limit = int.MaxValue, CancellationToken cancellationToken = default) =>
-             await ProcessResponseAsync<IEnumerable<CallModel>>(ECommand.history,
+        public async Task<ClientResult<IEnumerable<CallModel>>> HistoryAsync(FilterPeriod period, FilterCallType type, int limit = int.MaxValue, CancellationToken cancellationToken = default) =>
+             await ProcessResponseAsync<IEnumerable<CallModel>>(AtsCommand.history,
                  new Dictionary<string, string>()
             {
                 { "period", period.ToString().ToLower() },
@@ -88,8 +85,8 @@ namespace MegafonATS.Client
         /// <param name="limit">результат должен содержать не более, чем limit записей</param>
         /// <param name="cancellationToken"></param>
         /// <returns>Коллекцию объектов с информацией о звонках</returns>
-        public async Task<ClientResult<IEnumerable<CallModel>>> HistoryAsync(DateTime start, DateTime end, ECallType type, int limit = int.MaxValue, CancellationToken cancellationToken = default) =>
-            await ProcessResponseAsync<IEnumerable<CallModel>>(ECommand.history,
+        public async Task<ClientResult<IEnumerable<CallModel>>> HistoryAsync(DateTime start, DateTime end, FilterCallType type, int limit = int.MaxValue, CancellationToken cancellationToken = default) =>
+            await ProcessResponseAsync<IEnumerable<CallModel>>(AtsCommand.history,
                 new Dictionary<string, string>()
             {
                 { "start", start.ToString("yyyymmddThhmmssZ") },
@@ -109,31 +106,31 @@ namespace MegafonATS.Client
         /// <param name="cancellationToken"></param>
         /// <returns>Уникальный идентификатор звонка</returns>
         public async Task<ClientResult<CurrentCallModel>> MakeCallAsync(string user, string phoneNumber, CancellationToken cancellationToken = default) =>
-            await ProcessResponseAsync<CurrentCallModel>(ECommand.makeCall, new Dictionary<string, string>() { { "user", user }, { "phone", phoneNumber } }, cancellationToken);
+            await ProcessResponseAsync<CurrentCallModel>(AtsCommand.makeCall, new Dictionary<string, string>() { { "user", user }, { "phone", phoneNumber } }, cancellationToken);
 
         /// <summary>
         /// Запрос от CRM к Виртуальной АТС для включения / выключения приема звонков сотрудником во всех
         /// его отделах или конкретном отделе.
         /// </summary>
         /// <param name="user">идентификатор сотрудника Виртуальной АТС</param>
-        /// <param name="group_id">идентификатор отдела АТС, в которомнадо выключить/включить прием звонков </param>
+        /// <param name="groupId">идентификатор отдела АТС, в которомнадо выключить/включить прием звонков </param>
         /// <param name="status">on - чтобы включить прием звонков, off - чтобы выключить прием звонков</param>
         /// <param name="cancellationToken"></param>
         /// <returns>Информация о успехе/неуспехе операции</returns>
-        public async Task<ClientResult> SubscribeOnCallsAsync(string user, string group_id, ESubscriptionStatus status, CancellationToken cancellationToken = default)
+        public async Task<ClientResult> SubscribeOnCallsAsync(string user, string groupId, SubscriptionStatus status, CancellationToken cancellationToken = default)
         {
-            return await ProcessResponseAsync(ECommand.subscribeOnCalls, new Dictionary<string, string>() { { "user", user }, { "group_id", group_id }, { "status", status.ToString().ToLower() } }, cancellationToken);
+            return await ProcessResponseAsync(AtsCommand.subscribeOnCalls, new Dictionary<string, string>() { { "user", user }, { "group_id", groupId }, { "status", status.ToString().ToLower() } }, cancellationToken);
         }
 
         /// <summary>
         /// Запрос от CRM к Виртуальной АТС для проверки факта приема звонков сотрудником в конкретном отделе
         /// </summary>
         /// <param name="user">идентификатор сотрудника Виртуальной АТС</param>
-        /// <param name="group_id">идентификатор отдела АТС, для которого надо выполнить проверку</param>
+        /// <param name="groupId">идентификатор отдела АТС, для которого надо выполнить проверку</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<ClientResult<StatusModel>> SubscriptionStatusAsync(string user, string group_id, CancellationToken cancellationToken = default) =>
-             await ProcessResponseAsync<StatusModel>(ECommand.subscriptionStatus, new Dictionary<string, string>() { { "user", user }, { "group_id", group_id } }, cancellationToken);
+        public async Task<ClientResult<StatusModel>> SubscriptionStatusAsync(string user, string groupId, CancellationToken cancellationToken = default) =>
+             await ProcessResponseAsync<StatusModel>(AtsCommand.subscriptionStatus, new Dictionary<string, string>() { { "user", user }, { "group_id", groupId } }, cancellationToken);
 
         /// <summary>
         /// Запрос от CRM к Виртуальной АТС позволяет включить или выключить прием звонков сотрудником Виртуальной АТС.
@@ -143,7 +140,7 @@ namespace MegafonATS.Client
         /// <param name="cancellationToken"></param>
         /// <returns>Информация об успехе/неуспехе операции</returns>
         public async Task<ClientResult> SetDnDAsync(string user, bool state, CancellationToken cancellationToken = default) =>
-            await ProcessResponseAsync(ECommand.set_dnd, new Dictionary<string, string>() { { "user", user }, { "state", state.ToString().ToLower() } }, cancellationToken);
+            await ProcessResponseAsync(AtsCommand.set_dnd, new Dictionary<string, string>() { { "user", user }, { "state", state.ToString().ToLower() } }, cancellationToken);
 
 
         /// <summary>
@@ -154,14 +151,14 @@ namespace MegafonATS.Client
         /// <returns></returns>
         public async Task<ClientResult<DnDModel>> GetDnDAsync(string user, CancellationToken cancellationToken = default)
         {
-            return await ProcessResponseAsync<DnDModel>(ECommand.get_dnd, new Dictionary<string, string>() { { "user", user } }, cancellationToken);
+            return await ProcessResponseAsync<DnDModel>(AtsCommand.get_dnd, new Dictionary<string, string>() { { "user", user } }, cancellationToken);
         }
 
         #endregion
 
         #region Helpers
 
-        enum ECommand
+        enum AtsCommand
         {
             accounts,
             groups,
@@ -173,13 +170,13 @@ namespace MegafonATS.Client
             get_dnd
         }
 
-        async Task<HttpResponseMessage> GetResponseAsync(ECommand command, Dictionary<string, string> parameters, CancellationToken cancellationToken)
+        async Task<HttpResponseMessage> GetResponseAsync(AtsCommand command, Dictionary<string, string> parameters, CancellationToken cancellationToken)
         {
             var values = MakeRequestBody(command, parameters);
             return await httpClient.PostAsync(httpClient.BaseAddress, values, cancellationToken);
         }
 
-        async Task<ClientResult<TResponse>> ProcessResponseAsync<TResponse>(ECommand command, Dictionary<string, string> parameters, CancellationToken cancellationToken) where TResponse : class
+        async Task<ClientResult<TResponse>> ProcessResponseAsync<TResponse>(AtsCommand command, Dictionary<string, string> parameters, CancellationToken cancellationToken) where TResponse : class
         {
             var response = await GetResponseAsync(command, parameters, cancellationToken);
 
@@ -212,7 +209,7 @@ namespace MegafonATS.Client
             }
         }
 
-        async Task<ClientResult> ProcessResponseAsync(ECommand command, Dictionary<string, string> parameters, CancellationToken cancellationToken)
+        async Task<ClientResult> ProcessResponseAsync(AtsCommand command, Dictionary<string, string> parameters, CancellationToken cancellationToken)
         {
             var response = await GetResponseAsync(command, parameters, cancellationToken);
 
@@ -232,7 +229,7 @@ namespace MegafonATS.Client
             }
         }
 
-        FormUrlEncodedContent MakeRequestBody(ECommand command, Dictionary<string, string> args = null)
+        FormUrlEncodedContent MakeRequestBody(AtsCommand command, Dictionary<string, string> args = null)
         {
             var defaultParams = new Dictionary<string, string>
                     {
@@ -241,18 +238,17 @@ namespace MegafonATS.Client
                     };
             IEnumerable<KeyValuePair<string, string>> parameters;
             if (args != null)
-            {
                 parameters = defaultParams.Concat(args);
-            }
-            else parameters = defaultParams;
-            var content = new FormUrlEncodedContent(parameters);
-            return content;
+            else
+                parameters = defaultParams;
+
+            return new FormUrlEncodedContent(parameters);
         }
 
         static IEnumerable<CallModel> CreateListOfCalls(string content)
         {
             List<CallModel> result = new();
-            var rows = content.Split("\n");
+            var rows = content.Split("\r\n");
             foreach (var line in rows)
             {
                 if (line != "")
@@ -262,14 +258,14 @@ namespace MegafonATS.Client
                     result.Add(new CallModel()
                     {
                         UID = arr[0],
-                        Type = arr[1],
+                        Type = Enum.Parse<CallDirection>(arr[1], true),
                         Client = arr[2],
                         Account = arr[3],
                         Via = arr[4],
                         Start = arr[5],
                         Wait = arr[6],
                         Duration = arr[7],
-                        Record = arr[8],
+                        Record = !string.IsNullOrEmpty(arr[8]) ? new Uri(arr[8]) : null
                     });
                 }
             }

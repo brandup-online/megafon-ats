@@ -19,7 +19,7 @@ namespace ExampleWebSite.Pages
 
         protected override async Task OnPageRequestAsync(PageRequestContext context)
         {
-            var clientResult = await _client.HistoryAsync(EPeriod.today, ECallType.All);
+            var clientResult = await _client.HistoryAsync(FilterPeriod.today, FilterCallType.All);
             if (clientResult.IsSuccess == true)
                 Calls = clientResult.Result;
 
@@ -35,12 +35,12 @@ namespace ExampleWebSite.Pages
             IClientResult result;
             if (limit != "")
             {
-                result = await _client.HistoryAsync(Convert.ToDateTime(start), Convert.ToDateTime(end), Enum.Parse<ECallType>(type), Convert.ToInt32(limit));
+                result = await _client.HistoryAsync(Convert.ToDateTime(start), Convert.ToDateTime(end), Enum.Parse<FilterCallType>(type), Convert.ToInt32(limit));
 
             }
             else
             {
-                result = await _client.HistoryAsync(Convert.ToDateTime(start), Convert.ToDateTime(end), Enum.Parse<ECallType>(type));
+                result = await _client.HistoryAsync(Convert.ToDateTime(start), Convert.ToDateTime(end), Enum.Parse<FilterCallType>(type));
             }
             if (result.IsSuccess == true)
                 Calls = (IEnumerable<CallModel>)result.Result;

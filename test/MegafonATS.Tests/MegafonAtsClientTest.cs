@@ -62,14 +62,14 @@ namespace MegafonATS
         public async Task TestATS_historyPeriod()
         {
             var client = CreateClient();
-            var result = await client.HistoryAsync(EPeriod.today, ECallType.All);
+            var result = await client.HistoryAsync(FilterPeriod.today, FilterCallType.All);
 
             foreach (var str in result.Result)
             {
                 Assert.NotNull(str.Account);
                 Assert.NotNull(str.Start);
                 Assert.NotNull(str.UID);
-                Assert.NotNull(str.Record);
+                //Assert.Null(str.Record);
                 Assert.NotNull(str.Via);
                 Assert.NotNull(str.Wait);
                 Assert.NotNull(str.Client);
@@ -80,14 +80,14 @@ namespace MegafonATS
         public async Task TestATS_historyStartEnd()
         {
             var client = CreateClient();
-            var result = await client.HistoryAsync(new DateTime(2022, 01, 01, 01, 00, 00), DateTime.Now, ECallType.All);
+            var result = await client.HistoryAsync(new DateTime(2022, 01, 01, 01, 00, 00), DateTime.Now, FilterCallType.All);
 
             foreach (var str in result.Result)
             {
                 Assert.NotNull(str.Account);
                 Assert.NotNull(str.Start);
                 Assert.NotNull(str.UID);
-                Assert.NotNull(str.Record);
+                //Assert.NotNull(str.Record);
                 Assert.NotNull(str.Via);
                 Assert.NotNull(str.Wait);
                 Assert.NotNull(str.Client);
@@ -98,7 +98,7 @@ namespace MegafonATS
         public async Task TestATS_subscribeOnCalls()
         {
             var client = CreateClient();
-            var result = await client.SubscribeOnCallsAsync(config["MegafonAts:TestUserName"], config["MegafonAts:TestGroupId"], ESubscriptionStatus.On);
+            var result = await client.SubscribeOnCallsAsync(config["MegafonAts:TestUserName"], config["MegafonAts:TestGroupId"], SubscriptionStatus.On);
 
             Assert.True(result.IsSuccess);
         }
@@ -109,7 +109,7 @@ namespace MegafonATS
             var client = CreateClient();
             var result = await client.SubscriptionStatusAsync(config["MegafonAts:TestUserName"], config["MegafonAts:TestGroupId"]);
 
-            Assert.True(result.Result.Status == ESubscriptionStatus.On);
+            Assert.True(result.Result.Status == SubscriptionStatus.On);
         }
 
         [Fact]

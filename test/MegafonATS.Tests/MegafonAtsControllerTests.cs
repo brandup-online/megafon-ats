@@ -1,4 +1,6 @@
 ﻿using MegafonATS.Fakes;
+using MegafonATS.Models;
+using MegafonATS.Models.Webhooks;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MegafonATS
@@ -31,7 +33,7 @@ namespace MegafonATS
                         { "start", "20220101T010101" },
                         { "duration", "50" },
                         { "callid", "43294397431" },
-                        { "link", "jjj.net" },
+                        { "link", "https://test.ru/test.mp3" },
                         { "rating", "4" },
                         { "crm_token", secretKey },
                         { "status", "Success" }
@@ -46,7 +48,7 @@ namespace MegafonATS
 
             var results = factory.Services.GetRequiredService<FakeMegafonAtsEventsResults>();
 
-            Assert.Equal(results.History.Type, values["type"]);
+            Assert.Equal(results.History.Type, Enum.Parse<CallDirection>(values["type"], true));
             Assert.Equal(results.History.User, values["user"]);
             Assert.Equal(results.History.Ext, values["ext"]);
             Assert.Equal(results.History.groupRealName, values["groupRealName"]);
@@ -56,7 +58,7 @@ namespace MegafonATS
             Assert.Equal(results.History.Start.ToString("yyyyMMddThhmmss"), values["start"]);
             Assert.Equal(results.History.Duration.ToString(), values["duration"]);
             Assert.Equal(results.History.Callid, values["callid"]);
-            Assert.Equal(results.History.Link, values["link"]);
+            Assert.Equal(results.History.Link, new Uri(values["link"]));
             Assert.Equal(results.History.Rating.ToString(), values["rating"]);
             Assert.Equal(results.History.Status, values["status"]);
         }
@@ -75,7 +77,7 @@ namespace MegafonATS
                         { "groupRealName", "groupname" },
                         { "ext", "510" },
                         { "telnum", "999999" },
-                        { "direction", "9in99999" },
+                        { "direction", "in" },
                         { "callid", "43294397431" },
                         { "status", "Success" },
                         { "crm_token", secretKey }
@@ -87,14 +89,14 @@ namespace MegafonATS
 
             var results = factory.Services.GetRequiredService<FakeMegafonAtsEventsResults>();
 
-            Assert.Equal(results.Event.Type, values["type"]);
+            Assert.Equal(results.Event.Type, Enum.Parse<EventType>(values["type"], true));
             Assert.Equal(results.Event.Phone, values["phone"]);
             Assert.Equal(results.Event.Diversion, values["diversion"]);
             Assert.Equal(results.Event.User, values["user"]);
             Assert.Equal(results.Event.GroupRealName, values["groupRealName"]);
             Assert.Equal(results.Event.Ext, values["ext"]);
             Assert.Equal(results.Event.Telnum, values["telnum"]);
-            Assert.Equal(results.Event.Direction, values["direction"]);
+            Assert.Equal(results.Event.Direction, Enum.Parse<CallDirection>(values["direction"], true));
             Assert.Equal(results.Event.Callid, values["callid"]);
 
         }

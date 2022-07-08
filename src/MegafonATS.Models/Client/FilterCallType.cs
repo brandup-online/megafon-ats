@@ -1,6 +1,6 @@
 ﻿namespace MegafonATS.Models.Client
 {
-    public enum ECallType
+    public enum FilterCallType
     {
         All,
         In,

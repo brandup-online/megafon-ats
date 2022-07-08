@@ -1,7 +1,6 @@
 ﻿namespace MegafonATS.Models.Client
 {
-
-    public enum ESubscriptionStatus
+    public enum SubscriptionStatus
     {
         Off,
         On

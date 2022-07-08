@@ -10,11 +10,13 @@ namespace ExampleWebSite.Migrations
     {
         readonly IWebHooksContext dbContext;
         readonly IMegafonAtsClient megafonAtsClient;
-        public HistoryMigrationSetup(IWebHooksContext _dbContext, IMegafonAtsClient _megafonAtsClient)
+
+        public HistoryMigrationSetup(IWebHooksContext dbContext, IMegafonAtsClient megafonAtsClient)
         {
-            this.dbContext = _dbContext;
-            this.megafonAtsClient = _megafonAtsClient;
+            this.dbContext = dbContext;
+            this.megafonAtsClient = megafonAtsClient;
         }
+
         public Task DownAsync(CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
@@ -22,8 +24,9 @@ namespace ExampleWebSite.Migrations
 
         public async Task UpAsync(CancellationToken cancellationToken = default)
         {
-            var result = await megafonAtsClient.HistoryAsync(new DateTime(2022, 01, 01, 01, 00, 00), DateTime.Now, ECallType.All, 100);
+            var result = await megafonAtsClient.HistoryAsync(new DateTime(2022, 01, 01, 01, 00, 00), DateTime.Now, FilterCallType.All, 100);
             foreach (var item in result.Result)
+            {
                 await dbContext.History.InsertOneAsync(new HistoryDocument()
                 {
                     Id = new Guid(),
@@ -40,11 +43,10 @@ namespace ExampleWebSite.Migrations
                     Callid = item.UID,
                     Link = item.Record,
                     Rating = 0,
-                    Status = "0",
+                    Status = "0"
                 });
+            }
 
         }
-
-
     }
 }

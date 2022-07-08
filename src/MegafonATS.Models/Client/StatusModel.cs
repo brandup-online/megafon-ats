@@ -2,6 +2,6 @@
 {
     public class StatusModel
     {
-        public ESubscriptionStatus Status { get; set; }
+        public SubscriptionStatus Status { get; set; }
     }
 }

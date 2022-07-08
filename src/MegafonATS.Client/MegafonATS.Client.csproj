@@ -5,7 +5,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <PackageId>MegafonATS</PackageId>
+    <PackageId>MegafonATS.Client</PackageId>
+    <PackageProjectUrl>https://github.com/brandup-online/megafon-ats</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/brandup-online/megafon-ats</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
