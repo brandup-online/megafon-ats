@@ -19,6 +19,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MegafonATS.Tests", "test\Me
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleWebSite", "example\ExampleWebSite\ExampleWebSite.csproj", "{85DAC56D-40F9-4C0B-85AA-B20F5E83A1B3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5D014C91-F372-4590-BE8D-24AB84F6C06F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{6344DD45-421F-45CE-BF64-93ADADCDC296}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "example", "example", "{DCE12DA4-6B4B-4BD5-BC17-FD8BEC9B5ECD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,6 +54,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0CF393D0-BF3F-40AE-B9B0-833777743A13} = {5D014C91-F372-4590-BE8D-24AB84F6C06F}
+		{DC5E643F-024A-4F14-8BDC-C6953493760E} = {5D014C91-F372-4590-BE8D-24AB84F6C06F}
+		{591681BE-2760-494B-8430-34E05AED2226} = {5D014C91-F372-4590-BE8D-24AB84F6C06F}
+		{9E90D361-0747-4CD7-A42E-D2FC8F249F87} = {6344DD45-421F-45CE-BF64-93ADADCDC296}
+		{85DAC56D-40F9-4C0B-85AA-B20F5E83A1B3} = {DCE12DA4-6B4B-4BD5-BC17-FD8BEC9B5ECD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B73AF188-2292-47C6-AF03-8D5A89D4E89A}
