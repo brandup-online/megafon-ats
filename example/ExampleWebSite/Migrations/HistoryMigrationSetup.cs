@@ -43,7 +43,7 @@ namespace ExampleWebSite.Migrations
                     Callid = item.UID,
                     Link = item.Record,
                     Rating = 0,
-                    Status = "0"
+                    Status = MegafonATS.Models.Webhooks.CallStatus.Success
                 });
             }
 

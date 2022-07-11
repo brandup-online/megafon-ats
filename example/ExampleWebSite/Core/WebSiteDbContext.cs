@@ -67,6 +67,6 @@ namespace ExampleWebSite.Core
         public string Callid { get; set; }
         public Uri Link { get; set; }
         public int Rating { get; set; }
-        public string Status { get; set; }
+        public CallStatus Status { get; set; }
     }
 }

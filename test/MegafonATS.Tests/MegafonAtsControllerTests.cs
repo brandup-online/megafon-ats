@@ -36,7 +36,7 @@ namespace MegafonATS
                         { "link", "https://test.ru/test.mp3" },
                         { "rating", "4" },
                         { "crm_token", secretKey },
-                        { "status", "Success" }
+                        { "status", CallStatus.Success.ToString() }
 
 
                     };
@@ -47,6 +47,7 @@ namespace MegafonATS
             Assert.True(result.IsSuccessStatusCode);
 
             var results = factory.Services.GetRequiredService<FakeMegafonAtsEventsResults>();
+            Enum.TryParse(values["status"], out CallStatus status);
 
             Assert.Equal(results.History.Type, Enum.Parse<CallDirection>(values["type"], true));
             Assert.Equal(results.History.User, values["user"]);
@@ -60,7 +61,7 @@ namespace MegafonATS
             Assert.Equal(results.History.Callid, values["callid"]);
             Assert.Equal(results.History.Link, new Uri(values["link"]));
             Assert.Equal(results.History.Rating.ToString(), values["rating"]);
-            Assert.Equal(results.History.Status, values["status"]);
+            Assert.Equal(results.History.Status, status);
         }
 
         [Fact]
