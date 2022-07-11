@@ -142,6 +142,16 @@ namespace MegafonATS.Client
                         var result = await response.Content.ReadFromJsonAsync<ErrorResponse>(jsonSerializerOptions, cancellationToken);
                         return ClientResult<TResponse>.SetError(result.Error);
                     }
+                case System.Net.HttpStatusCode.Unauthorized:
+                    {
+                        var result = await response.Content.ReadFromJsonAsync<ErrorResponse>(jsonSerializerOptions, cancellationToken);
+                        return ClientResult<TResponse>.SetError(result.Error);
+                    }
+                case System.Net.HttpStatusCode.MovedPermanently:
+                    {
+                        var result = await response.Content.ReadAsStringAsync(cancellationToken);
+                        return ClientResult<TResponse>.SetError("invalid Ats name");
+                    }
                 default:
                     throw new InvalidOperationException("Unknown response status.");
             }
