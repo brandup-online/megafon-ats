@@ -1,6 +1,6 @@
 ﻿namespace MegafonATS.Models.Client
 {
-    public class UserModel
+    public class AccountModel
     {
         public string Name { get; set; }
 

@@ -9,7 +9,7 @@ namespace ExampleWebSite.Pages
         public override string Title => "Сделать звонок";
 
         private IMegafonAtsClient client;
-        public IEnumerable<UserModel> Users { get; set; }
+        public IEnumerable<AccountModel> Users { get; set; }
 
         public MakeCallModel(IMegafonAtsClient client)
         {

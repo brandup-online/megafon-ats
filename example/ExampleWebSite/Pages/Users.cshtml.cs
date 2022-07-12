@@ -9,7 +9,7 @@ namespace ExampleWebSite.Pages
     {
         public override string Title => "Пользователи";
 
-        public IEnumerable<UserModel> Users { get; set; }
+        public IEnumerable<AccountModel> Users { get; set; }
 
         IMegafonAtsClientFactory factory;
         IOptions<MegafonAtsOptions> options;

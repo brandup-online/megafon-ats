@@ -8,7 +8,7 @@ namespace ExampleWebSite.Pages
     {
         public override string Title => "Ãğóïïû";
         public IEnumerable<GroupModel> Groups { get; set; }
-        public IEnumerable<UserModel> Users { get; set; }
+        public IEnumerable<AccountModel> Users { get; set; }
 
         private IMegafonAtsClient _client;
 
