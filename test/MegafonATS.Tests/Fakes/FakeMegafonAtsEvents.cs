@@ -12,27 +12,27 @@ namespace MegafonATS.Fakes
             this.results = results ?? throw new ArgumentNullException(nameof(results));
         }
 
-        public Task ContactAsync(ContactModel contact)
+        public Task ContactAsync(ContactModel contact, string token)
         {
             results.Contact = contact;
 
             return Task.CompletedTask;
         }
 
-        public Task EventAsync(EventModel _event)
+        public Task EventAsync(EventModel _event, string token)
         {
             results.Event = _event;
             return Task.CompletedTask;
         }
 
-        public Task HistoryAsync(HistoryModel history)
+        public Task HistoryAsync(HistoryModel history, string token)
         {
             results.History = history;
 
             return Task.CompletedTask;
         }
 
-        public Task RatingAsync(RatingModel rating)
+        public Task RatingAsync(RatingModel rating, string token)
         {
             results.Rating = rating;
 
