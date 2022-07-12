@@ -34,8 +34,8 @@ namespace MegafonATS.Client
         #region IMegafonAtsClient member
 
 
-        public async Task<ClientResult<IEnumerable<UserModel>>> AccountsAsync(CancellationToken cancellationToken = default) =>
-            await ProcessResponseAsync<IEnumerable<UserModel>>(AtsCommand.accounts, new Dictionary<string, string>() { }, cancellationToken);
+        public async Task<ClientResult<IEnumerable<AccountModel>>> AccountsAsync(CancellationToken cancellationToken = default) =>
+            await ProcessResponseAsync<IEnumerable<AccountModel>>(AtsCommand.accounts, new Dictionary<string, string>() { }, cancellationToken);
 
 
 
@@ -77,6 +77,14 @@ namespace MegafonATS.Client
             {
                 { "user", user },
                 { "group_id", groupId },
+                { "status", status.ToString().ToLower() }
+            }, cancellationToken);
+
+        public async Task<ClientResult> SubscribeOnCallsAsync(string user, SubscriptionStatus status, CancellationToken cancellationToken = default) =>
+            await ProcessResponseAsync(AtsCommand.subscribeOnCalls,
+                 new Dictionary<string, string>()
+            {
+                { "user", user },
                 { "status", status.ToString().ToLower() }
             }, cancellationToken);
 

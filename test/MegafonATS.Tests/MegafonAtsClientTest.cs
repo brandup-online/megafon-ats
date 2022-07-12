@@ -95,10 +95,18 @@ namespace MegafonATS
         }
 
         [Fact]
-        public async Task TestATS_subscribeOnCalls()
+        public async Task TestATS_subscribeOnCallsInGroup()
         {
             var client = CreateClient();
             var result = await client.SubscribeOnCallsAsync(config["MegafonAts:TestUserName"], config["MegafonAts:TestGroupId"], SubscriptionStatus.On);
+
+            Assert.True(result.IsSuccess);
+        }
+        [Fact]
+        public async Task TestATS_subscribeOnCalls()
+        {
+            var client = CreateClient();
+            var result = await client.SubscribeOnCallsAsync(config["MegafonAts:TestUserName"], SubscriptionStatus.On);
 
             Assert.True(result.IsSuccess);
         }

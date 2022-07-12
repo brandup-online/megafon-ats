@@ -9,7 +9,7 @@ namespace MegafonATS.Client
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns>Коллекцию отделов</returns>
-        Task<ClientResult<IEnumerable<UserModel>>> AccountsAsync(CancellationToken cancellationToken = default);
+        Task<ClientResult<IEnumerable<AccountModel>>> AccountsAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Запрос от CRM к Виртуальной АТС для получения отделов для конкретного сотрудника
@@ -60,8 +60,7 @@ namespace MegafonATS.Client
         Task<ClientResult<IEnumerable<CallModel>>> HistoryAsync(DateTime start, DateTime end, FilterCallType type, int limit = int.MaxValue, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Запрос от CRM к Виртуальной АТС для включения / выключения приема звонков сотрудником во всех
-        /// его отделах или конкретном отделе.
+        /// Запрос от CRM к Виртуальной АТС для включения / выключения приема звонков сотрудником в конкретном отделе.
         /// </summary>
         /// <param name="user">идентификатор сотрудника Виртуальной АТС</param>
         /// <param name="groupId">идентификатор отдела АТС, в которомнадо выключить/включить прием звонков </param>
@@ -69,6 +68,15 @@ namespace MegafonATS.Client
         /// <param name="cancellationToken"></param>
         /// <returns>Информация о успехе/неуспехе операции</returns>
         Task<ClientResult> SubscribeOnCallsAsync(string user, string groupId, SubscriptionStatus status, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Запрос от CRM к Виртуальной АТС для включения / выключения приема звонков сотрудником во всех его отделах
+        /// </summary>
+        /// <param name="user">идентификатор сотрудника Виртуальной АТС</param>
+        /// <param name="groupId">идентификатор отдела АТС, в которомнадо выключить/включить прием звонков </param>
+        /// <param name="status">on - чтобы включить прием звонков, off - чтобы выключить прием звонков</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>Информация о успехе/неуспехе операции</returns>
+        Task<ClientResult> SubscribeOnCallsAsync(string user, SubscriptionStatus status, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Запрос от CRM к Виртуальной АТС для проверки факта приема звонков сотрудником в конкретном отделе
