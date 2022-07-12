@@ -9,7 +9,7 @@ namespace MegafonATS.Webhooks
         /// Команда может быть использована для сохранения в данных ваших клиентов истории и записей входящих и исходящих звонков.
         /// </summary>
         /// <param name="history">параметры команды</param>
-        Task HistoryAsync(HistoryModel history);
+        Task HistoryAsync(HistoryModel history, string token);
 
         /// <summary>
         /// С помощью команды event АТС отправляет в CRM уведомления о событиях звонков пользователям:
@@ -17,7 +17,7 @@ namespace MegafonATS.Webhooks
         ///всплывающей карточки клиента в интерфейсе CRM.
         /// </summary>
         /// <param name="_event">параметры команды</param>
-        Task EventAsync(EventModel _event);
+        Task EventAsync(EventModel _event, string token);
 
         /// <summary>
         /// С помощью команды contact CRM получает информацию о названии клиента и ответственном за него
@@ -26,13 +26,13 @@ namespace MegafonATS.Webhooks
         /// на ПК сотрудника названия клиента.
         /// </summary>
         /// <param name="contact">параметры команды</param>
-        Task ContactAsync(ContactModel contact);
+        Task ContactAsync(ContactModel contact, string token);
 
         /// <summary>
         /// С помощью команды rating в CRM отправляется запрос с оценкой, которую клиент поставил сотруднику
         /// после разговора
         /// </summary>
         /// <param name="rating">параметры команды</param>
-        Task RatingAsync(RatingModel rating);
+        Task RatingAsync(RatingModel rating, string token);
     }
 }

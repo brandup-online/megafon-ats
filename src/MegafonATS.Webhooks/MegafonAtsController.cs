@@ -32,28 +32,28 @@ namespace MegafonATS.Webhooks
                                                 System.Globalization.DateTimeStyles.None,
                                                 out DateTime tmp);
                         model.Start = tmp;
-                        await megafonAtsEvents.HistoryAsync(model);
+                        await megafonAtsEvents.HistoryAsync(model, token);
                         return Ok("history");
                     }
                 case "event":
                     {
                         EventModel model = new();
                         _ = await TryUpdateModelAsync(model);
-                        await megafonAtsEvents.EventAsync(model);
+                        await megafonAtsEvents.EventAsync(model, token);
                         return Ok("event");
                     }
                 case "contact":
                     {
                         ContactModel model = new();
                         _ = await TryUpdateModelAsync(model);
-                        await megafonAtsEvents.ContactAsync(model);
+                        await megafonAtsEvents.ContactAsync(model, token);
                         return Ok("contact");
                     }
                 case "rating":
                     {
                         RatingModel model = new();
                         _ = await TryUpdateModelAsync(model);
-                        await megafonAtsEvents.RatingAsync(model);
+                        await megafonAtsEvents.RatingAsync(model, token);
                         return Ok("rating");
                     }
                 default:
