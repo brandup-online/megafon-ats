@@ -12,19 +12,19 @@ namespace ExampleWebSite.Core
             this.context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public Task ContactAsync(ContactModel contact, string token)
+        public Task ContactAsync(ContactModel contact, string token, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
 
-        public Task EventAsync(EventModel _event, string token) =>
-            context.Events.InsertOneAsync(ParseToEventDocument(_event));
+        public Task EventAsync(EventModel _event, string token, CancellationToken cancellationToken = default) =>
+            context.Events.InsertOneAsync(ParseToEventDocument(_event), cancellationToken);
 
 
-        public Task HistoryAsync(HistoryModel history, string token) =>
-            context.History.InsertOneAsync(ParseToHistoryDocument(history));
+        public Task HistoryAsync(HistoryModel history, string token, CancellationToken cancellationToken = default) =>
+            context.History.InsertOneAsync(ParseToHistoryDocument(history), cancellationToken);
 
-        public Task RatingAsync(RatingModel rating, string token)
+        public Task RatingAsync(RatingModel rating, string token, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
