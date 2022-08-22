@@ -22,6 +22,11 @@ namespace MegafonATS.Webhooks
             var cmd = Request.Form["cmd"];
             var token = Request.Form["crm_token"];
 
+            logger.LogInformation("New Request: {cmd}", cmd);
+            logger.LogInformation("Form body:");
+            foreach (var item in Request.Form)
+                logger.LogInformation($"{item.Key} : {item.Value}");
+
             if (!await megafonAtsEvents.IsValidTokenAsync(token, HttpContext.RequestAborted)) return Unauthorized("Invalid token");
 
             switch (cmd)
@@ -33,14 +38,18 @@ namespace MegafonATS.Webhooks
                         if (!await TryUpdateModelAsync(model))
                         {
                             if (DateTime.TryParseExact(Request.Form["start"],
-                                                        "yyyyMMddThhmmssT",
+                                                        "yyyyMMddThhmmssZ",
                                                         System.Globalization.CultureInfo.InvariantCulture,
                                                         System.Globalization.DateTimeStyles.None,
                                                         out DateTime tmp))
                             {
                                 model.Start = tmp;
                             }
-                            else return BadRequest("Invalid parameters");
+                            else
+                            {
+                                logger.LogError($"Неудалось привязать модель {nameof(HistoryModel)}");
+                                return BadRequest("Invalid parameters");
+                            }
                         }
 
                         try
@@ -49,7 +58,7 @@ namespace MegafonATS.Webhooks
                         }
                         catch (Exception e)
                         {
-                            logger.LogCritical(e.Message, e);
+                            logger.LogCritical(e.Message);
                             return BadRequest("Invalid parameters");
                         }
 
@@ -58,14 +67,19 @@ namespace MegafonATS.Webhooks
                 case "event":
                     {
                         EventModel model = new();
-                        if (!await TryUpdateModelAsync(model)) return BadRequest("Invalid parameters");
+                        if (!await TryUpdateModelAsync(model))
+                        {
+                            logger.LogError($"Неудалось привязать модель {nameof(EventModel)}");
+                            return BadRequest("Invalid parameters");
+                        }
+
                         try
                         {
                             await megafonAtsEvents.EventAsync(model, HttpContext.RequestAborted);
                         }
                         catch (Exception e)
                         {
-                            logger.LogCritical(e.Message, e);
+                            logger.LogCritical(e.Message);
                             return BadRequest("Invalid parameters");
                         }
                         return Ok("event");
@@ -73,14 +87,19 @@ namespace MegafonATS.Webhooks
                 case "contact":
                     {
                         ContactModel model = new();
-                        if (!await TryUpdateModelAsync(model)) return BadRequest("Invalid parameters"); _ = await TryUpdateModelAsync(model);
+                        if (!await TryUpdateModelAsync(model))
+                        {
+                            logger.LogError($"Неудалось привязать модель {nameof(ContactModel)}");
+                            return BadRequest("Invalid parameters");
+                        }
+
                         try
                         {
                             await megafonAtsEvents.ContactAsync(model, HttpContext.RequestAborted);
                         }
                         catch (Exception e)
                         {
-                            logger.LogCritical(e.Message, e);
+                            logger.LogCritical(e.Message);
                             return BadRequest("Invalid parameters");
                         }
                         return Ok("contact");
@@ -88,14 +107,19 @@ namespace MegafonATS.Webhooks
                 case "rating":
                     {
                         RatingModel model = new();
-                        if (!await TryUpdateModelAsync(model)) return BadRequest("Invalid parameters");
+                        if (!await TryUpdateModelAsync(model))
+                        {
+                            logger.LogError($"Неудалось привязать модель {nameof(RatingModel)}");
+                            return BadRequest("Invalid parameters");
+                        }
+
                         try
                         {
                             await megafonAtsEvents.RatingAsync(model, HttpContext.RequestAborted);
                         }
                         catch (Exception e)
                         {
-                            logger.LogCritical(e.Message, e);
+                            logger.LogCritical(e.Message);
                             return BadRequest("Invalid parameters");
                         }
                         return Ok("rating");

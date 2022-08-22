@@ -30,7 +30,7 @@ namespace MegafonATS
                         { "telnum", "999999" },
                         { "phone", "88005553535" },
                         { "diversion", "100500" },
-                        { "start", "20220101T010101T" },
+                        { "start", "20220101T010101Z" },
                         { "duration", "50" },
                         { "callid", "43294397431" },
                         { "link", "https://test.ru/test.mp3" },
