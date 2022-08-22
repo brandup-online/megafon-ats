@@ -1,30 +1,37 @@
 ﻿using MegafonATS.Models.Webhooks;
 using MegafonATS.Webhooks;
+using Microsoft.Extensions.Options;
 
 namespace ExampleWebSite.Core
 {
     public class WebHookService : IMegafonAtsEvents
     {
         readonly WebSiteDbContext context;
+        readonly MegafonCallBackOptions options;
 
-        public WebHookService(WebSiteDbContext context)
+        public WebHookService(WebSiteDbContext context, IOptions<MegafonCallBackOptions> options)
         {
+            this.options = options.Value;
             this.context = context ?? throw new ArgumentNullException(nameof(context));
         }
+        public Task<bool> IsValidTokenAsync(string token, CancellationToken cancellationToken)
+        {
+            return token == options.Token ? Task.FromResult(true) : Task.FromResult(false);
+        }
 
-        public Task ContactAsync(ContactModel contact, string token, CancellationToken cancellationToken = default)
+        public Task ContactAsync(ContactModel contact, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
 
-        public Task EventAsync(EventModel _event, string token, CancellationToken cancellationToken = default) =>
-            context.Events.InsertOneAsync(ParseToEventDocument(_event), cancellationToken);
+        public async Task EventAsync(EventModel _event, CancellationToken cancellationToken = default) =>
+            await context.Events.InsertOneAsync(ParseToEventDocument(_event), null, cancellationToken);
 
 
-        public Task HistoryAsync(HistoryModel history, string token, CancellationToken cancellationToken = default) =>
-            context.History.InsertOneAsync(ParseToHistoryDocument(history), cancellationToken);
+        public async Task HistoryAsync(HistoryModel history, CancellationToken cancellationToken = default) =>
+            await context.History.InsertOneAsync(ParseToHistoryDocument(history), null, cancellationToken);
 
-        public Task RatingAsync(RatingModel rating, string token, CancellationToken cancellationToken = default)
+        public Task RatingAsync(RatingModel rating, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
@@ -64,5 +71,7 @@ namespace ExampleWebSite.Core
                 Direction = eventModel.Direction,
                 Callid = eventModel.Callid
             };
+
+
     }
 }

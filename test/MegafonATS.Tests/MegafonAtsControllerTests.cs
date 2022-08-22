@@ -30,7 +30,7 @@ namespace MegafonATS
                         { "telnum", "999999" },
                         { "phone", "88005553535" },
                         { "diversion", "100500" },
-                        { "start", "20220101T010101" },
+                        { "start", "20220101T010101T" },
                         { "duration", "50" },
                         { "callid", "43294397431" },
                         { "link", "https://test.ru/test.mp3" },
@@ -56,7 +56,7 @@ namespace MegafonATS
             Assert.Equal(results.History.Telnum, values["telnum"]);
             Assert.Equal(results.History.Phone, values["phone"]);
             Assert.Equal(results.History.Diversion, values["diversion"]);
-            Assert.Equal(results.History.Start.ToString("yyyyMMddThhmmss"), values["start"]);
+            Assert.Equal(results.History.Start.ToString("yyyyMMddThhmmssT"), values["start"]);
             Assert.Equal(results.History.Duration.ToString(), values["duration"]);
             Assert.Equal(results.History.Callid, values["callid"]);
             Assert.Equal(results.History.Link, new Uri(values["link"]));

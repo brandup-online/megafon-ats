@@ -5,6 +5,7 @@ using BrandUp.Website.Infrastructure;
 using ExampleWebSite.Core;
 using ExampleWebSite.Migrations;
 using MegafonATS.Client;
+using MegafonATS.Webhooks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -81,6 +82,9 @@ services.AddMongoDbContext<WebSiteDbContext>(builder =>
 
 services.AddMongoDbContextExension<WebSiteDbContext, IWebHooksContext>();
 
+services.AddMegafonWebHooks<WebHookService>();
+
+services.Configure<MegafonCallBackOptions>(builder.Configuration.GetSection("MegafonCallBackOptions"));
 services.AddMegafonAtsClient();
 
 services.AddWebsite(options =>
