@@ -9,6 +9,8 @@ namespace MegafonATS.Fakes
 
         public Task<bool> IsValidTokenAsync(string token, CancellationToken cancellationToken)
         {
+            if (results == null)
+                return Task.FromResult(false);
             return Task.FromResult(true);
         }
 

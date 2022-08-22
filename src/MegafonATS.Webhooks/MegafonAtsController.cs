@@ -20,7 +20,7 @@ namespace MegafonATS.Webhooks
         public async Task<IActionResult> CommandAsync()
         {
             var cmd = Request.Form["cmd"];
-            var token = Request.Form["token"];
+            var token = Request.Form["crm_token"];
 
             if (!await megafonAtsEvents.IsValidTokenAsync(token, HttpContext.RequestAborted)) return Unauthorized("Invalid token");
 
