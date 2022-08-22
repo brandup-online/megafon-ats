@@ -9,6 +9,11 @@ using MegafonATS.Webhooks;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"))
+               .AddConsole()
+               .AddEventLog()
+               .AddDebug();
+
 var services = builder.Services;
 
 services.AddRazorPages();
@@ -67,6 +72,8 @@ services.Configure<IISServerOptions>(options =>
 });
 
 #endregion
+
+services.AddLogging();
 
 services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 

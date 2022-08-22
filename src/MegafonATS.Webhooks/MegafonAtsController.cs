@@ -22,6 +22,11 @@ namespace MegafonATS.Webhooks
             var cmd = Request.Form["cmd"];
             var token = Request.Form["crm_token"];
 
+            logger.LogInformation("New Request: {cmd}", cmd);
+            logger.LogInformation("Form body:");
+            foreach (var item in Request.Form)
+                logger.LogInformation($"{item.Key} : {item.Value}");
+
             if (!await megafonAtsEvents.IsValidTokenAsync(token, HttpContext.RequestAborted)) return Unauthorized("Invalid token");
 
             switch (cmd)
@@ -49,7 +54,7 @@ namespace MegafonATS.Webhooks
                         }
                         catch (Exception e)
                         {
-                            logger.LogCritical(e.Message, e);
+                            logger.LogCritical(e.Message);
                             return BadRequest("Invalid parameters");
                         }
 
@@ -65,7 +70,7 @@ namespace MegafonATS.Webhooks
                         }
                         catch (Exception e)
                         {
-                            logger.LogCritical(e.Message, e);
+                            logger.LogCritical(e.Message);
                             return BadRequest("Invalid parameters");
                         }
                         return Ok("event");
@@ -80,7 +85,7 @@ namespace MegafonATS.Webhooks
                         }
                         catch (Exception e)
                         {
-                            logger.LogCritical(e.Message, e);
+                            logger.LogCritical(e.Message);
                             return BadRequest("Invalid parameters");
                         }
                         return Ok("contact");
@@ -95,7 +100,7 @@ namespace MegafonATS.Webhooks
                         }
                         catch (Exception e)
                         {
-                            logger.LogCritical(e.Message, e);
+                            logger.LogCritical(e.Message);
                             return BadRequest("Invalid parameters");
                         }
                         return Ok("rating");
