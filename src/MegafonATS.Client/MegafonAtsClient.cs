@@ -33,18 +33,14 @@ namespace MegafonATS.Client
 
         #region IMegafonAtsClient member
 
-
         public async Task<ClientResult<IEnumerable<AccountModel>>> AccountsAsync(CancellationToken cancellationToken = default) =>
             await ProcessResponseAsync<IEnumerable<AccountModel>>(AtsCommand.accounts, new Dictionary<string, string>() { }, cancellationToken);
-
-
 
         public async Task<ClientResult<IEnumerable<GroupModel>>> GroupsAsync(string user, CancellationToken cancellationToken = default) =>
             await ProcessResponseAsync<IEnumerable<GroupModel>>(AtsCommand.groups, new Dictionary<string, string>() { { "user", user } }, cancellationToken);
 
         public async Task<ClientResult<IEnumerable<GroupModel>>> GroupsAsync(CancellationToken cancellationToken = default) =>
             await ProcessResponseAsync<IEnumerable<GroupModel>>(AtsCommand.groups, new Dictionary<string, string>(), cancellationToken);
-
 
         public async Task<ClientResult<IEnumerable<CallModel>>> HistoryAsync(FilterPeriod period, FilterCallType type, int limit = int.MaxValue, CancellationToken cancellationToken = default) =>
              await ProcessResponseAsync<IEnumerable<CallModel>>(AtsCommand.history,
@@ -54,7 +50,6 @@ namespace MegafonATS.Client
                 { "type", type.ToString().ToLower() },
                 { "limit", limit.ToString() }
             }, cancellationToken);
-
 
         public async Task<ClientResult<IEnumerable<CallModel>>> HistoryAsync(DateTime start, DateTime end, FilterCallType type, int limit = int.MaxValue, CancellationToken cancellationToken = default) =>
             await ProcessResponseAsync<IEnumerable<CallModel>>(AtsCommand.history,
@@ -66,10 +61,8 @@ namespace MegafonATS.Client
                 { "limit", limit.ToString() }
             }, cancellationToken);
 
-
         public async Task<ClientResult<CurrentCallModel>> MakeCallAsync(string user, string phoneNumber, CancellationToken cancellationToken = default) =>
             await ProcessResponseAsync<CurrentCallModel>(AtsCommand.makeCall, new Dictionary<string, string>() { { "user", user }, { "phone", phoneNumber } }, cancellationToken);
-
 
         public async Task<ClientResult> SubscribeOnCallsAsync(string user, string groupId, SubscriptionStatus status, CancellationToken cancellationToken = default) =>
             await ProcessResponseAsync(AtsCommand.subscribeOnCalls,
