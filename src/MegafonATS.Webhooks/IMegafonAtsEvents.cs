@@ -1,4 +1,5 @@
-﻿using MegafonATS.Models.Webhooks;
+﻿using MegafonATS.Models.Webhooks.RequestModels;
+using MegafonATS.Models.Webhooks.ResponseModels;
 
 namespace MegafonATS.Webhooks
 {
@@ -34,7 +35,7 @@ namespace MegafonATS.Webhooks
         /// на ПК сотрудника названия клиента.
         /// </summary>
         /// <param name="contact">параметры команды</param>
-        Task ContactAsync(ContactModel contact, CancellationToken cancellationToken = default);
+        Task<ContactResponse> ContactAsync(ContactModel contact, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// С помощью команды rating в CRM отправляется запрос с оценкой, которую клиент поставил сотруднику

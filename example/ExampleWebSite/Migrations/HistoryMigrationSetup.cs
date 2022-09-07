@@ -2,6 +2,7 @@
 using ExampleWebSite.Core;
 using MegafonATS.Client;
 using MegafonATS.Models.Client;
+using MegafonATS.Models.Webhooks.RequestModels;
 
 namespace ExampleWebSite.Migrations
 {
@@ -43,7 +44,7 @@ namespace ExampleWebSite.Migrations
                     Callid = item.UID,
                     Link = item.Record,
                     Rating = 0,
-                    Status = MegafonATS.Models.Webhooks.CallStatus.Success
+                    Status = CallStatus.Success
                 });
             }
 

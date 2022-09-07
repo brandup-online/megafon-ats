@@ -1,4 +1,4 @@
-﻿namespace MegafonATS.Models.Webhooks
+﻿namespace MegafonATS.Models.Webhooks.RequestModels
 {
     public class RatingModel
     {

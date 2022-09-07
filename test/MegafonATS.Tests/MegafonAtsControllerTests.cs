@@ -1,6 +1,6 @@
 ﻿using MegafonATS.Fakes;
 using MegafonATS.Models;
-using MegafonATS.Models.Webhooks;
+using MegafonATS.Models.Webhooks.RequestModels;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MegafonATS
@@ -38,8 +38,6 @@ namespace MegafonATS
                         { "rating", "4" },
                         { "crm_token", secretKey },
                         { "status", CallStatus.Success.ToString() }
-
-
                     };
 
             var content = new FormUrlEncodedContent(values);
@@ -118,8 +116,10 @@ namespace MegafonATS
             var result = await client.PostAsync("megafon/callback", new FormUrlEncodedContent(values));
             Assert.True(result.IsSuccessStatusCode == true);
 
-            var results = factory.Services.GetRequiredService<FakeMegafonAtsEventsResults>();
+            var contentString = await result.Content.ReadAsStringAsync();
+            Assert.NotNull(contentString);
 
+            var results = factory.Services.GetRequiredService<FakeMegafonAtsEventsResults>();
             Assert.NotNull(results.Contact);
             Assert.Equal(results.Contact.Phone, values["phone"]);
             Assert.Equal(results.Contact.Callid, values["callid"]); ;

@@ -1,6 +1,6 @@
 ﻿using BrandUp.MongoDB;
 using MegafonATS.Models;
-using MegafonATS.Models.Webhooks;
+using MegafonATS.Models.Webhooks.RequestModels;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
 

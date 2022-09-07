@@ -1,4 +1,5 @@
-﻿using MegafonATS.Models.Webhooks;
+﻿using MegafonATS.Models.Webhooks.RequestModels;
+using MegafonATS.Models.Webhooks.ResponseModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -87,6 +88,7 @@ namespace MegafonATS.Webhooks
                 case "contact":
                     {
                         ContactModel model = new();
+                        ContactResponse response = new();
                         if (!await TryUpdateModelAsync(model))
                         {
                             logger.LogError($"Неудалось привязать модель {nameof(ContactModel)}");
@@ -95,14 +97,15 @@ namespace MegafonATS.Webhooks
 
                         try
                         {
-                            await megafonAtsEvents.ContactAsync(model, HttpContext.RequestAborted);
+                            response = await megafonAtsEvents.ContactAsync(model, HttpContext.RequestAborted);
                         }
                         catch (Exception e)
                         {
                             logger.LogCritical(e.Message);
                             return BadRequest("Invalid parameters");
                         }
-                        return Ok("contact");
+
+                        return Ok(response);
                     }
                 case "rating":
                     {

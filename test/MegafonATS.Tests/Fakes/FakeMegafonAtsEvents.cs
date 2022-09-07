@@ -1,4 +1,5 @@
-﻿using MegafonATS.Models.Webhooks;
+﻿using MegafonATS.Models.Webhooks.RequestModels;
+using MegafonATS.Models.Webhooks.ResponseModels;
 using MegafonATS.Webhooks;
 
 namespace MegafonATS.Fakes
@@ -19,11 +20,11 @@ namespace MegafonATS.Fakes
             this.results = results ?? throw new ArgumentNullException(nameof(results));
         }
 
-        public Task ContactAsync(ContactModel contact, CancellationToken cancellationToken = default)
+        public Task<ContactResponse> ContactAsync(ContactModel contact, CancellationToken cancellationToken = default)
         {
             results.Contact = contact;
 
-            return Task.CompletedTask;
+            return Task.FromResult(new ContactResponse { ContactName = "Name", Responsible = "Manager" });
         }
 
         public Task EventAsync(EventModel _event, CancellationToken cancellationToken = default)

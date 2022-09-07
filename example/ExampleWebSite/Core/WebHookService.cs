@@ -1,4 +1,5 @@
-﻿using MegafonATS.Models.Webhooks;
+﻿using MegafonATS.Models.Webhooks.RequestModels;
+using MegafonATS.Models.Webhooks.ResponseModels;
 using MegafonATS.Webhooks;
 using Microsoft.Extensions.Options;
 
@@ -19,7 +20,7 @@ namespace ExampleWebSite.Core
             return token == options.Token ? Task.FromResult(true) : Task.FromResult(false);
         }
 
-        public Task ContactAsync(ContactModel contact, CancellationToken cancellationToken = default)
+        public Task<ContactResponse> ContactAsync(ContactModel contact, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
