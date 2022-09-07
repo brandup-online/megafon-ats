@@ -11,6 +11,7 @@ namespace MegafonATS.Webhooks
     {
         readonly IMegafonAtsEvents megafonAtsEvents;
         readonly ILogger<MegafonAtsController> logger;
+
         public MegafonAtsController(IMegafonAtsEvents megafonAtsEvents, ILogger<MegafonAtsController> logger)
         {
             this.megafonAtsEvents = megafonAtsEvents;
