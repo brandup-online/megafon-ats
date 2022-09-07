@@ -62,13 +62,13 @@ namespace MegafonATS
         public async Task TestATS_historyPeriod()
         {
             var client = CreateClient();
-            var result = await client.HistoryAsync(FilterPeriod.today, FilterCallType.All);
+            var result = await client.HistoryAsync(FilterPeriod.Today, FilterCallType.All);
 
             foreach (var str in result.Result)
             {
                 Assert.NotNull(str.Account);
                 Assert.NotNull(str.Start);
-                Assert.NotNull(str.UID);
+                Assert.NotNull(str.CallId);
                 //Assert.Null(str.Record);
                 Assert.NotNull(str.Via);
                 Assert.NotNull(str.Wait);
@@ -86,7 +86,7 @@ namespace MegafonATS
             {
                 Assert.NotNull(str.Account);
                 Assert.NotNull(str.Start);
-                Assert.NotNull(str.UID);
+                Assert.NotNull(str.CallId);
                 //Assert.NotNull(str.Record);
                 Assert.NotNull(str.Via);
                 Assert.NotNull(str.Wait);

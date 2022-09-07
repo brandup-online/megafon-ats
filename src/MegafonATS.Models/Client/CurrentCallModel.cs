@@ -1,7 +1,10 @@
-﻿namespace MegafonATS.Models.Client
+﻿using System.Text.Json.Serialization;
+
+namespace MegafonATS.Models.Client
 {
     public class CurrentCallModel
     {
-        public string CallID { get; set; }
+        [JsonPropertyName("CallID")]
+        public string CallId { get; set; }
     }
 }

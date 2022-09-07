@@ -49,7 +49,7 @@
         /// уникальный id звонка, совпадает для
         /// всех связанных звонков
         /// </summary>
-        public string Callid { get; set; }
+        public string CallId { get; set; }
     }
 
     public enum EventType

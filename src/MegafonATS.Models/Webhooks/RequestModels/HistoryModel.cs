@@ -20,7 +20,7 @@
         /// <summary>
         /// название отдела, если входящий звонок прошел через отдел
         /// </summary>
-        public string groupRealName { get; set; }
+        public string GroupRealName { get; set; }
 
         /// <summary>
         /// прямой телефонный номер пользователя АТС, если есть
@@ -50,7 +50,7 @@
         /// <summary>
         /// уникальный id звонка
         /// </summary>
-        public string Callid { get; set; }
+        public string CallId { get; set; }
 
         /// <summary>
         /// ссылка на запись звонка, если она включена в Виртуальной АТС

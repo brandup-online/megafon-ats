@@ -2,11 +2,11 @@
 {
     public enum FilterPeriod
     {
-        today,
-        yesterday,
-        this_week,
-        last_week,
-        this_month,
-        last_month
+        Today,
+        Yesterday,
+        ThisWeek,
+        LastWeek,
+        ThisMonth,
+        LastMonth
     }
 }

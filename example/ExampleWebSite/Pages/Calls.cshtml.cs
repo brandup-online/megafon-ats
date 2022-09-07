@@ -19,7 +19,7 @@ namespace ExampleWebSite.Pages
 
         protected override async Task OnPageRequestAsync(PageRequestContext context)
         {
-            var clientResult = await _client.HistoryAsync(FilterPeriod.today, FilterCallType.All);
+            var clientResult = await _client.HistoryAsync(FilterPeriod.Today, FilterCallType.All);
             if (clientResult.IsSuccess == true)
                 Calls = clientResult.Result;
 

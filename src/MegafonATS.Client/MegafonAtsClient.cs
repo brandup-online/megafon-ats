@@ -1,6 +1,7 @@
 ﻿using MegafonATS.Models;
 using MegafonATS.Models.Client;
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -34,7 +35,7 @@ namespace MegafonATS.Client
         #region IMegafonAtsClient member
 
         public async Task<ClientResult<IEnumerable<AccountModel>>> AccountsAsync(CancellationToken cancellationToken = default) =>
-            await ProcessResponseAsync<IEnumerable<AccountModel>>(AtsCommand.accounts, new Dictionary<string, string>() { }, cancellationToken);
+            await ProcessResponseAsync<IEnumerable<AccountModel>>(AtsCommand.accounts, new Dictionary<string, string>(), cancellationToken);
 
         public async Task<ClientResult<IEnumerable<GroupModel>>> GroupsAsync(string user, CancellationToken cancellationToken = default) =>
             await ProcessResponseAsync<IEnumerable<GroupModel>>(AtsCommand.groups, new Dictionary<string, string>() { { "user", user } }, cancellationToken);
@@ -46,7 +47,7 @@ namespace MegafonATS.Client
              await ProcessResponseAsync<IEnumerable<CallModel>>(AtsCommand.history,
                  new Dictionary<string, string>()
             {
-                { "period", period.ToString().ToLower() },
+                { "period",ToSnakeCase(period.ToString()) },
                 { "type", type.ToString().ToLower() },
                 { "limit", limit.ToString() }
             }, cancellationToken);
@@ -151,7 +152,7 @@ namespace MegafonATS.Client
                 case System.Net.HttpStatusCode.MovedPermanently:
                     {
                         var result = await response.Content.ReadAsStringAsync(cancellationToken);
-                        return ClientResult<TResponse>.SetError("invalid Ats name");
+                        return ClientResult<TResponse>.SetError("Invalid Ats name");
                     }
                 default:
                     throw new InvalidOperationException("Unknown response status.");
@@ -206,7 +207,7 @@ namespace MegafonATS.Client
 
                     result.Add(new CallModel()
                     {
-                        UID = arr[0],
+                        CallId = arr[0],
                         Type = Enum.Parse<CallDirection>(arr[1], true),
                         Client = arr[2],
                         Account = arr[3],
@@ -214,13 +215,41 @@ namespace MegafonATS.Client
                         Start = arr[5],
                         Wait = arr[6],
                         Duration = arr[7],
-                        Record = !string.IsNullOrEmpty(arr[8]) ? new Uri(arr[8]) : null
+                        Record = !string.IsNullOrEmpty(arr[8]) ? new Uri(arr[8]) : null,
+                        QualityControl = arr.Length > 9 ? arr[9] : null,
                     });
                 }
             }
             return result;
         }
 
+        static string ToSnakeCase(string text)
+        {
+            if (text == null)
+            {
+                throw new ArgumentNullException(nameof(text));
+            }
+            if (text.Length < 2)
+            {
+                return text;
+            }
+            var sb = new StringBuilder();
+            sb.Append(char.ToLowerInvariant(text[0]));
+            for (int i = 1; i < text.Length; ++i)
+            {
+                char c = text[i];
+                if (char.IsUpper(c))
+                {
+                    sb.Append('_');
+                    sb.Append(char.ToLowerInvariant(c));
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+            return sb.ToString();
+        }
         #endregion
     }
 }

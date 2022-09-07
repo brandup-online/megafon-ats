@@ -41,7 +41,7 @@ namespace ExampleWebSite.Migrations
                     Diversion = item.Via,
                     Start = DateTime.Parse(item.Start).ToUniversalTime(),
                     Duration = Convert.ToInt32(item.Duration),
-                    Callid = item.UID,
+                    Callid = item.CallId,
                     Link = item.Record,
                     Rating = 0,
                     Status = CallStatus.Success

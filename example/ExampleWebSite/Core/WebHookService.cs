@@ -45,13 +45,13 @@ namespace ExampleWebSite.Core
                 Type = history.Type,
                 User = history.User,
                 Ext = history.Ext,
-                groupRealName = history.groupRealName,
+                groupRealName = history.GroupRealName,
                 Telnum = history.Telnum,
                 Phone = history.Phone,
                 Diversion = history.Diversion,
                 Start = history.Start,
                 Duration = history.Duration,
-                Callid = history.Callid,
+                Callid = history.CallId,
                 Link = history.Link,
                 Rating = history.Rating,
                 Status = history.Status
@@ -70,7 +70,7 @@ namespace ExampleWebSite.Core
                 Ext = eventModel.Ext,
                 Telnum = eventModel.Telnum,
                 Direction = eventModel.Direction,
-                Callid = eventModel.Callid
+                Callid = eventModel.CallId
             };
 
 

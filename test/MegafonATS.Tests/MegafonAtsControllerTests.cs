@@ -51,13 +51,13 @@ namespace MegafonATS
             Assert.Equal(results.History.Type, Enum.Parse<CallDirection>(values["type"], true));
             Assert.Equal(results.History.User, values["user"]);
             //Assert.Equal(results.History.Ext, values["ext"]);
-            Assert.Equal(results.History.groupRealName, values["groupRealName"]);
+            Assert.Equal(results.History.GroupRealName, values["groupRealName"]);
             Assert.Equal(results.History.Telnum, values["telnum"]);
             Assert.Equal(results.History.Phone, values["phone"]);
             Assert.Equal(results.History.Diversion, values["diversion"]);
             Assert.Equal(results.History.Start.ToUniversalTime().ToString("yyyyMMddThhmmssZ"), values["start"]);
             Assert.Equal(results.History.Duration.ToString(), values["duration"]);
-            Assert.Equal(results.History.Callid, values["callid"]);
+            Assert.Equal(results.History.CallId, values["callid"]);
             Assert.Equal(results.History.Link, new Uri(values["link"]));
             Assert.Equal(results.History.Rating.ToString(), values["rating"]);
             Assert.Equal(results.History.Status, status);
@@ -97,7 +97,7 @@ namespace MegafonATS
             Assert.Equal(results.Event.Ext, values["ext"]);
             Assert.Equal(results.Event.Telnum, values["telnum"]);
             Assert.Equal(results.Event.Direction, Enum.Parse<CallDirection>(values["direction"], true));
-            Assert.Equal(results.Event.Callid, values["callid"]);
+            Assert.Equal(results.Event.CallId, values["callid"]);
 
         }
 
@@ -122,7 +122,7 @@ namespace MegafonATS
             var results = factory.Services.GetRequiredService<FakeMegafonAtsEventsResults>();
             Assert.NotNull(results.Contact);
             Assert.Equal(results.Contact.Phone, values["phone"]);
-            Assert.Equal(results.Contact.Callid, values["callid"]); ;
+            Assert.Equal(results.Contact.CallId, values["callid"]); ;
         }
 
         [Fact]
@@ -147,7 +147,7 @@ namespace MegafonATS
 
             var results = factory.Services.GetRequiredService<FakeMegafonAtsEventsResults>();
 
-            Assert.Equal(results.Rating.Callid, values["callid"]);
+            Assert.Equal(results.Rating.CallId, values["callid"]);
             Assert.Equal(results.Rating.Rating, values["rating"]);
             Assert.Equal(results.Rating.User, values["user"]);
             Assert.Equal(results.Rating.Phone, values["phone"]);

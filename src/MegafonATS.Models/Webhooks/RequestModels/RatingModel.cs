@@ -5,7 +5,7 @@
         /// <summary>
         /// уникальный id звонка 
         /// </summary>
-        public string Callid { get; set; }
+        public string CallId { get; set; }
 
         /// <summary>
         /// оценка качества 
