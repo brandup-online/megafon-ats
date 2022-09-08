@@ -1,4 +1,5 @@
-﻿using MegafonATS.Models;
+﻿using MegafonATS.Client.Common;
+using MegafonATS.Models;
 using MegafonATS.Models.Client;
 using System.Net.Http.Json;
 using System.Text;

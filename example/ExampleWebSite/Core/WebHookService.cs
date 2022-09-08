@@ -44,14 +44,14 @@ namespace ExampleWebSite.Core
                 Created = DateTime.UtcNow,
                 Type = history.Type,
                 User = history.User,
-                Ext = history.Ext,
-                groupRealName = history.GroupRealName,
-                Telnum = history.Telnum,
+                UserExt = history.UserExt,
+                GroupRealName = history.GroupRealName,
+                UserPhone = history.UserPhone,
                 Phone = history.Phone,
                 Diversion = history.Diversion,
                 Start = history.Start,
                 Duration = history.Duration,
-                Callid = history.CallId,
+                CallId = history.CallId,
                 Link = history.Link,
                 Rating = history.Rating,
                 Status = history.Status
@@ -67,10 +67,10 @@ namespace ExampleWebSite.Core
                 Diversion = eventModel.Diversion,
                 User = eventModel.User,
                 GroupRealName = eventModel.GroupRealName,
-                Ext = eventModel.Ext,
-                Telnum = eventModel.Telnum,
+                UserExt = eventModel.UserExt,
+                UserPhone = eventModel.UserPhone,
                 Direction = eventModel.Direction,
-                Callid = eventModel.CallId
+                CallId = eventModel.CallId
             };
 
 

@@ -1,4 +1,6 @@
-﻿namespace MegafonATS.Models.Client
+﻿using System.Text.Json.Serialization;
+
+namespace MegafonATS.Models.Client
 {
     public class AccountModel
     {
@@ -6,8 +8,10 @@
 
         public string RealName { get; set; }
 
-        public string Ext { get; set; }
+        [JsonPropertyName("ext")]
+        public string UserExt { get; set; }
 
-        public string Telnum { get; set; }
+        [JsonPropertyName("telnum")]
+        public string UserPhone { get; set; }
     }
 }

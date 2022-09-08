@@ -38,11 +38,11 @@ namespace ExampleWebSite.Core
         [BsonRequired]
         public string User { get; set; }
         public string GroupRealName { get; set; }
-        public string Ext { get; set; }
+        public string UserExt { get; set; }
         [BsonRequired]
-        public string Telnum { get; set; }
+        public string UserPhone { get; set; }
         public CallDirection Direction { get; set; }
-        public string Callid { get; set; }
+        public string CallId { get; set; }
     }
 
     [Document(CollectionName = "MegasfonAts.History")]
@@ -56,10 +56,10 @@ namespace ExampleWebSite.Core
         public CallDirection Type { get; set; }
         [BsonRequired]
         public string User { get; set; }
-        public string Ext { get; set; }
-        public string groupRealName { get; set; }
+        public string UserExt { get; set; }
+        public string GroupRealName { get; set; }
         [BsonRequired]
-        public string Telnum { get; set; }
+        public string UserPhone { get; set; }
         [BsonRequired]
         public string Phone { get; set; }
         public string Diversion { get; set; }
@@ -68,7 +68,7 @@ namespace ExampleWebSite.Core
         public DateTime Start { get; set; }
         [BsonRequired]
         public int Duration { get; set; }
-        public string Callid { get; set; }
+        public string CallId { get; set; }
         public Uri Link { get; set; }
         public int Rating { get; set; }
         [BsonRequired]

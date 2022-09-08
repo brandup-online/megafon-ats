@@ -1,4 +1,6 @@
-﻿namespace MegafonATS.Models.Webhooks.RequestModels
+﻿using System.Text.Json.Serialization;
+
+namespace MegafonATS.Models.Webhooks.RequestModels
 {
     public class RatingModel
     {
@@ -26,6 +28,7 @@
         /// <summary>
         /// внутренний номер пользователя АТС, если есть
         /// </summary>
-        public string Ext { get; set; }
+        [JsonPropertyName("ext")]
+        public string UserExt { get; set; }
     }
 }

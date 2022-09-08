@@ -1,4 +1,5 @@
-﻿using MegafonATS.Models.Client;
+﻿using MegafonATS.Client.Common;
+using MegafonATS.Models.Client;
 
 namespace MegafonATS.Client
 {

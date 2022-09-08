@@ -1,4 +1,6 @@
-﻿namespace MegafonATS.Models.Webhooks.RequestModels
+﻿using System.Text.Json.Serialization;
+
+namespace MegafonATS.Models.Webhooks.RequestModels
 {
     public class EventModel
     {
@@ -32,13 +34,15 @@
         /// внутренний номер пользователя АТС,
         /// если есть
         /// </summary>
-        public string Ext { get; set; }
+        [JsonPropertyName("telnum")]
+        public string UserExt { get; set; }
 
         /// <summary>
         /// прямой телефонный номер пользователя
         /// АТС, если есть
         /// </summary>
-        public string Telnum { get; set; }
+        [JsonPropertyName("telnum")]
+        public string UserPhone { get; set; }
 
         /// <summary>
         /// тип звонка in/out (входящий/исходящий)

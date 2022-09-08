@@ -39,8 +39,8 @@ namespace MegafonATS
             {
                 Assert.NotNull(account.Name);
                 Assert.NotNull(account.RealName);
-                Assert.NotNull(account.Telnum);
-                Assert.NotNull(account.Ext);
+                Assert.NotNull(account.UserPhone);
+                Assert.NotNull(account.UserExt);
             }
         }
 
@@ -80,7 +80,7 @@ namespace MegafonATS
         public async Task TestATS_historyStartEnd()
         {
             var client = CreateClient();
-            var result = await client.HistoryAsync(new DateTime(2022, 01, 01, 01, 00, 00), DateTime.Now, FilterCallType.All);
+            var result = await client.HistoryAsync(new DateTime(2022, 01, 01, 01, 00, 00), DateTime.UtcNow, FilterCallType.All);
 
             foreach (var str in result.Result)
             {

@@ -50,9 +50,9 @@ namespace MegafonATS
 
             Assert.Equal(results.History.Type, Enum.Parse<CallDirection>(values["type"], true));
             Assert.Equal(results.History.User, values["user"]);
-            //Assert.Equal(results.History.Ext, values["ext"]);
+            //Assert.Equal(results.History.UserExt, values["ext"]);
             Assert.Equal(results.History.GroupRealName, values["groupRealName"]);
-            Assert.Equal(results.History.Telnum, values["telnum"]);
+            Assert.Equal(results.History.UserPhone, values["telnum"]);
             Assert.Equal(results.History.Phone, values["phone"]);
             Assert.Equal(results.History.Diversion, values["diversion"]);
             Assert.Equal(results.History.Start.ToUniversalTime().ToString("yyyyMMddThhmmssZ"), values["start"]);
@@ -94,8 +94,8 @@ namespace MegafonATS
             Assert.Equal(results.Event.Diversion, values["diversion"]);
             Assert.Equal(results.Event.User, values["user"]);
             Assert.Equal(results.Event.GroupRealName, values["groupRealName"]);
-            Assert.Equal(results.Event.Ext, values["ext"]);
-            Assert.Equal(results.Event.Telnum, values["telnum"]);
+            Assert.Equal(results.Event.UserExt, values["ext"]);
+            Assert.Equal(results.Event.UserPhone, values["telnum"]);
             Assert.Equal(results.Event.Direction, Enum.Parse<CallDirection>(values["direction"], true));
             Assert.Equal(results.Event.CallId, values["callid"]);
 
@@ -151,7 +151,7 @@ namespace MegafonATS
             Assert.Equal(results.Rating.Rating, values["rating"]);
             Assert.Equal(results.Rating.User, values["user"]);
             Assert.Equal(results.Rating.Phone, values["phone"]);
-            Assert.Equal(results.Rating.Ext, values["ext"]);
+            Assert.Equal(results.Rating.UserExt, values["ext"]);
         }
     }
 

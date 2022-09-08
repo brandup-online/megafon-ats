@@ -1,4 +1,6 @@
-﻿namespace MegafonATS.Models.Webhooks.RequestModels
+﻿using System.Text.Json.Serialization;
+
+namespace MegafonATS.Models.Webhooks.RequestModels
 {
     public class HistoryModel
     {
@@ -15,7 +17,8 @@
         /// <summary>
         /// внутренний номер пользователя АТС, если есть
         /// </summary>
-        public string Ext { get; set; }
+        [JsonPropertyName("ext")]
+        public string UserExt { get; set; }
 
         /// <summary>
         /// название отдела, если входящий звонок прошел через отдел
@@ -25,7 +28,8 @@
         /// <summary>
         /// прямой телефонный номер пользователя АТС, если есть
         /// </summary>
-        public string Telnum { get; set; }
+        [JsonPropertyName("telnum")]
+        public string UserPhone { get; set; }
 
         /// <summary>
         /// номер телефона клиента, с которого или на который произошел звонок
@@ -61,11 +65,6 @@
         /// оценка качества звонка
         /// </summary>
         public int Rating { get; set; }
-
-        /// <summary>
-        /// ключ (token) от CRM, установленный в веб-кабинете
-        /// </summary>
-        public string Crm_token { get; set; }
 
         /// <summary>
         /// статус входящего/исходящего звонка

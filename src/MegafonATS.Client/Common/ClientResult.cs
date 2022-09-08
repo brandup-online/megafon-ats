@@ -1,4 +1,4 @@
-﻿namespace MegafonATS.Client
+﻿namespace MegafonATS.Client.Common
 {
     public class ClientResult<T> : IClientResult
     {

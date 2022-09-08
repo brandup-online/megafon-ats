@@ -1,5 +1,6 @@
 using BrandUp.Website.Pages;
 using MegafonATS.Client;
+using MegafonATS.Client.Common;
 using MegafonATS.Models.Client;
 
 namespace ExampleWebSite.Pages
