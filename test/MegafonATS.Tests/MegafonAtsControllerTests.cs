@@ -1,4 +1,9 @@
-﻿namespace MegafonATS
+﻿using MegafonATS.Fakes;
+using MegafonATS.Models;
+using MegafonATS.Models.Webhooks.RequestModels;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace MegafonATS
 {
     public class MegafonAtsControllerTests
     {
@@ -45,7 +50,7 @@
 
             Assert.Equal(results.History.Type, Enum.Parse<CallDirection>(values["type"], true));
             Assert.Equal(results.History.User, values["user"]);
-            Assert.Equal(results.History.Ext, values["ext"]);
+            Assert.Equal(results.History.UserExt, values["ext"]);
             Assert.Equal(results.History.GroupRealName, values["groupRealName"]);
             Assert.Equal(results.History.UserPhone, values["telnum"]);
             Assert.Equal(results.History.Phone, values["phone"]);
