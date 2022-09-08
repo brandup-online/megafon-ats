@@ -1,8 +1,6 @@
 ﻿using BrandUp.Extensions.Migrations;
 using ExampleWebSite.Core;
 using MegafonATS.Client;
-using MegafonATS.Models.Client;
-using MegafonATS.Models.Webhooks.RequestModels;
 
 namespace ExampleWebSite.Migrations
 {
@@ -25,28 +23,28 @@ namespace ExampleWebSite.Migrations
 
         public async Task UpAsync(CancellationToken cancellationToken = default)
         {
-            var result = await megafonAtsClient.HistoryAsync(new DateTime(2022, 01, 01, 01, 00, 00), DateTime.Now, FilterCallType.All, 100);
-            foreach (var item in result.Result)
-            {
-                await dbContext.History.InsertOneAsync(new HistoryDocument()
-                {
-                    Id = new Guid(),
-                    Created = DateTime.Now.ToUniversalTime(),
-                    Type = item.Type,
-                    User = item.Account,
-                    Ext = "0",
-                    groupRealName = "0",
-                    Telnum = "0",
-                    Phone = item.Client,
-                    Diversion = item.Via,
-                    Start = DateTime.Parse(item.Start).ToUniversalTime(),
-                    Duration = Convert.ToInt32(item.Duration),
-                    Callid = item.CallId,
-                    Link = item.Record,
-                    Rating = 0,
-                    Status = CallStatus.Success
-                });
-            }
+            //var result = await megafonAtsClient.HistoryAsync(new DateTime(2022, 01, 01, 01, 00, 00), DateTime.Now, FilterCallType.All, 100);
+            //foreach (var item in result.Result)
+            //{
+            //    await dbContext.History.InsertOneAsync(new HistoryDocument()
+            //    {
+            //        Id = new Guid(),
+            //        Created = DateTime.Now.ToUniversalTime(),
+            //        Type = item.Type,
+            //        User = item.Account,
+            //        Ext = "0",
+            //        groupRealName = "0",
+            //        Telnum = "0",
+            //        Phone = item.Client,
+            //        Diversion = item.Via,
+            //        Start = DateTime.Parse(item.Start).ToUniversalTime(),
+            //        Duration = Convert.ToInt32(item.Duration),
+            //        Callid = item.CallId,
+            //        Link = item.Record,
+            //        Rating = 0,
+            //        Status = CallStatus.Success
+            //    });
+            //}
 
         }
     }

@@ -3,12 +3,12 @@
     public class MegafonAtsOptions
     {
         /// <summary>
-        /// Name of your Megafon ATS.
+        /// Название АТС.
         /// </summary>
         public string Name { get; set; }
         /// <summary>
-        /// Access token to your Megafon ATS.
+        /// Ключ для авторизации в АТС
         /// </summary>
-        public string Token { get; set; }
+        public string Key { get; set; }
     }
 }

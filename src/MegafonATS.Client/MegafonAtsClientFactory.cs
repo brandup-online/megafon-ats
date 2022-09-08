@@ -1,4 +1,6 @@
-﻿namespace MegafonATS.Client
+﻿using MegafonATS.Client.Core;
+
+namespace MegafonATS.Client
 {
     public class MegafonAtsClientFactory : IMegafonAtsClientFactory
     {
@@ -9,10 +11,16 @@
             this.httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         }
 
-        public IMegafonAtsClient Create(MegafonAtsOptions atsOptions)
+        public MegafonAtsClientBase Create(MegafonAtsOptions options)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UsersClient CreateUserClient(MegafonAtsOptions options)
         {
             var client = httpClientFactory.CreateClient();
-            return new MegafonAtsClient(client, atsOptions);
+            return new UsersClient(client, options);
         }
+
     }
 }

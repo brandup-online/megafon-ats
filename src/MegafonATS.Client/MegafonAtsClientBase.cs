@@ -1,4 +1,5 @@
-﻿using MegafonATS.Models;
+﻿using MegafonATS.Client.Results;
+using MegafonATS.Models;
 using MegafonATS.Models.Client;
 using System.Net.Http.Json;
 using System.Text;
@@ -7,94 +8,33 @@ using System.Text.Json.Serialization;
 
 namespace MegafonATS.Client
 {
-    public class MegafonAtsClient : IMegafonAtsClient
+    public class MegafonAtsClientBase
     {
+        readonly string baseUri = "https://{this.options.Name}.megapbx.ru/sys/crm_api.wcgp";
+
         readonly HttpClient httpClient;
         readonly MegafonAtsOptions options;
         readonly static JsonSerializerOptions jsonSerializerOptions;
 
-        static MegafonAtsClient()
+        static MegafonAtsClientBase()
         {
             jsonSerializerOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
             jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         }
 
-        public MegafonAtsClient(HttpClient httpClient, MegafonAtsOptions options)
+        public MegafonAtsClientBase(HttpClient httpClient, MegafonAtsOptions options)
         {
             this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             this.options = options ?? throw new ArgumentNullException(nameof(options));
 
             if (options.Name == null)
                 throw new ArgumentNullException(nameof(options.Name));
-            if (options.Token == null)
-                throw new ArgumentNullException(nameof(options.Token));
+            if (options.Key == null)
+                throw new ArgumentNullException(nameof(options.Key));
 
+            baseUri = $"https://{this.options.Name}.megapbx.ru/crmapi/v1";
             this.httpClient.BaseAddress = new Uri($"https://{this.options.Name}.megapbx.ru/sys/crm_api.wcgp");
         }
-
-        #region IMegafonAtsClient member
-
-        public async Task<ClientResult<IEnumerable<AccountModel>>> AccountsAsync(CancellationToken cancellationToken = default) =>
-            await ProcessResponseAsync<IEnumerable<AccountModel>>(AtsCommand.accounts, new Dictionary<string, string>(), cancellationToken);
-
-        public async Task<ClientResult<IEnumerable<GroupModel>>> GroupsAsync(string user, CancellationToken cancellationToken = default) =>
-            await ProcessResponseAsync<IEnumerable<GroupModel>>(AtsCommand.groups, new Dictionary<string, string>() { { "user", user } }, cancellationToken);
-
-        public async Task<ClientResult<IEnumerable<GroupModel>>> GroupsAsync(CancellationToken cancellationToken = default) =>
-            await ProcessResponseAsync<IEnumerable<GroupModel>>(AtsCommand.groups, new Dictionary<string, string>(), cancellationToken);
-
-        public async Task<ClientResult<IEnumerable<CallModel>>> HistoryAsync(FilterPeriod period, FilterCallType type, int limit = int.MaxValue, CancellationToken cancellationToken = default) =>
-             await ProcessResponseAsync<IEnumerable<CallModel>>(AtsCommand.history,
-                 new Dictionary<string, string>()
-            {
-                { "period",ToSnakeCase(period.ToString()) },
-                { "type", type.ToString().ToLower() },
-                { "limit", limit.ToString() }
-            }, cancellationToken);
-
-        public async Task<ClientResult<IEnumerable<CallModel>>> HistoryAsync(DateTime start, DateTime end, FilterCallType type, int limit = int.MaxValue, CancellationToken cancellationToken = default) =>
-            await ProcessResponseAsync<IEnumerable<CallModel>>(AtsCommand.history,
-                new Dictionary<string, string>()
-            {
-                { "start", start.ToString("yyyymmddThhmmssZ") },
-                { "end", end.ToString("yyyymmddThhmmssZ") },
-                { "type", type.ToString().ToLower() },
-                { "limit", limit.ToString() }
-            }, cancellationToken);
-
-        public async Task<ClientResult<CurrentCallModel>> MakeCallAsync(string user, string phoneNumber, CancellationToken cancellationToken = default) =>
-            await ProcessResponseAsync<CurrentCallModel>(AtsCommand.makeCall, new Dictionary<string, string>() { { "user", user }, { "phone", phoneNumber } }, cancellationToken);
-
-        public async Task<ClientResult> SubscribeOnCallsAsync(string user, string groupId, SubscriptionStatus status, CancellationToken cancellationToken = default) =>
-            await ProcessResponseAsync(AtsCommand.subscribeOnCalls,
-                new Dictionary<string, string>()
-            {
-                { "user", user },
-                { "group_id", groupId },
-                { "status", status.ToString().ToLower() }
-            }, cancellationToken);
-
-        public async Task<ClientResult> SubscribeOnCallsAsync(string user, SubscriptionStatus status, CancellationToken cancellationToken = default) =>
-            await ProcessResponseAsync(AtsCommand.subscribeOnCalls,
-                 new Dictionary<string, string>()
-            {
-                { "user", user },
-                { "status", status.ToString().ToLower() }
-            }, cancellationToken);
-
-
-        public async Task<ClientResult<StatusModel>> SubscriptionStatusAsync(string user, string groupId, CancellationToken cancellationToken = default) =>
-             await ProcessResponseAsync<StatusModel>(AtsCommand.subscriptionStatus, new Dictionary<string, string>() { { "user", user }, { "group_id", groupId } }, cancellationToken);
-
-        public async Task<ClientResult> SetDnDAsync(string user, bool state, CancellationToken cancellationToken = default) =>
-            await ProcessResponseAsync(AtsCommand.set_dnd, new Dictionary<string, string>() { { "user", user }, { "state", state.ToString().ToLower() } }, cancellationToken);
-
-        public async Task<ClientResult<DnDModel>> GetDnDAsync(string user, CancellationToken cancellationToken = default)
-        {
-            return await ProcessResponseAsync<DnDModel>(AtsCommand.get_dnd, new Dictionary<string, string>() { { "user", user } }, cancellationToken);
-        }
-
-        #endregion
 
         #region Helpers
 
@@ -109,6 +49,23 @@ namespace MegafonATS.Client
             set_dnd,
             get_dnd
         }
+
+        protected async Task<ClientResult<TResponse>> ExecuteGetAsync<TResponse>(string method, CancellationToken cancellationToken)
+        {
+            var requestUri = new Uri(baseUri + method);
+            using var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
+
+            request.Headers.Add("X-API-KEY", options.Key);
+            using var response = await httpClient.SendAsync(request, cancellationToken);
+
+            if (!response.IsSuccessStatusCode)
+                return ClientResult<TResponse>.SetError(response.StatusCode.ToString());
+            string data = await response.Content.ReadAsStringAsync();
+            TResponse deserializeResponse = await response.Content.ReadFromJsonAsync<TResponse>(jsonSerializerOptions, cancellationToken);
+            return ClientResult<TResponse>.Success(deserializeResponse);
+        }
+
+
 
         async Task<HttpResponseMessage> GetResponseAsync(AtsCommand command, Dictionary<string, string> parameters, CancellationToken cancellationToken)
         {
@@ -184,7 +141,7 @@ namespace MegafonATS.Client
             var defaultParams = new Dictionary<string, string>
                     {
                         { "cmd", command.ToString() },
-                        { "token", options.Token }
+                        { "token", options.Key }
                     };
             IEnumerable<KeyValuePair<string, string>> parameters;
             if (args != null)

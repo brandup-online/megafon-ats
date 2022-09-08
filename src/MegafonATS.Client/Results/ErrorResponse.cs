@@ -1,4 +1,4 @@
-﻿namespace MegafonATS.Client
+﻿namespace MegafonATS.Client.Results
 {
     public class ErrorResponse
     {

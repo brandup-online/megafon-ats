@@ -1,7 +1,10 @@
-﻿namespace MegafonATS.Client
+﻿using MegafonATS.Client.Core;
+
+namespace MegafonATS.Client
 {
     public interface IMegafonAtsClientFactory
     {
-        IMegafonAtsClient Create(MegafonAtsOptions options);
+        MegafonAtsClientBase Create(MegafonAtsOptions options);
+        UsersClient CreateUserClient(MegafonAtsOptions options);
     }
 }

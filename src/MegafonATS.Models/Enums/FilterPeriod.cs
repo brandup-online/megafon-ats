@@ -1,4 +1,4 @@
-﻿namespace MegafonATS.Models.Client
+﻿namespace MegafonATS.Models.Enums
 {
     public enum FilterPeriod
     {
