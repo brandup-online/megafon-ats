@@ -28,7 +28,6 @@ namespace MegafonATS.Models.Webhooks.RequestModels
         /// <summary>
         /// прямой телефонный номер пользователя АТС, если есть
         /// </summary>
-        [JsonPropertyName("telnum")]
         public string UserPhone { get; set; }
 
         /// <summary>

@@ -5,20 +5,15 @@ namespace MegafonATS.Models.Webhooks.RequestModels
     public class RatingModel
     {
         /// <summary>
-        /// уникальный id звонка 
+        /// номер телефона клиента, с которого или
+        /// на который произошел звонок
         /// </summary>
-        public string CallId { get; set; }
+        public string Phone { get; set; }
 
         /// <summary>
         /// оценка качества 
         /// </summary>
         public string Rating { get; set; }
-
-        /// <summary>
-        /// номер телефона клиента, с которого или
-        /// на который произошел звонок
-        /// </summary>
-        public string Phone { get; set; }
 
         /// <summary>
         /// идентификатор пользователя АТС
@@ -30,5 +25,10 @@ namespace MegafonATS.Models.Webhooks.RequestModels
         /// </summary>
         [JsonPropertyName("ext")]
         public string UserExt { get; set; }
+
+        /// <summary>
+        /// уникальный id звонка 
+        /// </summary>
+        public string CallId { get; set; }
     }
 }

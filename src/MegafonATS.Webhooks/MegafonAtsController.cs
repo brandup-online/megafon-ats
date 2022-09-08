@@ -1,7 +1,9 @@
-﻿using MegafonATS.Models.Webhooks.RequestModels;
+﻿using MegafonATS.Models;
+using MegafonATS.Models.Webhooks.RequestModels;
 using MegafonATS.Models.Webhooks.ResponseModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Globalization;
 
 namespace MegafonATS.Webhooks
 {
@@ -35,23 +37,22 @@ namespace MegafonATS.Webhooks
                 case "history":
                     {
 
-                        HistoryModel model = new();
-                        if (!await TryUpdateModelAsync(model))
+                        HistoryModel model = new()
                         {
-                            if (DateTime.TryParseExact(Request.Form["start"],
-                                                        "yyyyMMddThhmmssZ",
-                                                        System.Globalization.CultureInfo.InvariantCulture,
-                                                        System.Globalization.DateTimeStyles.None,
-                                                        out DateTime tmp))
-                            {
-                                model.Start = tmp;
-                            }
-                            else
-                            {
-                                logger.LogError($"Неудалось привязать модель {nameof(HistoryModel)}");
-                                return BadRequest("Invalid parameters");
-                            }
-                        }
+                            Type = Enum.Parse<CallDirection>(Request.Form["type"], true),
+                            User = Request.Form["user"],
+                            UserExt = Request.Form["ext"],
+                            GroupRealName = Request.Form["groupRealName"],
+                            UserPhone = Request.Form["telnum"],
+                            Phone = Request.Form["phone"],
+                            Diversion = Request.Form["diversion"],
+                            Start = DateTime.ParseExact(Request.Form["start"], "yyyyMMddThhmmssZ", CultureInfo.InvariantCulture),
+                            Duration = int.Parse(Request.Form["duration"]),
+                            CallId = Request.Form["callid"],
+                            Link = new Uri(Request.Form["link"]),
+                            Rating = int.Parse(Request.Form["rating"]),
+                            Status = Enum.Parse<CallStatus>(Request.Form["status"], true)
+                        };
 
                         try
                         {
@@ -67,12 +68,18 @@ namespace MegafonATS.Webhooks
                     }
                 case "event":
                     {
-                        EventModel model = new();
-                        if (!await TryUpdateModelAsync(model))
+                        EventModel model = new()
                         {
-                            logger.LogError($"Неудалось привязать модель {nameof(EventModel)}");
-                            return BadRequest("Invalid parameters");
-                        }
+                            Type = Enum.Parse<EventType>(Request.Form["type"], true),
+                            Phone = Request.Form["phone"],
+                            User = Request.Form["user"],
+                            UserExt = Request.Form["ext"],
+                            GroupRealName = Request.Form["groupRealName"],
+                            UserPhone = Request.Form["telnum"],
+                            Diversion = Request.Form["diversion"],
+                            CallId = Request.Form["callid"],
+                            Direction = Enum.Parse<CallDirection>(Request.Form["direction"], true)
+                        };
 
                         try
                         {
@@ -87,13 +94,14 @@ namespace MegafonATS.Webhooks
                     }
                 case "contact":
                     {
-                        ContactModel model = new();
-                        ContactResponse response = new();
-                        if (!await TryUpdateModelAsync(model))
+                        ContactModel model = new()
                         {
-                            logger.LogError($"Неудалось привязать модель {nameof(ContactModel)}");
-                            return BadRequest("Invalid parameters");
-                        }
+                            CallId = Request.Form["callid"],
+                            Phone = Request.Form["phone"],
+                            Diversion = Request.Form["diversion"],
+
+                        };
+                        ContactResponse response = new();
 
                         try
                         {
@@ -109,7 +117,14 @@ namespace MegafonATS.Webhooks
                     }
                 case "rating":
                     {
-                        RatingModel model = new();
+                        RatingModel model = new()
+                        {
+                            Phone = Request.Form["phone"],
+                            Rating = Request.Form["rating"],
+                            User = Request.Form["user"],
+                            UserExt = Request.Form["ext"],
+                            CallId = Request.Form["callid"]
+                        };
                         if (!await TryUpdateModelAsync(model))
                         {
                             logger.LogError($"Неудалось привязать модель {nameof(RatingModel)}");
