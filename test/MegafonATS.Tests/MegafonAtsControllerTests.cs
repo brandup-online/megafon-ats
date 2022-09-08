@@ -1,9 +1,4 @@
-﻿using MegafonATS.Fakes;
-using MegafonATS.Models;
-using MegafonATS.Models.Webhooks.RequestModels;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace MegafonATS
+﻿namespace MegafonATS
 {
     public class MegafonAtsControllerTests
     {
@@ -46,11 +41,11 @@ namespace MegafonATS
             Assert.True(result.IsSuccessStatusCode);
 
             var results = factory.Services.GetRequiredService<FakeMegafonAtsEventsResults>();
-            Enum.TryParse(values["status"], out CallStatus status);
+            Assert.True(Enum.TryParse(values["status"], out CallStatus status));
 
             Assert.Equal(results.History.Type, Enum.Parse<CallDirection>(values["type"], true));
             Assert.Equal(results.History.User, values["user"]);
-            //Assert.Equal(results.History.UserExt, values["ext"]);
+            Assert.Equal(results.History.Ext, values["ext"]);
             Assert.Equal(results.History.GroupRealName, values["groupRealName"]);
             Assert.Equal(results.History.UserPhone, values["telnum"]);
             Assert.Equal(results.History.Phone, values["phone"]);
@@ -98,7 +93,6 @@ namespace MegafonATS
             Assert.Equal(results.Event.UserPhone, values["telnum"]);
             Assert.Equal(results.Event.Direction, Enum.Parse<CallDirection>(values["direction"], true));
             Assert.Equal(results.Event.CallId, values["callid"]);
-
         }
 
         [Fact]
@@ -154,6 +148,4 @@ namespace MegafonATS
             Assert.Equal(results.Rating.UserExt, values["ext"]);
         }
     }
-
-
 }
