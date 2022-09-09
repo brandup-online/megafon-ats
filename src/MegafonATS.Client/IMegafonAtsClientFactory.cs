@@ -4,7 +4,7 @@ namespace MegafonATS.Client
 {
     public interface IMegafonAtsClientFactory
     {
-        MegafonAtsClientBase Create(MegafonAtsOptions options);
-        UsersClient CreateUserClient(MegafonAtsOptions options);
+        Type Create<Type>(MegafonAtsOptions options) where Type : ClientBase;
+        UserClient CreateUserClient(MegafonAtsOptions options);
     }
 }

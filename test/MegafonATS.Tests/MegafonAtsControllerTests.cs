@@ -20,7 +20,7 @@ namespace MegafonATS
         public async Task TestController_HistoryCommand()
         {
             var client = factory.CreateClient();
-            var date = DateTime.UtcNow.ToString("yyyyMMddThhmmssZ");
+            var date = DateTime.UtcNow.ToString("yyyy-MM-ddThh:mm:ssZ");
             var values = new Dictionary<string, string>
                     {
                         { "cmd", "history" },

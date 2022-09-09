@@ -11,15 +11,16 @@ namespace MegafonATS.Client
             this.httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         }
 
-        public MegafonAtsClientBase Create(MegafonAtsOptions options)
-        {
-            throw new NotImplementedException();
-        }
-
-        public UsersClient CreateUserClient(MegafonAtsOptions options)
+        public Type Create<Type>(MegafonAtsOptions options) where Type : ClientBase
         {
             var client = httpClientFactory.CreateClient();
-            return new UsersClient(client, options);
+            return Activator.CreateInstance(typeof(Type), new object[] { client, options }) as Type;
+        }
+
+        public UserClient CreateUserClient(MegafonAtsOptions options)
+        {
+            var client = httpClientFactory.CreateClient();
+            return new UserClient(client, options);
         }
 
     }

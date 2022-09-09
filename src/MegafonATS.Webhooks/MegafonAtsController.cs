@@ -39,7 +39,7 @@ namespace MegafonATS.Webhooks
                         if (!await TryUpdateModelAsync(model))
                         {
                             if (DateTime.TryParseExact(Request.Form["start"],
-                                                        "yyyyMMddThhmmssZ",
+                                                        "yyyy-MM-ddThh:mm:ssZ",
                                                         System.Globalization.CultureInfo.InvariantCulture,
                                                         System.Globalization.DateTimeStyles.None,
                                                         out DateTime tmp))
