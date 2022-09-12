@@ -1,5 +1,5 @@
 ﻿using MegafonATS.Fakes;
-using MegafonATS.Models;
+using MegafonATS.Models.Webhooks.Enums;
 using MegafonATS.Models.Webhooks.RequestModels;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,7 +20,7 @@ namespace MegafonATS
         public async Task TestController_HistoryCommand()
         {
             var client = factory.CreateClient();
-            var date = DateTime.UtcNow.ToString("yyyyMMddThhmmssZ");
+            var date = DateTime.UtcNow.ToString("yyyy-MM-ddThh:mm:ssZ");
             var values = new Dictionary<string, string>
                     {
                         { "cmd", "history" },
@@ -37,7 +37,7 @@ namespace MegafonATS
                         { "link", "https://test.ru/test.mp3" },
                         { "rating", "4" },
                         { "crm_token", secretKey },
-                        { "status", CallStatus.Success.ToString() }
+                        { "status", WebhookCallStatus.Success.ToString() }
                     };
 
             var content = new FormUrlEncodedContent(values);
@@ -46,16 +46,16 @@ namespace MegafonATS
             Assert.True(result.IsSuccessStatusCode);
 
             var results = factory.Services.GetRequiredService<FakeMegafonAtsEventsResults>();
-            Assert.True(Enum.TryParse(values["status"], out CallStatus status));
+            Enum.TryParse(values["status"], out WebhookCallStatus status);
 
-            Assert.Equal(results.History.Type, Enum.Parse<CallDirection>(values["type"], true));
+            Assert.Equal(results.History.Type, Enum.Parse<WebhookCallDirection>(values["type"], true));
             Assert.Equal(results.History.User, values["user"]);
             Assert.Equal(results.History.UserExt, values["ext"]);
             Assert.Equal(results.History.GroupRealName, values["groupRealName"]);
             Assert.Equal(results.History.UserPhone, values["telnum"]);
             Assert.Equal(results.History.Phone, values["phone"]);
             Assert.Equal(results.History.Diversion, values["diversion"]);
-            Assert.Equal(results.History.Start.ToUniversalTime().ToString("yyyyMMddThhmmssZ"), values["start"]);
+            Assert.Equal(results.History.Start.ToUniversalTime().ToString("yyyy-MM-ddThh:mm:ssZ"), values["start"]);
             Assert.Equal(results.History.Duration.ToString(), values["duration"]);
             Assert.Equal(results.History.CallId, values["callid"]);
             Assert.Equal(results.History.Link, new Uri(values["link"]));
@@ -96,7 +96,7 @@ namespace MegafonATS
             Assert.Equal(results.Event.GroupRealName, values["groupRealName"]);
             Assert.Equal(results.Event.UserExt, values["ext"]);
             Assert.Equal(results.Event.UserPhone, values["telnum"]);
-            Assert.Equal(results.Event.Direction, Enum.Parse<CallDirection>(values["direction"], true));
+            Assert.Equal(results.Event.Direction, Enum.Parse<WebhookCallDirection>(values["direction"], true));
             Assert.Equal(results.Event.CallId, values["callid"]);
         }
 
