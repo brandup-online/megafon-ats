@@ -1,27 +1,30 @@
-﻿using MegafonATS.Models.Client;
+﻿using MegafonATS.Client.Core.Abstract;
+using MegafonATS.Client.Results;
 using MegafonATS.Models.Client.Requests;
-using MegafonATS.Models.Client.Responses;
+using MegafonATS.Models.Client.Responses.History;
+using Microsoft.Extensions.Logging;
 
 namespace MegafonATS.Client.Core
 {
     public class HistoryClient : ClientBase
     {
         const string apiEndpoint = "/history/json";
-        public HistoryClient(HttpClient httpClient, MegafonAtsOptions options) : base(httpClient, options)
+
+        public HistoryClient(HttpClient httpClient, MegafonAtsOptions options, ILogger<ClientBase> logger) : base(httpClient, options, logger)
         {
         }
 
-        public async Task<HistoryResponse> GetHistoryAsync(HistoryRequest request, CancellationToken cancellationToken)
+        public async Task<ClientResult<HistoryResponse>> GetHistoryAsync(HistoryRequest request, CancellationToken cancellationToken)
         {
 
-            var result = await ExecuteGetAsync<Call[]>(apiEndpoint, request, cancellationToken);
+            var result = await ExecuteGetAsync<CallResponse[]>(apiEndpoint, request, cancellationToken);
 
             if (!result.IsSuccess)
-                throw new Exception(result.Error);
+            {
+                return ClientResult<HistoryResponse>.SetError(result.Error);
+            }
 
-            return new HistoryResponse { Calls = result.Result };
+            return ClientResult<HistoryResponse>.Success(new HistoryResponse { Calls = result.Data });
         }
-
-
     }
 }

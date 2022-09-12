@@ -1,5 +1,6 @@
 ﻿using MegafonATS.Fakes;
 using MegafonATS.Models;
+using MegafonATS.Models.Webhooks.Enums;
 using MegafonATS.Models.Webhooks.RequestModels;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -55,7 +56,7 @@ namespace MegafonATS
             Assert.Equal(results.History.Telnum, values["telnum"]);
             Assert.Equal(results.History.Phone, values["phone"]);
             Assert.Equal(results.History.Diversion, values["diversion"]);
-            Assert.Equal(results.History.Start.ToUniversalTime().ToString("yyyyMMddThhmmssZ"), values["start"]);
+            Assert.Equal(results.History.Start.ToUniversalTime().ToString("yyyy-MM-ddThh:mm:ssZ"), values["start"]);
             Assert.Equal(results.History.Duration.ToString(), values["duration"]);
             Assert.Equal(results.History.CallId, values["callid"]);
             Assert.Equal(results.History.Link, new Uri(values["link"]));

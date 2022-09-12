@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MegafonATS.Client.Factory;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MegafonATS.Client
 {

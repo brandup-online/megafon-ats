@@ -1,11 +1,6 @@
-using BrandUp.Extensions.Migrations;
-using BrandUp.MongoDB;
 using BrandUp.Website;
 using BrandUp.Website.Infrastructure;
-using ExampleWebSite.Core;
-using ExampleWebSite.Migrations;
 using MegafonATS.Client;
-using MegafonATS.Webhooks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -77,21 +72,6 @@ services.AddLogging();
 
 services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
-services.AddMongoDbContext<WebSiteDbContext>(builder =>
-{
-    builder.ConnectionString = "mongodb://localhost:27017";
-    builder.DatabaseName = "WebSite";
-    builder
-        .UseCamelCaseElementName()
-        .UseIgnoreIfNull(true)
-        .UseIgnoreIfDefault(false);
-});
-
-services.AddMongoDbContextExension<WebSiteDbContext, IWebHooksContext>();
-
-services.AddMegafonWebHooks<WebHookService>();
-
-services.Configure<MegafonCallBackOptions>(builder.Configuration.GetSection("MegafonCallBackOptions"));
 services.AddMegafonAtsClient();
 
 services.AddWebsite(options =>
@@ -101,17 +81,6 @@ services.AddWebsite(options =>
     .AddUrlMapProvider<SubdomainUrlMapProvider>()
     .AddSingleWebsite("website title");
 
-
-services.AddSingleton<IMigrationState, MemoryMigrationStore>();
-
-services.AddSingleton<MigrationExecutor>();
-
-
-services.AddMigrations(options =>
-{
-    options.AddAssembly(typeof(HistoryMigrationSetup).Assembly);
-
-});
 
 var app = builder.Build();
 
@@ -136,4 +105,5 @@ app.UseEndpoints(endpoints =>
 
 
 app.Run();
+
 public partial class Program { }

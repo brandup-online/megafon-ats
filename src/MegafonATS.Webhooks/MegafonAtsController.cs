@@ -1,5 +1,5 @@
 ﻿using MegafonATS.Models.Webhooks.RequestModels;
-using MegafonATS.Models.Webhooks.ResponseModels;
+using MegafonATS.Webhooks.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -20,116 +20,32 @@ namespace MegafonATS.Webhooks
         [HttpPost("callback")]
         public async Task<IActionResult> CommandAsync()
         {
-            var cmd = Request.Form["cmd"];
-            var token = Request.Form["crm_token"];
-
-            logger.LogInformation("New Request: {cmd}", cmd);
+            logger.LogInformation("New Request: {cmd}", Request.Form["cmd"].ToString());
             logger.LogInformation("Form body:");
             foreach (var item in Request.Form)
                 logger.LogInformation($"{item.Key} : {item.Value}");
 
-            if (!await megafonAtsEvents.IsValidTokenAsync(token, HttpContext.RequestAborted)) return Unauthorized("Invalid token");
+            if (!await megafonAtsEvents.IsValidTokenAsync(Request.Form["crm_token"].ToString(), HttpContext.RequestAborted))
+                return Unauthorized("Invalid token");
 
-            switch (cmd)
+            if (!ModelMapper.MapAndValidate(Request.Form, out var webHookModel))
+                return BadRequest();
+
+            if (webHookModel.GetType() == typeof(HistoryModel))
+                await megafonAtsEvents.HistoryAsync(webHookModel as HistoryModel);
+            else if (webHookModel.GetType() == typeof(ContactModel))
+                await megafonAtsEvents.ContactAsync(webHookModel as ContactModel);
+            else if (webHookModel.GetType() == typeof(EventModel))
+                await megafonAtsEvents.EventAsync(webHookModel as EventModel);
+            else if (webHookModel.GetType() == typeof(RatingModel))
+                await megafonAtsEvents.RatingAsync(webHookModel as RatingModel);
+            else
             {
-                case "history":
-                    {
-
-                        HistoryModel model = new();
-                        if (!await TryUpdateModelAsync(model))
-                        {
-                            if (DateTime.TryParseExact(Request.Form["start"],
-                                                        "yyyy-MM-ddThh:mm:ssZ",
-                                                        System.Globalization.CultureInfo.InvariantCulture,
-                                                        System.Globalization.DateTimeStyles.None,
-                                                        out DateTime tmp))
-                            {
-                                model.Start = tmp;
-                            }
-                            else
-                            {
-                                logger.LogError($"Неудалось привязать модель {nameof(HistoryModel)}");
-                                return BadRequest("Invalid parameters");
-                            }
-                        }
-
-                        try
-                        {
-                            await megafonAtsEvents.HistoryAsync(model, HttpContext.RequestAborted);
-                        }
-                        catch (Exception e)
-                        {
-                            logger.LogCritical(e.Message);
-                            return BadRequest("Invalid parameters");
-                        }
-
-                        return Ok("history");
-                    }
-                case "event":
-                    {
-                        EventModel model = new();
-                        if (!await TryUpdateModelAsync(model))
-                        {
-                            logger.LogError($"Неудалось привязать модель {nameof(EventModel)}");
-                            return BadRequest("Invalid parameters");
-                        }
-
-                        try
-                        {
-                            await megafonAtsEvents.EventAsync(model, HttpContext.RequestAborted);
-                        }
-                        catch (Exception e)
-                        {
-                            logger.LogCritical(e.Message);
-                            return BadRequest("Invalid parameters");
-                        }
-                        return Ok("event");
-                    }
-                case "contact":
-                    {
-                        ContactModel model = new();
-                        ContactResponse response = new();
-                        if (!await TryUpdateModelAsync(model))
-                        {
-                            logger.LogError($"Неудалось привязать модель {nameof(ContactModel)}");
-                            return BadRequest("Invalid parameters");
-                        }
-
-                        try
-                        {
-                            response = await megafonAtsEvents.ContactAsync(model, HttpContext.RequestAborted);
-                        }
-                        catch (Exception e)
-                        {
-                            logger.LogCritical(e.Message);
-                            return BadRequest("Invalid parameters");
-                        }
-
-                        return Ok(response);
-                    }
-                case "rating":
-                    {
-                        RatingModel model = new();
-                        if (!await TryUpdateModelAsync(model))
-                        {
-                            logger.LogError($"Неудалось привязать модель {nameof(RatingModel)}");
-                            return BadRequest("Invalid parameters");
-                        }
-
-                        try
-                        {
-                            await megafonAtsEvents.RatingAsync(model, HttpContext.RequestAborted);
-                        }
-                        catch (Exception e)
-                        {
-                            logger.LogCritical(e.Message);
-                            return BadRequest("Invalid parameters");
-                        }
-                        return Ok("rating");
-                    }
-                default:
-                    return BadRequest();
+                logger.LogCritical("Невозможный тип модели.");
+                return StatusCode(500);
             }
+
+            return Ok();
         }
     }
 }

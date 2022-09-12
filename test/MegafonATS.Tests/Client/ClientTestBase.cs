@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using MegafonATS.Client.Core.Abstract;
+using MegafonATS.Client.Factory;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MegafonATS.Client
@@ -7,7 +9,7 @@ namespace MegafonATS.Client
     {
         readonly IServiceProvider serviceProvider;
         readonly IConfiguration config;
-        readonly MegafonAtsOptions options = new MegafonAtsOptions();
+        readonly MegafonAtsOptions options = new();
 
         public ClientTestBase()
         {
@@ -18,6 +20,7 @@ namespace MegafonATS.Client
             options.Key = config["MegafonAts:Options:Token"];
 
             services.AddMegafonAtsClient();
+            services.AddLogging();
 
             serviceProvider = services.BuildServiceProvider();
         }
@@ -25,7 +28,7 @@ namespace MegafonATS.Client
         protected Type CreateClient<Type>() where Type : ClientBase
         {
             var factory = serviceProvider.GetRequiredService<IMegafonAtsClientFactory>();
-            return factory.Create<Type>(options) as Type;
+            return factory.Create<Type>(options);
         }
     }
 }

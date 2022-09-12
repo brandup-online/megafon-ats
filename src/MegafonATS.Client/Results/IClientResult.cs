@@ -3,7 +3,7 @@
     public interface IClientResult
     {
         bool IsSuccess { get; }
-        string Error { get; }
-        object Result { get; }
+        ErrorResponse Error { get; }
+        object Data { get; }
     }
 }

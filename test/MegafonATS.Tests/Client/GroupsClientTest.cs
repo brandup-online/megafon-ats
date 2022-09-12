@@ -1,5 +1,4 @@
 ﻿using MegafonATS.Client.Core;
-using MegafonATS.Models.Client.Requests;
 
 namespace MegafonATS.Client
 {
@@ -8,39 +7,21 @@ namespace MegafonATS.Client
         [Fact]
         public async Task GetGroupsAsync_Success()
         {
-            var client = CreateClient<GroupClient>(); //сделать Client disposible
+            var client = CreateClient<GroupClient>();
             var result = await client.GetGroupsAsync(default);
 
             Assert.NotNull(result);
-            Assert.NotEmpty(result.Items);
+            Assert.NotEmpty(result.Data.Items);
         }
 
         [Fact]
         public async Task GetGroupAsync_Success()
         {
-            var client = CreateClient<GroupClient>(); //сделать Client disposible
+            var client = CreateClient<GroupClient>();
             var result = await client.GetGroupAsync("_g6978081595918316104", default);
 
             Assert.NotNull(result);
-        }
-
-        [Fact]
-        public async Task UpdateUsersInGroup_Success()
-        {
-            var client = CreateClient<GroupClient>(); //сделать Client disposible
-            var request = new ChangeUsersInGroupRequest
-            {
-                AddUsers = new[]
-                {
-                    "dima1"
-                },
-            };
-
-            await client.UpdateUsersInGroupAsync("_g6978081595918316104", request, default);
-
-            var result = await client.GetGroupAsync("_g6978081595918316104", default);
-
-            Assert.NotNull(result);
+            Assert.NotEmpty(result.Data.Users);
         }
     }
 }

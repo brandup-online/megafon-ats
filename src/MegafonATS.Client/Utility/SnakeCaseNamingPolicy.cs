@@ -22,6 +22,7 @@ namespace MegafonATS.Models.Utility
             {
                 return text;
             }
+
             var sb = new StringBuilder();
             sb.Append(char.ToLowerInvariant(text[0]));
             for (int i = 1; i < text.Length; ++i)
@@ -37,6 +38,7 @@ namespace MegafonATS.Models.Utility
                     sb.Append(c);
                 }
             }
+
             return sb.ToString();
         }
     }
