@@ -68,7 +68,6 @@ namespace MegafonATS.Webhooks.Helpers
                 return FirstToLower(property.Name);
         }
 
-
         static string FirstToUpper(string text) =>
             text[..1].ToUpper() + text[1..];
 
