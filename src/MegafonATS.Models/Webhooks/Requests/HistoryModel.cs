@@ -23,7 +23,8 @@ namespace MegafonATS.Models.Webhooks.RequestModels
         /// <summary>
         /// внутренний номер пользователя АТС, если есть
         /// </summary>
-        public string Ext { get; set; }
+        [MapName("ext")]
+        public string UserExt { get; set; }
 
         /// <summary>
         /// название отдела, если входящий звонок прошел через отдел
@@ -33,7 +34,8 @@ namespace MegafonATS.Models.Webhooks.RequestModels
         /// <summary>
         /// прямой телефонный номер пользователя АТС, если есть
         /// </summary>
-        public string Telnum { get; set; }
+        [MapName("telnum")]
+        public string UserPhone { get; set; }
 
         /// <summary>
         /// номер телефона клиента, с которого или на который произошел звонок

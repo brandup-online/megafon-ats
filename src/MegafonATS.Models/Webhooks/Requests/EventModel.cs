@@ -31,13 +31,15 @@ namespace MegafonATS.Models.Webhooks.RequestModels
         /// внутренний номер пользователя АТС,
         /// если есть
         /// </summary>
-        public string Ext { get; set; }
+        [MapName("ext")]
+        public string UserExt { get; set; }
 
         /// <summary>
         /// прямой телефонный номер пользователя
         /// АТС, если есть
         /// </summary>
-        public string Telnum { get; set; }
+        [MapName("telnum")]
+        public string UserPhone { get; set; }
 
         /// <summary>
         /// номер телефона клиента
