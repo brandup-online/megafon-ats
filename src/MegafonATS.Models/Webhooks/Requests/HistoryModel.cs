@@ -48,7 +48,7 @@ namespace MegafonATS.Models.Webhooks.RequestModels
         /// </summary>
         [Required]
         [MapName("type")]
-        public WebhookCallDirection Type { get; set; }
+        public WebhookCallDirection? Type { get; set; }
 
         /// <summary>
         /// статус входящего/исходящего звонка
