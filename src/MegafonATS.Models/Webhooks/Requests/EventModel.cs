@@ -1,4 +1,5 @@
 ﻿using MegafonATS.Models.Attributes;
+using MegafonATS.Models.Webhooks.Enums;
 using MegafonATS.Models.Webhooks.Requests;
 using System.ComponentModel.DataAnnotations;
 
@@ -48,7 +49,7 @@ namespace MegafonATS.Models.Webhooks.RequestModels
         /// тип звонка in/out (входящий/исходящий)
         /// </summary>
         [Required]
-        public CallDirection? Direction { get; set; }
+        public WebhookCallDirection? Direction { get; set; }
         /// <summary>
         /// type - это тип события, связанного со звонком
         /// </summary>

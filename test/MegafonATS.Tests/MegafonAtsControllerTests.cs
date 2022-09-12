@@ -1,5 +1,4 @@
 ﻿using MegafonATS.Fakes;
-using MegafonATS.Models;
 using MegafonATS.Models.Webhooks.Enums;
 using MegafonATS.Models.Webhooks.RequestModels;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,7 +37,7 @@ namespace MegafonATS
                         { "link", "https://test.ru/test.mp3" },
                         { "rating", "4" },
                         { "crm_token", secretKey },
-                        { "status", CallStatus.Success.ToString() }
+                        { "status", WebhookCallStatus.Success.ToString() }
                     };
 
             var content = new FormUrlEncodedContent(values);
@@ -47,11 +46,11 @@ namespace MegafonATS
             Assert.True(result.IsSuccessStatusCode);
 
             var results = factory.Services.GetRequiredService<FakeMegafonAtsEventsResults>();
-            Enum.TryParse(values["status"], out CallStatus status);
+            Enum.TryParse(values["status"], out WebhookCallStatus status);
 
-            Assert.Equal(results.History.Type, Enum.Parse<CallDirection>(values["type"], true));
+            Assert.Equal(results.History.Type, Enum.Parse<WebhookCallDirection>(values["type"], true));
             Assert.Equal(results.History.User, values["user"]);
-            //Assert.Equal(results.History.Ext, values["ext"]);
+            Assert.Equal(results.History.Ext, values["ext"]);
             Assert.Equal(results.History.GroupRealName, values["groupRealName"]);
             Assert.Equal(results.History.Telnum, values["telnum"]);
             Assert.Equal(results.History.Phone, values["phone"]);
@@ -97,7 +96,7 @@ namespace MegafonATS
             Assert.Equal(results.Event.GroupRealName, values["groupRealName"]);
             Assert.Equal(results.Event.Ext, values["ext"]);
             Assert.Equal(results.Event.Telnum, values["telnum"]);
-            Assert.Equal(results.Event.Direction, Enum.Parse<CallDirection>(values["direction"], true));
+            Assert.Equal(results.Event.Direction, Enum.Parse<WebhookCallDirection>(values["direction"], true));
             Assert.Equal(results.Event.CallId, values["callid"]);
 
         }

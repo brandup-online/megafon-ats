@@ -1,6 +1,6 @@
 ﻿namespace MegafonATS.Models.Webhooks.Enums
 {
-    public enum CallStatus
+    public enum WebhookCallStatus
     {
         Success, // Успешный входящий (исходящий) звонок
         Missed, // Пропущенный входящий (исходящий) звонок

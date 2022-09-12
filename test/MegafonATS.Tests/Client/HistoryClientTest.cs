@@ -1,4 +1,5 @@
 ﻿using MegafonATS.Client.Core;
+using MegafonATS.Models.Client.Enums;
 using MegafonATS.Models.Client.Requests;
 
 namespace MegafonATS.Client
@@ -49,7 +50,7 @@ namespace MegafonATS.Client
             Assert.True(result.IsSuccess);
             foreach (var call in result.Data.Calls)
             {
-                Assert.Equal(Models.CallDirection.Out, call.Direction);
+                Assert.Equal(ClientCallDirection.Out, call.Direction);
             }
         }
 

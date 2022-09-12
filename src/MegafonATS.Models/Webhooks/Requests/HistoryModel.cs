@@ -45,13 +45,14 @@ namespace MegafonATS.Models.Webhooks.RequestModels
         /// тип звонка входящий/исходящий
         /// </summary>
         [Required]
-        public CallDirection Type { get; set; }
+        [MapName("type")]
+        public WebhookCallDirection Type { get; set; }
 
         /// <summary>
         /// статус входящего/исходящего звонка
         /// </summary>
         [Required]
-        public CallStatus? Status { get; set; }
+        public WebhookCallStatus? Status { get; set; }
 
         /// <summary>
         /// ваш номер телефона, через который пришел входящий вызов

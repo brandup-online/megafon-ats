@@ -1,6 +1,6 @@
-﻿namespace MegafonATS.Models.Enums
+﻿namespace MegafonATS.Models.Client.Enums
 {
-    public enum CallStatus
+    public enum ClientCallStatus
     {
         Success,
         Missed,

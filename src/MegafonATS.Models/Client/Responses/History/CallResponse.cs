@@ -1,4 +1,4 @@
-﻿using MegafonATS.Models.Enums;
+﻿using MegafonATS.Models.Client.Enums;
 using System.Text.Json.Serialization;
 
 namespace MegafonATS.Models.Client.Responses.History
@@ -35,11 +35,11 @@ namespace MegafonATS.Models.Client.Responses.History
         /// Тип вызова: in / out / missed
         /// </summary>
         [JsonPropertyName("type")]
-        public CallDirection Direction { get; set; }
+        public ClientCallDirection Direction { get; set; }
         /// <summary>
         /// Статус звонка (успешный/пропущенный/не состоялся)
         /// </summary>
-        public CallStatus Status { get; set; }
+        public ClientCallStatus Status { get; set; }
         /// <summary>
         /// Номер телефона, через который пришел звонок
         /// </summary>
