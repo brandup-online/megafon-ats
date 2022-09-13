@@ -1,6 +1,7 @@
 ﻿using MegafonATS.Models.Attributes;
 using MegafonATS.Models.Webhooks.Enums;
 using MegafonATS.Models.Webhooks.Requests;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace MegafonATS.Models.Webhooks.RequestModels
@@ -24,6 +25,7 @@ namespace MegafonATS.Models.Webhooks.RequestModels
         /// внутренний номер пользователя АТС, если есть
         /// </summary>
         [MapName("ext")]
+        [BindProperty(Name = "ext")]
         public string UserExt { get; set; }
 
         /// <summary>
@@ -35,6 +37,7 @@ namespace MegafonATS.Models.Webhooks.RequestModels
         /// прямой телефонный номер пользователя АТС, если есть
         /// </summary>
         [MapName("telnum")]
+        [BindProperty(Name = "telnum")]
         public string UserPhone { get; set; }
 
         /// <summary>
@@ -48,6 +51,7 @@ namespace MegafonATS.Models.Webhooks.RequestModels
         /// </summary>
         [Required]
         [MapName("type")]
+        [BindProperty(Name = "type")]
         public WebhookCallDirection? Type { get; set; }
 
         /// <summary>

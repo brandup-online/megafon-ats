@@ -43,6 +43,7 @@ namespace MegafonATS
             var content = new FormUrlEncodedContent(values);
 
             var result = await client.PostAsync("megafon/callback", content);
+            var response = await result.Content.ReadAsStringAsync();
             Assert.True(result.IsSuccessStatusCode);
 
             var results = factory.Services.GetRequiredService<FakeMegafonAtsEventsResults>();
