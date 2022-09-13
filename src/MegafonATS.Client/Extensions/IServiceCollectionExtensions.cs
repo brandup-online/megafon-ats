@@ -5,7 +5,7 @@ namespace MegafonATS.Client
 {
     public static class IServiceCollectionExtensions
     {
-        public static void AddMegafonAtsClient(this IServiceCollection services)
+        public static void AddMegafonAtsClientFactory(this IServiceCollection services)
         {
             services.AddHttpClient();
             services.AddScoped<IMegafonAtsClientFactory, MegafonAtsClientFactory>();

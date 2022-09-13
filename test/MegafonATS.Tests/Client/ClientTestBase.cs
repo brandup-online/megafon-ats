@@ -19,7 +19,7 @@ namespace MegafonATS.Client
             options.Name = config["MegafonAts:Options:AtsName"];
             options.Key = config["MegafonAts:Options:Token"];
 
-            services.AddMegafonAtsClient();
+            services.AddMegafonAtsClientFactory();
             services.AddLogging();
 
             serviceProvider = services.BuildServiceProvider();

@@ -72,7 +72,7 @@ services.AddLogging();
 
 services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
-services.AddMegafonAtsClient();
+services.AddMegafonAtsClientFactory();
 
 services.AddWebsite(options =>
     {
