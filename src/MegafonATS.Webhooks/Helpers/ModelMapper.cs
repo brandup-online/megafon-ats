@@ -1,5 +1,6 @@
 ﻿using MegafonATS.Models.Attributes;
 using MegafonATS.Models.Webhooks.Requests;
+using MegafonATS.Webhooks.Exceptions;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -12,8 +13,15 @@ namespace MegafonATS.Webhooks.Helpers
     {
         public static bool MapAndValidate(IFormCollection form, out IWebHookModel model)
         {
-            model = MapModel(form);
-
+            try
+            {
+                model = MapModel(form);
+            }
+            catch
+            {
+                model = null;
+                return false;
+            }
             return ValidateModel(model);
         }
         public static bool ValidateModel(IWebHookModel model)
@@ -44,7 +52,9 @@ namespace MegafonATS.Webhooks.Helpers
 
                 if (property.PropertyType == typeof(DateTime))
                 {
-                    var date = DateTime.ParseExact(value, "yyyy-MM-ddThh:mm:ssZ", CultureInfo.InvariantCulture).ToUniversalTime();
+                    if (!TryParseDateTime(value, out var date))
+                        throw new MappingException($"Невозможно преобразовать строку {value} в объект даты");
+
                     property.SetValue(model, date);
                 }
                 else
@@ -59,7 +69,30 @@ namespace MegafonATS.Webhooks.Helpers
 
         #region Helpers
 
-        private static string GetPropertyName(PropertyInfo property)
+        static bool TryParseDateTime(string inDate, out DateTime? dateTime)
+        {
+            try
+            {
+                var converter = TypeDescriptor.GetConverter(typeof(DateTime));
+                dateTime = (DateTime)converter.ConvertFromString(inDate);
+            }
+            catch
+            {
+                try
+                {
+                    dateTime = DateTime.ParseExact(inDate, "yyyyMMddThhmmssZ", CultureInfo.InvariantCulture);
+                }
+                catch
+                {
+                    dateTime = null;
+                    return false;
+                }
+            }
+            dateTime.Value.ToUniversalTime();
+            return true;
+        }
+
+        static string GetPropertyName(PropertyInfo property)
         {
             var attr = property.GetCustomAttribute<MapNameAttribute>();
             if (attr != null)
