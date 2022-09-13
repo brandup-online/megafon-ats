@@ -29,4 +29,4 @@ CreateUserClient(options);
 ```
 services.AddMegafonWebHooks<MyTestService>();    
  ```
-Запросы от атс будут приходить по адресу ```{domain}/megafon/callback```
+Запросы от АТС будут приходить по адресу ```{domain}/megafon/callback```
