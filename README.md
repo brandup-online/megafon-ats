@@ -6,7 +6,7 @@
 ```
 services.AddMegafonAtsClientFactory();
 ```
-Для работы с клиентами нужно передать в класс объект типа IMegafonAtsClientFactory и вызвать метод Create передав в него опции АТС(название и токен)
+Для работы с клиентами нужно передать в класс объект типа IMegafonAtsClientFactory и вызвать метод Create передав в него опции АТС(название и ключ)
 ```
 var options = new MegafonAtsOptions 
 {
@@ -29,5 +29,4 @@ CreateUserClient(options);
 ```
 services.AddMegafonWebHooks<MyTestService>();    
  ```
-
-
+Запросы от АТС будут приходить по адресу ```{domain}/megafon/callback```
