@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MegafonATS.Models.Webhooks.RequestModels
 {
-    public class RatingModel : IWebHookModel
+    public class RatingModel : WebHookModel
     {
         /// <summary>
         /// номер телефона клиента, с которого или

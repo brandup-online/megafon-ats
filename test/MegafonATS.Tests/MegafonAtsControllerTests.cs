@@ -20,7 +20,7 @@ namespace MegafonATS
         public async Task TestController_HistoryCommand()
         {
             var client = factory.CreateClient();
-            var date = DateTime.UtcNow.ToString("yyyy-MM-ddThh:mm:ssZ");
+            var date = DateTime.UtcNow.ToString("yyyyMMddThhmmssZ");
             var values = new Dictionary<string, string>
                     {
                         { "cmd", "history" },
@@ -55,7 +55,7 @@ namespace MegafonATS
             Assert.Equal(results.History.UserPhone, values["telnum"]);
             Assert.Equal(results.History.Phone, values["phone"]);
             Assert.Equal(results.History.Diversion, values["diversion"]);
-            Assert.Equal(results.History.Start.ToUniversalTime().ToString("yyyy-MM-ddThh:mm:ssZ"), values["start"]);
+            Assert.Equal(results.History.Start.ToUniversalTime().ToString("yyyyMMddThhmmssZ"), values["start"]);
             Assert.Equal(results.History.Duration.ToString(), values["duration"]);
             Assert.Equal(results.History.CallId, values["callid"]);
             Assert.Equal(results.History.Link, new Uri(values["link"]));

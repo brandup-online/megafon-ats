@@ -1,6 +1,6 @@
 ﻿namespace MegafonATS.Models.Webhooks.Requests
 {
-    public interface IWebHookModel
+    public abstract class WebHookModel
     {
     }
 }

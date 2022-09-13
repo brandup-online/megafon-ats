@@ -4,14 +4,13 @@ using MegafonATS.Webhooks.Exceptions;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 using System.Reflection;
 
 namespace MegafonATS.Webhooks.Helpers
 {
     internal static class ModelMapper
     {
-        public static bool MapAndValidate(IFormCollection form, out IWebHookModel model)
+        public static bool MapAndValidate(IFormCollection form, out WebHookModel model)
         {
             try
             {
@@ -24,7 +23,7 @@ namespace MegafonATS.Webhooks.Helpers
             }
             return ValidateModel(model);
         }
-        public static bool ValidateModel(IWebHookModel model)
+        public static bool ValidateModel(WebHookModel model)
         {
             var context = new ValidationContext(model, serviceProvider: null, items: null);
             var validationResults = new List<ValidationResult>();
@@ -32,7 +31,7 @@ namespace MegafonATS.Webhooks.Helpers
             return Validator.TryValidateObject(model, context, validationResults);
         }
 
-        public static IWebHookModel MapModel(IFormCollection form)
+        public static WebHookModel MapModel(IFormCollection form)
         {
             var command = FirstToUpper(form["cmd"]);
             var model = CreateInstance(command + "Model");
@@ -64,30 +63,19 @@ namespace MegafonATS.Webhooks.Helpers
                 }
             }
 
-            return model as IWebHookModel;
+            return model as WebHookModel;
         }
 
         #region Helpers
 
-        static bool TryParseDateTime(string inDate, out DateTime? dateTime)
+        public static bool TryParseDateTime(string inDate, out DateTime? dateTime)
         {
-            try
+            if (inDate != null)
             {
-                var converter = TypeDescriptor.GetConverter(typeof(DateTime));
-                dateTime = (DateTime)converter.ConvertFromString(inDate);
+                dateTime = DateTime.ParseExact(inDate, "yyyyMMddThhmmssZ", null);
             }
-            catch
-            {
-                try
-                {
-                    dateTime = DateTime.ParseExact(inDate, "yyyyMMddThhmmssZ", CultureInfo.InvariantCulture);
-                }
-                catch
-                {
-                    dateTime = null;
-                    return false;
-                }
-            }
+            else throw new ArgumentNullException(inDate);
+
             dateTime.Value.ToUniversalTime();
             return true;
         }
@@ -109,7 +97,7 @@ namespace MegafonATS.Webhooks.Helpers
 
         static object CreateInstance(string className)
         {
-            var assembly = Assembly.GetAssembly(typeof(IWebHookModel));
+            var assembly = Assembly.GetAssembly(typeof(WebHookModel));
 
             var type = assembly.GetTypes()
                 .First(t => t.Name == className);

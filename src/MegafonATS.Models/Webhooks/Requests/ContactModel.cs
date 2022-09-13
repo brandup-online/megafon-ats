@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MegafonATS.Models.Webhooks.RequestModels
 {
-    public class ContactModel : IWebHookModel
+    public class ContactModel : WebHookModel
     {
         /// <summary>
         /// Уникальный id звонка, совпадает для всех связанных звонков
