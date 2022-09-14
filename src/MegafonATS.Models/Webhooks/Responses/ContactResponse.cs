@@ -1,4 +1,6 @@
-﻿namespace MegafonATS.Models.Webhooks.ResponseModels
+﻿using System.Text.Json.Serialization;
+
+namespace MegafonATS.Models.Webhooks.ResponseModels
 {
     public class ContactResponse
     {
@@ -6,6 +8,7 @@
         /// Название контакта которое высветится 
         /// на коммуникаторе
         /// </summary>
+        [JsonPropertyName("contact_name")]
         public string ContactName { get; set; }
 
         /// <summary>

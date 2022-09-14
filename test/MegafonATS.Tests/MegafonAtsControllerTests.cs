@@ -1,7 +1,9 @@
 ﻿using MegafonATS.Fakes;
 using MegafonATS.Models.Webhooks.Enums;
 using MegafonATS.Models.Webhooks.RequestModels;
+using MegafonATS.Models.Webhooks.ResponseModels;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http.Json;
 
 namespace MegafonATS
 {
@@ -116,8 +118,10 @@ namespace MegafonATS
             var result = await client.PostAsync("megafon/callback", new FormUrlEncodedContent(values));
             Assert.True(result.IsSuccessStatusCode == true);
 
-            var contentString = await result.Content.ReadAsStringAsync();
-            Assert.NotNull(contentString);
+
+            var response = await result.Content.ReadFromJsonAsync<ContactResponse>();
+            Assert.Equal("Name", response.ContactName);
+            Assert.Equal("Manager", response.Responsible);
 
             var results = factory.Services.GetRequiredService<FakeMegafonAtsEventsResults>();
             Assert.NotNull(results.Contact);

@@ -38,7 +38,7 @@ namespace MegafonATS.Webhooks
             if (model.GetType() == typeof(HistoryModel))
                 await megafonAtsEvents.HistoryAsync(model as HistoryModel);
             else if (model.GetType() == typeof(ContactModel))
-                await megafonAtsEvents.ContactAsync(model as ContactModel);
+                return Ok(await megafonAtsEvents.ContactAsync(model as ContactModel));
             else if (model.GetType() == typeof(EventModel))
                 await megafonAtsEvents.EventAsync(model as EventModel);
             else if (model.GetType() == typeof(RatingModel))
