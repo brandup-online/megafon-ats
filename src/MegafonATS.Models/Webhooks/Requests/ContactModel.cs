@@ -1,5 +1,4 @@
-﻿using MegafonATS.Models.Attributes;
-using MegafonATS.Models.Webhooks.Requests;
+﻿using MegafonATS.Models.Webhooks.Requests;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
@@ -11,7 +10,6 @@ namespace MegafonATS.Models.Webhooks.RequestModels
         /// Уникальный id звонка, совпадает для всех связанных звонков
         /// </summary>
         [Required]
-        [MapName("callid")]
         [BindProperty(Name = "callid")]
         public string CallId { get; set; }
 

@@ -1,5 +1,4 @@
-﻿using MegafonATS.Models.Attributes;
-using MegafonATS.Models.Webhooks.Enums;
+﻿using MegafonATS.Models.Webhooks.Enums;
 using MegafonATS.Models.Webhooks.Requests;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -13,7 +12,6 @@ namespace MegafonATS.Models.Webhooks.RequestModels
         /// всех связанных звонков
         /// </summary>
         [Required]
-        [MapName("callid")]
         [BindProperty(Name = "callid")]
         public string CallId { get; set; }
 
@@ -33,7 +31,6 @@ namespace MegafonATS.Models.Webhooks.RequestModels
         /// внутренний номер пользователя АТС,
         /// если есть
         /// </summary>
-        [MapName("ext")]
         [BindProperty(Name = "ext")]
         public string UserExt { get; set; }
 
@@ -41,7 +38,6 @@ namespace MegafonATS.Models.Webhooks.RequestModels
         /// прямой телефонный номер пользователя
         /// АТС, если есть
         /// </summary>
-        [MapName("telnum")]
         [BindProperty(Name = "telnum")]
         public string UserPhone { get; set; }
 

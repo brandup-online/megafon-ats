@@ -27,11 +27,13 @@ namespace MegafonATS.Webhooks
             foreach (var item in Request.Form)
                 logger.LogInformation($"{item.Key} : {item.Value}");
 
+            if (!TryValidateModel(model))
+                return BadRequest(ModelState);
+
             if (!await megafonAtsEvents.IsValidTokenAsync(Request.Form["crm_token"].ToString(), HttpContext.RequestAborted))
                 return Unauthorized("Invalid token");
 
-            //if (!ModelMapper.MapAndValidate(Request.Form, out var webHookModel))
-            //    return BadRequest();
+
 
             if (model.GetType() == typeof(HistoryModel))
                 await megafonAtsEvents.HistoryAsync(model as HistoryModel);

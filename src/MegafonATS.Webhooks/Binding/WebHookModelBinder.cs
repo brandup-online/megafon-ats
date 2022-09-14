@@ -32,15 +32,17 @@ namespace MegafonATS.Models.Webhooks.Binding
                                                             bindingContext.ModelName);
             await modelBinder.BindModelAsync(newBindingContext);
             bindingContext.Result = newBindingContext.Result;
+
             if (cmd == "history")
             {
-                if (bindingContext.ModelState.ContainsKey("Start"))
-                    bindingContext.ModelState.Clear();
+
                 var history = bindingContext.Result.Model as HistoryModel;
                 var start = bindingContext.ValueProvider.GetValue("start").FirstValue;
 
                 history.Start = DateTime.ParseExact(start, "yyyyMMddThhmmssZ", null);
-                //bindingContext.Result = ModelBindingResult.Success(history);
+
+                bindingContext.ModelState.SetModelValue("Start", history.Start, start);
+                bindingContext.ModelState["Start"].ValidationState = ModelValidationState.Unvalidated;
             }
         }
     }
