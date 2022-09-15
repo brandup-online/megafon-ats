@@ -17,7 +17,7 @@ namespace MegafonATS.Client.Utility
         }
         public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            return DateTime.ParseExact(reader.GetString(), Format, CultureInfo.InvariantCulture).ToUniversalTime();
+            return DateTime.Parse(reader.GetString(), CultureInfo.InvariantCulture).ToUniversalTime();
         }
     }
 }

@@ -84,7 +84,6 @@ namespace MegafonATS.Client.Core.Abstract
             }
 
             logger.LogInformation($"Запрос вернул успешный статус код.");
-
             TResponse deserializeResponse = JsonSerializer.Deserialize<TResponse>(jsonString, jsonSerializerOptions);
             return ClientResult<TResponse>.Success(deserializeResponse);
         }

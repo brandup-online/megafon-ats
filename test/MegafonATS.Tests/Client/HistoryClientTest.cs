@@ -26,7 +26,7 @@ namespace MegafonATS.Client
             Assert.True(result.Data.Calls.Length < 100);
             foreach (var call in result.Data.Calls)
             {
-                Assert.True(call.Start > DateTime.UtcNow.Date);
+                Assert.True(call.Start > DateTime.UtcNow.Date || call.Start > DateTime.UtcNow.Date.AddDays(-1));
             }
         }
 
