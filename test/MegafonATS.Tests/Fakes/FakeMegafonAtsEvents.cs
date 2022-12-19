@@ -8,32 +8,25 @@ namespace MegafonATS.Fakes
     {
         readonly FakeMegafonAtsEventsResults results;
 
-        public Task<bool> IsValidTokenAsync(string token, CancellationToken cancellationToken)
-        {
-            if (results == null)
-                return Task.FromResult(false);
-            return Task.FromResult(true);
-        }
-
         public FakeMegafonAtsEvents(FakeMegafonAtsEventsResults results)
         {
             this.results = results ?? throw new ArgumentNullException(nameof(results));
         }
 
-        public Task<ContactResponse> ContactAsync(ContactModel contact, CancellationToken cancellationToken = default)
+        public Task<ContactResponse> ContactAsync(string token, ContactModel contact, CancellationToken cancellationToken = default)
         {
             results.Contact = contact;
 
             return Task.FromResult(new ContactResponse { ContactName = "Name", Responsible = "Manager" });
         }
 
-        public Task EventAsync(EventModel _event, CancellationToken cancellationToken = default)
+        public Task EventAsync(string token, EventModel _event, CancellationToken cancellationToken = default)
         {
             results.Event = _event;
             return Task.CompletedTask;
         }
 
-        public Task HistoryAsync(HistoryModel history, CancellationToken cancellationToken = default)
+        public Task HistoryAsync(string token, HistoryModel history, CancellationToken cancellationToken = default)
         {
             results.History = history;
 
@@ -42,7 +35,7 @@ namespace MegafonATS.Fakes
 
 
 
-        public Task RatingAsync(RatingModel rating, CancellationToken cancellationToken = default)
+        public Task RatingAsync(string token, RatingModel rating, CancellationToken cancellationToken = default)
         {
             results.Rating = rating;
 

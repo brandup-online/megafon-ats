@@ -30,19 +30,14 @@ namespace MegafonATS.Webhooks
             if (!TryValidateModel(model))
                 return BadRequest(ModelState);
 
-            if (!await megafonAtsEvents.IsValidTokenAsync(Request.Form["crm_token"].ToString(), HttpContext.RequestAborted))
-                return Unauthorized("Invalid token");
-
-
-
             if (model.GetType() == typeof(HistoryModel))
-                await megafonAtsEvents.HistoryAsync(model as HistoryModel);
+                await megafonAtsEvents.HistoryAsync(Request.Form["crm_token"].ToString(), model as HistoryModel, HttpContext.RequestAborted);
             else if (model.GetType() == typeof(ContactModel))
-                return Ok(await megafonAtsEvents.ContactAsync(model as ContactModel));
+                return Ok(await megafonAtsEvents.ContactAsync(Request.Form["crm_token"].ToString(), model as ContactModel, HttpContext.RequestAborted));
             else if (model.GetType() == typeof(EventModel))
-                await megafonAtsEvents.EventAsync(model as EventModel);
+                await megafonAtsEvents.EventAsync(Request.Form["crm_token"].ToString(), model as EventModel, HttpContext.RequestAborted);
             else if (model.GetType() == typeof(RatingModel))
-                await megafonAtsEvents.RatingAsync(model as RatingModel);
+                await megafonAtsEvents.RatingAsync(Request.Form["crm_token"].ToString(), model as RatingModel, HttpContext.RequestAborted);
             else
             {
                 logger.LogCritical("Невозможный тип модели.");
