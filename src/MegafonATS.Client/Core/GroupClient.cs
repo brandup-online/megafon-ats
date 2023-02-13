@@ -1,6 +1,6 @@
 ﻿using MegafonATS.Client.Core.Abstract;
+using MegafonATS.Client.Models.Responses.Groups;
 using MegafonATS.Client.Results;
-using MegafonATS.Models.Client.Responses.Groups;
 using Microsoft.Extensions.Logging;
 
 namespace MegafonATS.Client.Core
@@ -9,9 +9,7 @@ namespace MegafonATS.Client.Core
     {
         const string endpoint = "/groups";
 
-        public GroupClient(HttpClient httpClient, MegafonAtsOptions options, ILogger<ClientBase> logger) : base(httpClient, options, logger)
-        {
-        }
+        public GroupClient(HttpClient httpClient, MegafonAtsOptions options, ILogger<ClientBase> logger) : base(httpClient, options, logger) { }
 
         public async Task<ClientResult<GroupListResponse>> GetGroupsAsync(CancellationToken cancellationToken = default) =>
             await GetAllAsync<GroupListResponse>(endpoint, cancellationToken);

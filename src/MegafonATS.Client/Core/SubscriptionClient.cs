@@ -1,6 +1,6 @@
 ﻿using MegafonATS.Client.Core.Abstract;
+using MegafonATS.Client.Models.Responses.Subscriptions;
 using MegafonATS.Client.Results;
-using MegafonATS.Models.Client.Responses.Subscriptions;
 using Microsoft.Extensions.Logging;
 
 namespace MegafonATS.Client.Core
@@ -8,9 +8,8 @@ namespace MegafonATS.Client.Core
     public class SubscriptionClient : ClientBase, ISubscriptionClient
     {
         const string apiEndpont = "/users";
-        public SubscriptionClient(HttpClient httpClient, MegafonAtsOptions options, ILogger<ClientBase> logger) : base(httpClient, options, logger)
-        {
-        }
+
+        public SubscriptionClient(HttpClient httpClient, MegafonAtsOptions options, ILogger<ClientBase> logger) : base(httpClient, options, logger) { }
 
         public async Task<ClientResult> SubscribeUserOnGroupAsync(string login, string groupId, CancellationToken cancellationToken)
         {

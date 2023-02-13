@@ -1,5 +1,5 @@
 ﻿using MegafonATS.Client.Core;
-using MegafonATS.Models.Enums;
+using MegafonATS.Client.Models;
 
 namespace MegafonATS.Client
 {
@@ -25,7 +25,5 @@ namespace MegafonATS.Client
             Assert.NotNull(result);
             Assert.Equal(UserRole.Admin, result.Data.Role);
         }
-
-
     }
 }

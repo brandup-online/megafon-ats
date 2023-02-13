@@ -1,14 +1,12 @@
-﻿using MegafonATS.Client.Results;
-using MegafonATS.Models.Client.Requests;
+﻿using MegafonATS.Client.Models.Requests;
+using MegafonATS.Client.Results;
 using Microsoft.Extensions.Logging;
 
 namespace MegafonATS.Client.Core.Abstract
 {
     public abstract class CRUDClient : ClientBase
     {
-        protected CRUDClient(HttpClient httpClient, MegafonAtsOptions options, ILogger<ClientBase> logger) : base(httpClient, options, logger)
-        {
-        }
+        protected CRUDClient(HttpClient httpClient, MegafonAtsOptions options, ILogger<ClientBase> logger) : base(httpClient, options, logger) { }
 
         protected async Task<ClientResult<TModel>> CreateAsync<TModel>(string apiEndpoint, IRequestModel request, CancellationToken cancellationToken) =>
             await ExecuteAsync<TModel>(HttpMethod.Post, apiEndpoint, request, cancellationToken);

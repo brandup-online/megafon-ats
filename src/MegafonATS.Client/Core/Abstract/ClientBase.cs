@@ -1,15 +1,15 @@
-﻿using MegafonATS.Client.Exceptions;
-using MegafonATS.Client.Results;
-using MegafonATS.Client.Utility;
-using MegafonATS.Models.Client.Requests;
-using MegafonATS.Models.Utility;
-using Microsoft.Extensions.Logging;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using MegafonATS.Client.Exceptions;
+using MegafonATS.Client.Models.Requests;
+using MegafonATS.Client.Results;
+using MegafonATS.Client.Utility;
+using MegafonATS.Models.Utility;
+using Microsoft.Extensions.Logging;
 
 namespace MegafonATS.Client.Core.Abstract
 {
@@ -189,6 +189,5 @@ namespace MegafonATS.Client.Core.Abstract
         }
 
         #endregion
-
     }
 }

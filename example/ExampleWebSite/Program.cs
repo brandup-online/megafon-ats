@@ -6,7 +6,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"))
                .AddConsole()
-               .AddEventLog()
                .AddDebug();
 
 var services = builder.Services;
@@ -90,12 +89,11 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseRequestLocalization();
 
 app.UseWebsite();
 app.UseStaticFiles();
 app.UseRouting();
-
+app.UseRequestLocalization();
 
 app.UseEndpoints(endpoints =>
 {

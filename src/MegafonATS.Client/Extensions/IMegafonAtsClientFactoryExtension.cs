@@ -1,5 +1,4 @@
 ﻿using MegafonATS.Client.Core;
-using MegafonATS.Client.Factory;
 
 namespace MegafonATS.Client
 {

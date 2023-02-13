@@ -1,6 +1,5 @@
 ﻿using MegafonATS.Models.Webhooks.Binding;
-using MegafonATS.Models.Webhooks.RequestModels;
-using MegafonATS.Models.Webhooks.Requests;
+using MegafonATS.Webhooks.Models.Requests;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -20,12 +19,13 @@ namespace MegafonATS.Webhooks
         }
 
         [HttpPost("callback")]
-        public async Task<IActionResult> CommandAsync([FromForm][ModelBinder(BinderType = typeof(WebHookModelBinder))] WebHookModel model)
+        public async Task<IActionResult> CommandAsync([FromForm, ModelBinder(BinderType = typeof(WebHookModelBinder))] WebHookModel model)
         {
             logger.LogInformation("New Request: {cmd}", Request.Form["cmd"].ToString());
             logger.LogInformation("Form body:");
-            foreach (var item in Request.Form)
-                logger.LogInformation($"{item.Key} : {item.Value}");
+
+            //foreach (var item in Request.Form)
+            //    logger.LogInformation($"{item.Key} : {item.Value}");
 
             if (!TryValidateModel(model))
                 return BadRequest(ModelState);

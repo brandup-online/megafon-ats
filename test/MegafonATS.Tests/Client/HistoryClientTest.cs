@@ -1,6 +1,6 @@
 ﻿using MegafonATS.Client.Core;
-using MegafonATS.Models.Client.Enums;
-using MegafonATS.Models.Client.Requests;
+using MegafonATS.Client.Models;
+using MegafonATS.Client.Models.Requests;
 
 namespace MegafonATS.Client
 {
@@ -14,8 +14,8 @@ namespace MegafonATS.Client
 
             var request = new HistoryRequest
             {
-                Period = Models.Enums.FilterPeriod.Today,
-                Type = Models.Enums.FilterCallType.All,
+                Period = Models.FilterPeriod.Today,
+                Type = Models.FilterCallType.All,
                 Limit = 100
             };
 
@@ -40,7 +40,7 @@ namespace MegafonATS.Client
             {
                 Start = DateTime.UtcNow.AddDays(-5),
                 End = DateTime.UtcNow.AddDays(-3),
-                Type = Models.Enums.FilterCallType.Out,
+                Type = Models.FilterCallType.Out,
                 Limit = 10
             };
 

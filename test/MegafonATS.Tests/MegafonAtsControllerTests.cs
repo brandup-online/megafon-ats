@@ -1,9 +1,9 @@
-﻿using MegafonATS.Fakes;
-using MegafonATS.Models.Webhooks.Enums;
-using MegafonATS.Models.Webhooks.RequestModels;
-using MegafonATS.Models.Webhooks.ResponseModels;
+﻿using System.Net.Http.Json;
+using MegafonATS.Fakes;
+using MegafonATS.Webhooks.Models;
+using MegafonATS.Webhooks.Models.Requests;
+using MegafonATS.Webhooks.Models.Responses;
 using Microsoft.Extensions.DependencyInjection;
-using System.Net.Http.Json;
 
 namespace MegafonATS
 {

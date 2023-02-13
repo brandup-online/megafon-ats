@@ -1,6 +1,6 @@
-﻿using MegafonATS.Models.Webhooks.RequestModels;
-using MegafonATS.Models.Webhooks.ResponseModels;
-using MegafonATS.Webhooks;
+﻿using MegafonATS.Webhooks;
+using MegafonATS.Webhooks.Models.Requests;
+using MegafonATS.Webhooks.Models.Responses;
 
 namespace MegafonATS.Fakes
 {

@@ -1,5 +1,4 @@
 ﻿using MegafonATS.Client.Core.Abstract;
-using MegafonATS.Client.Factory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

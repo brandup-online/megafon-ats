@@ -1,4 +1,4 @@
-﻿using MegafonATS.Models.Webhooks.RequestModels;
+﻿using MegafonATS.Webhooks.Models.Requests;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace MegafonATS.Models.Webhooks.Binding
