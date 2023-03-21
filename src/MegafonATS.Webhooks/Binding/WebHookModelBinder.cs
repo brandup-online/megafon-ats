@@ -30,6 +30,7 @@ namespace MegafonATS.Models.Webhooks.Binding
                                                             modelMetadata,
                                                             bindingInfo: null,
                                                             bindingContext.ModelName);
+
             await modelBinder.BindModelAsync(newBindingContext);
             bindingContext.Result = newBindingContext.Result;
 

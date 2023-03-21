@@ -2,6 +2,7 @@
 using MegafonATS.Webhooks.Models.Requests;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.ComponentModel.DataAnnotations;
 
 namespace MegafonATS.Webhooks
 {
@@ -19,25 +20,21 @@ namespace MegafonATS.Webhooks
         }
 
         [HttpPost("callback")]
-        public async Task<IActionResult> CommandAsync([FromForm, ModelBinder(BinderType = typeof(WebHookModelBinder))] WebHookModel model)
+        public async Task<IActionResult> CommandAsync([FromForm(Name = "crm_token"), Required] string token, [FromForm, Required, ModelBinder(BinderType = typeof(WebHookModelBinder))] WebHookModel model)
         {
             logger.LogInformation("New Request: {cmd}", Request.Form["cmd"].ToString());
-            logger.LogInformation("Form body:");
-
-            //foreach (var item in Request.Form)
-            //    logger.LogInformation($"{item.Key} : {item.Value}");
 
             if (!TryValidateModel(model))
                 return BadRequest(ModelState);
 
             if (model.GetType() == typeof(HistoryModel))
-                await megafonAtsEvents.HistoryAsync(Request.Form["crm_token"].ToString(), model as HistoryModel, HttpContext.RequestAborted);
+                await megafonAtsEvents.HistoryAsync(token, model as HistoryModel, HttpContext.RequestAborted);
             else if (model.GetType() == typeof(ContactModel))
-                return Ok(await megafonAtsEvents.ContactAsync(Request.Form["crm_token"].ToString(), model as ContactModel, HttpContext.RequestAborted));
+                return Ok(await megafonAtsEvents.ContactAsync(token, model as ContactModel, HttpContext.RequestAborted));
             else if (model.GetType() == typeof(EventModel))
-                await megafonAtsEvents.EventAsync(Request.Form["crm_token"].ToString(), model as EventModel, HttpContext.RequestAborted);
+                await megafonAtsEvents.EventAsync(token, model as EventModel, HttpContext.RequestAborted);
             else if (model.GetType() == typeof(RatingModel))
-                await megafonAtsEvents.RatingAsync(Request.Form["crm_token"].ToString(), model as RatingModel, HttpContext.RequestAborted);
+                await megafonAtsEvents.RatingAsync(token, model as RatingModel, HttpContext.RequestAborted);
             else
             {
                 logger.LogCritical("Невозможный тип модели.");

@@ -1,5 +1,4 @@
 ﻿using MegafonATS.Client.Core;
-using MegafonATS.Client.Models;
 
 namespace MegafonATS.Client
 {
@@ -12,7 +11,7 @@ namespace MegafonATS.Client
             var client = CreateClient<UserClient>();
             var result = await client.GetUsersAsync(default);
 
-            Assert.NotNull(result);
+            Assert.True(result.IsSuccess);
             Assert.NotEmpty(result.Data.Items);
         }
 
@@ -20,10 +19,10 @@ namespace MegafonATS.Client
         public async Task GetUserAsync_Success()
         {
             var client = CreateClient<UserClient>();
-            var result = await client.GetUserAsync("admin", default);
+            var result = await client.GetUserAsync(Data.UserName, default);
 
-            Assert.NotNull(result);
-            Assert.Equal(UserRole.Admin, result.Data.Role);
+            Assert.True(result.IsSuccess);
+            Assert.Equal(Data.UserName, result.Data.Login);
         }
     }
 }

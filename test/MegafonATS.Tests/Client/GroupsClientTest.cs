@@ -4,23 +4,31 @@ namespace MegafonATS.Client
 {
     public class GroupsClientTest : ClientTestBase
     {
+        GroupClient client;
+
+        protected override Task OnInitializeAsync(IServiceProvider serviceProvider)
+        {
+            client = CreateClient<GroupClient>();
+            return base.OnInitializeAsync(serviceProvider);
+        }
+
         [Fact]
         public async Task GetGroupsAsync_Success()
         {
-            var client = CreateClient<GroupClient>();
             var result = await client.GetGroupsAsync(default);
 
-            Assert.NotNull(result);
+            Assert.True(result.IsSuccess);
             Assert.NotEmpty(result.Data.Items);
+            Assert.Equal(Data.GroupsCount, result.Data.Items.Count);
         }
 
         [Fact]
         public async Task GetGroupAsync_Success()
         {
-            var client = CreateClient<GroupClient>();
-            var result = await client.GetGroupAsync("_g6978081595918316104", default);
+            var result = await client.GetGroupAsync(Data.GroupId, default);
 
-            Assert.NotNull(result);
+            Assert.True(result.IsSuccess);
+            Assert.Equal(Data.GroupId, result.Data.Id);
             Assert.NotEmpty(result.Data.Users);
         }
     }

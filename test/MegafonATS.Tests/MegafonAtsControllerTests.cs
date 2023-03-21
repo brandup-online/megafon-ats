@@ -1,9 +1,9 @@
-﻿using System.Net.Http.Json;
-using MegafonATS.Fakes;
+﻿using MegafonATS.Fakes;
 using MegafonATS.Webhooks.Models;
 using MegafonATS.Webhooks.Models.Requests;
 using MegafonATS.Webhooks.Models.Responses;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http.Json;
 
 namespace MegafonATS
 {
@@ -17,6 +17,8 @@ namespace MegafonATS
             factory = new AgentFactory();
             factory.ClientOptions.BaseAddress = new Uri("https://localhost/");
         }
+
+        #region Common tests
 
         [Fact]
         public async Task TestController_HistoryCommand()
@@ -46,10 +48,11 @@ namespace MegafonATS
 
             var result = await client.PostAsync("megafon/callback", content);
             var response = await result.Content.ReadAsStringAsync();
+            Assert.NotNull(response);
             Assert.True(result.IsSuccessStatusCode);
 
             var results = factory.Services.GetRequiredService<FakeMegafonAtsEventsResults>();
-            Enum.TryParse(values["status"], out WebhookCallStatus status);
+            Assert.True(Enum.TryParse(values["status"], out WebhookCallStatus status));
 
             Assert.Equal(results.History.Type, Enum.Parse<WebhookCallDirection>(values["type"], true));
             Assert.Equal(results.History.User, values["user"]);
@@ -157,5 +160,138 @@ namespace MegafonATS
             Assert.Equal(results.Rating.Phone, values["phone"]);
             Assert.Equal(results.Rating.UserExt, values["ext"]);
         }
+
+        #endregion
+
+        #region Validation tests
+
+        // Testing how controller validates a requests
+
+        [Theory]
+        [InlineData("cmd")]
+        [InlineData("type")]
+        [InlineData("user")]
+        [InlineData("phone")]
+        [InlineData("diversion")]
+        [InlineData("start")]
+        [InlineData("duration")]
+        [InlineData("callid")]
+        [InlineData("status")]
+        [InlineData("crm_token")]
+        public async Task History_Validation(string nullKey)
+        {
+            var client = factory.CreateClient();
+            var date = DateTime.UtcNow.ToString("yyyyMMddThhmmssZ");
+            var values = new Dictionary<string, string>
+                    {
+                        { "cmd", "history" },
+                        { "type", "in" },
+                        { "user", "user" },
+                        { "ext", "510" },
+                        { "groupRealName", "groupname" },
+                        { "telnum", "999999" },
+                        { "phone", "88005553535" },
+                        { "diversion", "100500" },
+                        { "start", date },
+                        { "duration", "50" },
+                        { "callid", "43294397431" },
+                        { "link", "https://test.ru/test.mp3" },
+                        { "rating", "4" },
+                        { "crm_token", secretKey },
+                        { "status", WebhookCallStatus.Success.ToString() }
+                    };
+
+            values.Remove(nullKey);
+            var content = new FormUrlEncodedContent(values);
+
+            var result = await client.PostAsync("megafon/callback", content);
+            Assert.False(result.IsSuccessStatusCode);
+        }
+
+        [Theory]
+        [InlineData("cmd")]
+        [InlineData("type")]
+        [InlineData("user")]
+        [InlineData("phone")]
+        [InlineData("direction")]
+        [InlineData("callid")]
+        [InlineData("crm_token")]
+        public async Task Event_Validation(string nullKey)
+        {
+            var client = factory.CreateClient();
+            var values = new Dictionary<string, string>
+                    {
+                        { "cmd", "event" },
+                        { "type", "INCOMING" },
+                        { "phone", "88005553535" },
+                        { "diversion", "100500" },
+                        { "user", "user" },
+                        { "groupRealName", "groupname" },
+                        { "ext", "510" },
+                        { "telnum", "999999" },
+                        { "direction", "in" },
+                        { "callid", "43294397431" },
+                        { "status", "Success" },
+                        { "crm_token", secretKey }
+                    };
+
+            values.Remove(nullKey);
+            var content = new FormUrlEncodedContent(values);
+
+            var result = await client.PostAsync("megafon/callback", content);
+            Assert.False(result.IsSuccessStatusCode);
+        }
+
+        [Theory]
+        [InlineData("cmd")]
+        [InlineData("phone")]
+        [InlineData("callid")]
+        [InlineData("crm_token")]
+        public async Task Contact_Validation(string nullKey)
+        {
+            var client = factory.CreateClient();
+            var values = new Dictionary<string, string>
+                    {
+                        { "cmd", "contact" },
+                        { "phone", "88005553535" },
+                        { "callid", "43294397431" },
+                        { "crm_token", secretKey }
+                    };
+
+            values.Remove(nullKey);
+            var content = new FormUrlEncodedContent(values);
+
+            var result = await client.PostAsync("megafon/callback", content);
+            Assert.False(result.IsSuccessStatusCode);
+        }
+
+        [Theory]
+        [InlineData("cmd")]
+        [InlineData("phone")]
+        [InlineData("rating")]
+        [InlineData("user")]
+        [InlineData("callid")]
+        [InlineData("crm_token")]
+        public async Task Rating_Validation(string nullKey)
+        {
+            var client = factory.CreateClient();
+            var values = new Dictionary<string, string>
+                    {
+                        { "cmd", "rating" },
+                        { "callid", "43294397431" },
+                        { "rating", "4" },
+                        { "phone", "88005553535" },
+                        { "user", "user" },
+                        { "ext", "510" },
+                        { "crm_token", secretKey }
+                    };
+
+            values.Remove(nullKey);
+            var content = new FormUrlEncodedContent(values);
+
+            var result = await client.PostAsync("megafon/callback", content);
+            Assert.False(result.IsSuccessStatusCode);
+        }
+        #endregion
     }
 }

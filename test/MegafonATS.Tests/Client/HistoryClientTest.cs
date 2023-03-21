@@ -6,12 +6,16 @@ namespace MegafonATS.Client
 {
     public class HistoryClientTest : ClientTestBase
     {
+        HistoryClient client;
+        protected override Task OnInitializeAsync(IServiceProvider services)
+        {
+            client = CreateClient<HistoryClient>();
+            return base.OnInitializeAsync(services);
+        }
 
         [Fact]
         public async Task GetHistoryAsync_Filter_Success()
         {
-            var client = CreateClient<HistoryClient>();
-
             var request = new HistoryRequest
             {
                 Period = Models.FilterPeriod.Today,
@@ -21,8 +25,7 @@ namespace MegafonATS.Client
 
             var result = await client.GetHistoryAsync(request, default);
 
-            Assert.NotNull(result);
-
+            Assert.True(result.IsSuccess);
             Assert.True(result.Data.Calls.Length < 100);
             foreach (var call in result.Data.Calls)
             {
@@ -34,8 +37,6 @@ namespace MegafonATS.Client
 
         public async Task GetHistoryAsync_Dates_Success()
         {
-            var client = CreateClient<HistoryClient>();
-
             var request = new HistoryRequest
             {
                 Start = DateTime.UtcNow.AddDays(-5),
@@ -46,7 +47,6 @@ namespace MegafonATS.Client
 
             var result = await client.GetHistoryAsync(request, default);
 
-            Assert.NotNull(result);
             Assert.True(result.IsSuccess);
             foreach (var call in result.Data.Calls)
             {
@@ -57,15 +57,13 @@ namespace MegafonATS.Client
         [Fact]
         public async Task GetHistoryAsync_Empty_Success()
         {
-            var client = CreateClient<HistoryClient>();
-
             var request = new HistoryRequest
             {
             };
 
             var result = await client.GetHistoryAsync(request, default);
 
-            Assert.NotNull(result);
+            Assert.True(result.IsSuccess);
         }
     }
 }

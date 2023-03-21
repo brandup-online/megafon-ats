@@ -6,6 +6,7 @@
 	<Nullable>disable</Nullable>
 	<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 	<PackageId>MegafonATS.Webhooks</PackageId>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	<PackageProjectUrl>https://github.com/brandup-online/megafon-ats</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/brandup-online/megafon-ats</RepositoryUrl>
 	<RepositoryType>git</RepositoryType>
