@@ -8,7 +8,7 @@ namespace MegafonATS.Webhooks
 {
     [Route("megafon")]
     [ApiController]
-    public class MegafonAtsController : Controller
+    public class MegafonAtsController : ControllerBase
     {
         readonly IMegafonAtsEvents megafonAtsEvents;
         readonly ILogger<MegafonAtsController> logger;
