@@ -20,7 +20,7 @@ namespace MegafonATS.Client.Models.Requests
         /// </summary>
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public FilterPeriod? Period { get; set; }
+        public Period? Period { get; set; }
         /// <summary>
         /// Тип звонка
         /// </summary>
@@ -29,6 +29,6 @@ namespace MegafonATS.Client.Models.Requests
         /// <summary>
         /// Лимит записей в полученном результате
         /// </summary>
-        public int Limit { get; set; } = 100;
+        public int? Limit { get; set; }
     }
 }

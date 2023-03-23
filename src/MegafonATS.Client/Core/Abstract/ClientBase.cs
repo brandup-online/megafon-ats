@@ -1,15 +1,15 @@
-﻿using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Reflection;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using MegafonATS.Client.Exceptions;
+﻿using MegafonATS.Client.Exceptions;
 using MegafonATS.Client.Models.Requests;
 using MegafonATS.Client.Results;
 using MegafonATS.Client.Utility;
 using MegafonATS.Models.Utility;
 using Microsoft.Extensions.Logging;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Reflection;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace MegafonATS.Client.Core.Abstract
 {
@@ -84,6 +84,9 @@ namespace MegafonATS.Client.Core.Abstract
             }
 
             logger.LogInformation($"Запрос вернул успешный статус код.");
+            if (jsonString == string.Empty)
+                return ClientResult<TResponse>.Success();
+
             TResponse deserializeResponse = JsonSerializer.Deserialize<TResponse>(jsonString, jsonSerializerOptions);
             return ClientResult<TResponse>.Success(deserializeResponse);
         }

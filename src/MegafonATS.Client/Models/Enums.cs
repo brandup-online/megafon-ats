@@ -36,7 +36,7 @@
         Missed
     }
 
-    public enum FilterPeriod
+    public enum Period
     {
         Today,
         Yesterday,

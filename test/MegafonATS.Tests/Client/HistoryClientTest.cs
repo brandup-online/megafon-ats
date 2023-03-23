@@ -18,7 +18,7 @@ namespace MegafonATS.Client
         {
             var request = new HistoryRequest
             {
-                Period = Models.FilterPeriod.Today,
+                Period = Models.Period.Today,
                 Type = Models.FilterCallType.All,
                 Limit = 100
             };
@@ -52,6 +52,20 @@ namespace MegafonATS.Client
             {
                 Assert.Equal(ClientCallDirection.Out, call.Direction);
             }
+        }
+
+        [Fact]
+        public async Task GetHistoryAsync_NoLimit_Success()
+        {
+            var request = new HistoryRequest
+            {
+                Start = DateTime.UtcNow.AddDays(-5),
+                End = DateTime.UtcNow.AddDays(-3),
+            };
+
+            var result = await client.GetHistoryAsync(request, default);
+
+            Assert.True(result.IsSuccess);
         }
 
         [Fact]
