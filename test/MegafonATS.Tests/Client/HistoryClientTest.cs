@@ -66,6 +66,7 @@ namespace MegafonATS.Client
             var result = await client.GetHistoryAsync(request, default);
 
             Assert.True(result.IsSuccess);
+            Assert.NotEmpty(result.Data.Calls);
         }
 
         [Fact]
