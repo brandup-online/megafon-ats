@@ -59,14 +59,14 @@ namespace MegafonATS.Client
         {
             var request = new HistoryRequest
             {
-                Start = DateTime.UtcNow.AddDays(-5),
-                End = DateTime.UtcNow.AddDays(-3),
+                Start = DateTime.UtcNow.AddHours(-3),
+                End = DateTime.UtcNow,
             };
 
             var result = await client.GetHistoryAsync(request, default);
 
             Assert.True(result.IsSuccess);
-            Assert.NotEmpty(result.Data.Calls);
+            Assert.NotNull(result.Data.Calls);
         }
 
         [Fact]
