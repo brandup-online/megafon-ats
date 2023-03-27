@@ -45,7 +45,7 @@ namespace MegafonATS.Models.Webhooks.Binding
                     history.Start = startDate;
                 else
                 {
-                    throw new ArgumentException($"Не удалось преобразавать строку {start} в валидную дату", nameof(start));
+                    throw new Exception($"Не удалось преобразавать строку {start} в валидную дату");
                 }
 
                 bindingContext.ModelState.SetModelValue("Start", history.Start, start);
