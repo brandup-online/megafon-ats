@@ -27,7 +27,7 @@ namespace MegafonATS.Client.Core.Abstract
         {
             jsonSerializerOptions = new JsonSerializerOptions { PropertyNamingPolicy = SnakeCaseNamingPolicy.Instance, PropertyNameCaseInsensitive = true, DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull };
             jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(SnakeCaseNamingPolicy.Instance));
-            jsonSerializerOptions.Converters.Add(new CustomDateTimeConverter("yyyy-MM-ddThh:mm:ssZ"));
+            jsonSerializerOptions.Converters.Add(new CustomDateTimeConverter("yyyy-MM-ddTHH:mm:ssZ"));
 
         }
 
