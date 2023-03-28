@@ -29,6 +29,7 @@ namespace MegafonATS.Client.Models.Requests
         /// <summary>
         /// Лимит записей в полученном результате
         /// </summary>
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public int? Limit { get; set; }
     }
 }

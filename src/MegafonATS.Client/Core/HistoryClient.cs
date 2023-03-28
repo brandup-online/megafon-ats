@@ -19,9 +19,7 @@ namespace MegafonATS.Client.Core
             if (!result.IsSuccess)
                 return ClientResult<HistoryResponse>.SetError(result.Error);
 
-            var data = result.Data;
-            if (data == null)
-                data = new CallResponse[0];
+            var data = result.Data ?? Array.Empty<CallResponse>();
             return ClientResult<HistoryResponse>.Success(new HistoryResponse { Calls = data });
         }
     }

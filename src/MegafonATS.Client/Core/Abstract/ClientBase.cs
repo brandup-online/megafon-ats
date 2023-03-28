@@ -126,7 +126,7 @@ namespace MegafonATS.Client.Core.Abstract
                     if (property.PropertyType == typeof(DateTime?))
                     {
                         var dateTime = (DateTime)property.GetValue(request);
-                        parts.Add(string.Format("{0}={1}", ToSnakeCase(property.Name), dateTime.ToString("yyyy-MM-ddThh:mm:ssZ")));
+                        parts.Add(string.Format("{0}={1}", ToSnakeCase(property.Name), dateTime.ToString("yyyy-MM-ddTHH:mm:ssZ")));
                     }
                     else
                     {
