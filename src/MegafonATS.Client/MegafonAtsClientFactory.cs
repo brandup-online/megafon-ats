@@ -3,16 +3,10 @@ using Microsoft.Extensions.Logging;
 
 namespace MegafonATS.Client
 {
-    public class MegafonAtsClientFactory : IMegafonAtsClientFactory
+    public class MegafonAtsClientFactory(IHttpClientFactory httpClientFactory, ILogger<ClientBase> logger) : IMegafonAtsClientFactory
     {
-        readonly IHttpClientFactory httpClientFactory;
-        readonly ILogger<ClientBase> logger;
-
-        public MegafonAtsClientFactory(IHttpClientFactory httpClientFactory, ILogger<ClientBase> logger)
-        {
-            this.httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        }
+        readonly IHttpClientFactory httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+        readonly ILogger<ClientBase> logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
         public TClient Create<TClient>(MegafonAtsOptions options)
             where TClient : ClientBase
