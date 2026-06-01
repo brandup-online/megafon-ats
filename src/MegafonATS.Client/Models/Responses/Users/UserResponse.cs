@@ -16,6 +16,7 @@ namespace MegafonATS.Client.Models.Responses.Users
         public string Email { get; set; }
         public UserRole Role { get; set; }
         public MobileRedirect MobileRedirect { get; set; }
+        public string Status { get; set; }
     }
 
     public class MobileRedirect

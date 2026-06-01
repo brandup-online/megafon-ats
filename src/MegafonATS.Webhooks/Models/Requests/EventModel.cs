@@ -1,95 +1,70 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MegafonATS.Webhooks.Models.Requests
 {
     public class EventModel : WebHookModel
     {
-        /// <summary>
-        /// уникальный id звонка, совпадает для
-        /// всех связанных звонков
-        /// </summary>
         [Required]
         [BindProperty(Name = "callid")]
         public string CallId { get; set; }
 
-        /// <summary>
-        /// идентификатор пользователя АТС (необходим для сопоставления на стороне CRM)
-        /// </summary>
         [Required]
         public string User { get; set; }
 
-        /// <summary>
-        /// название отдела, если входящий звонок
-        /// прошел через отдел
-        /// </summary>
         public string GroupRealName { get; set; }
 
-        /// <summary>
-        /// внутренний номер пользователя АТС,
-        /// если есть
-        /// </summary>
         [BindProperty(Name = "ext")]
         public string UserExt { get; set; }
 
-        /// <summary>
-        /// прямой телефонный номер пользователя
-        /// АТС, если есть
-        /// </summary>
         [BindProperty(Name = "telnum")]
         public string UserPhone { get; set; }
 
-        /// <summary>
-        /// номер телефона клиента
-        /// </summary>
+        [BindProperty(Name = "telnum_name")]
+        public string TelnumName { get; set; }
+
         [Required]
         public string Phone { get; set; }
 
-        /// <summary>
-        /// тип звонка in/out (входящий/исходящий)
-        /// </summary>
         [Required]
         public WebhookCallDirection? Direction { get; set; }
-        /// <summary>
-        /// type - это тип события, связанного со звонком
-        /// </summary>
+
         [Required]
         public EventType? Type { get; set; }
 
-        /// <summary>
-        /// ваш номер телефона, через который пришел входящий вызов
-        /// </summary>
         public string Diversion { get; set; }
 
-
+        /// <summary>
+        /// Уникальный id переведенного звонка (при событии TRANSFERRED)
+        /// </summary>
+        [BindProperty(Name = "second_callid")]
+        public string SecondCallId { get; set; }
     }
 
     public enum EventType
     {
         /// <summary>
-        /// Поступил входящий звонок (у менеджера должен начать звонить телефон в это время)
+        /// Поступил входящий звонок
         /// </summary>
         Incoming,
 
         /// <summary>
-        /// Звонок успешно принят (менеджер снял трубку). В этот момент
-        /// можно убрать всплывающую карточку контакта в CRM
+        /// Звонок успешно принят
         /// </summary>
         Accepted,
 
         /// <summary>
-        /// Звонок успешно завершен(менеджер или клиент положили трубку после разговора)
+        /// Звонок успешно завершен
         /// </summary>
         Completed,
 
         /// <summary>
-        /// Звонок сброшен (клиент не  дождался пока менеджер снимет трубку,
-        /// либо если это был звонок на группу менеджеров, на звонок мог ответить ктото еще)
+        /// Звонок сброшен
         /// </summary>
         Cancelled,
 
         /// <summary>
-        /// Менеджер совершает исходящий звонок (ВАТС пытается дозвониться до клиента)
+        /// Менеджер совершает исходящий звонок
         /// </summary>
         Outgoing,
 

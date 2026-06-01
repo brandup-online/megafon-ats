@@ -1,4 +1,4 @@
-﻿namespace MegafonATS.Client.Models
+namespace MegafonATS.Client.Models
 {
     public enum Advaced
     {
@@ -25,7 +25,11 @@
     {
         Success,
         Missed,
-        NoAnswer
+        Cancel,
+        Busy,
+        NotAvailable,
+        NotAllowed,
+        NotFound
     }
 
     public enum FilterCallType
@@ -50,6 +54,7 @@
     {
         User,
         Admin,
+        GroupHead,
         RestrictedUser
     }
 }

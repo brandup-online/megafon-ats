@@ -155,7 +155,7 @@ namespace MegafonATS
             var results = factory.Services.GetRequiredService<FakeMegafonAtsEventsResults>();
 
             Assert.Equal(results.Rating.CallId, values["callid"]);
-            Assert.Equal(results.Rating.Rating, values["rating"]);
+            Assert.Equal(results.Rating.Rating.ToString(), values["rating"]);
             Assert.Equal(results.Rating.User, values["user"]);
             Assert.Equal(results.Rating.Phone, values["phone"]);
             Assert.Equal(results.Rating.UserExt, values["ext"]);

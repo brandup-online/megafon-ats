@@ -1,62 +1,46 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace MegafonATS.Webhooks.Models.Requests
 {
     public class HistoryModel : WebHookModel
     {
-        /// <summary>
-        /// Уникальный id звонка
-        /// </summary>
         [Required]
         [BindProperty(Name = "callid")]
         public string CallId { get; set; }
 
-        /// <summary>
-        /// Идентификатор пользователя АТС 
-        /// </summary>
         [Required]
         public string User { get; set; }
 
-        /// <summary>
-        /// Внутренний номер пользователя АТС, если есть
-        /// </summary>
         [BindProperty(Name = "ext")]
         public string UserExt { get; set; }
 
         /// <summary>
-        /// Название отдела, если входящий звонок прошел через отдел
+        /// Идентификатор отдела, если входящий звонок прошел через отдел
         /// </summary>
+        public string Group { get; set; }
+
         public string GroupRealName { get; set; }
 
-        /// <summary>
-        /// Прямой телефонный номер пользователя АТС, если есть
-        /// </summary>
         [BindProperty(Name = "telnum")]
         public string UserPhone { get; set; }
 
-        /// <summary>
-        /// Номер телефона клиента, с которого или на который произошел звонок
-        /// </summary> 
+        [BindProperty(Name = "telnum_name")]
+        public string TelnumName { get; set; }
+
         [Required]
         public string Phone { get; set; }
 
         /// <summary>
-        /// Тип звонка входящий/исходящий
+        /// Тип звонка in/out
         /// </summary>
         [Required]
         [BindProperty(Name = "type")]
         public WebhookCallDirection? Type { get; set; }
 
-        /// <summary>
-        /// Статус входящего/исходящего звонка
-        /// </summary>
         [Required]
         public WebhookCallStatus? Status { get; set; }
 
-        /// <summary>
-        /// Ваш номер телефона, через который пришел входящий вызов
-        /// </summary>
         [Required]
         public string Diversion { get; set; }
 
@@ -67,19 +51,25 @@ namespace MegafonATS.Webhooks.Models.Requests
         public DateTime Start { get; set; }
 
         /// <summary>
-        /// Общая длительность звонка в секундах 
+        /// Время ожидания ответа (сек)
+        /// </summary>
+        [Required]
+        public int? Wait { get; set; }
+
+        /// <summary>
+        /// Общая длительность звонка в секундах
         /// </summary>
         [Required]
         public int? Duration { get; set; }
 
-        /// <summary>
-        /// Ссылка на запись звонка, если она включена в Виртуальной АТС
-        /// </summary>
         public Uri Link { get; set; }
 
+        public int? Rating { get; set; }
+
         /// <summary>
-        /// Оценка качества звонка
+        /// Статус пропущенного звонка: 1-клиент перезвонил, 2-перезвонили, 3-не перезванивали, 4-не дозвонились
         /// </summary>
-        public int Rating { get; set; }
+        [BindProperty(Name = "missedStatus")]
+        public string MissedStatus { get; set; }
     }
 }

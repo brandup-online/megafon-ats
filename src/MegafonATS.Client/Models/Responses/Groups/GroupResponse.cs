@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace MegafonATS.Client.Models.Responses.Groups
 {
@@ -13,6 +13,7 @@ namespace MegafonATS.Client.Models.Responses.Groups
         public List<GroupMember> Users { get; set; }
         public TimeoutModel Timeout { get; set; }
         public Advaced Advanced { get; set; }
+        public bool QueuePosition { get; set; }
     }
 
     public class TimeoutModel
@@ -20,11 +21,16 @@ namespace MegafonATS.Client.Models.Responses.Groups
         public int Time { get; set; }
         public string Target { get; set; }
         public string User { get; set; }
+        public string Group { get; set; }
+        public string Telnum { get; set; }
     }
 
     public class GroupMember
     {
         public string Login { get; set; }
         public bool CallsEnable { get; set; }
+        public bool GroupHead { get; set; }
+        public bool IsAbsenceActive { get; set; }
+        public bool IsForwardingDisabled { get; set; }
     }
 }

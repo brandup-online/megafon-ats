@@ -32,9 +32,9 @@ namespace MegafonATS.Webhooks.Models.Requests
         [Required]
         public string Phone { get; set; }
         /// <summary>
-        /// оценка качества 
+        /// Оценка качества обслуживания
         /// </summary>
         [Required]
-        public string Rating { get; set; }
+        public int? Rating { get; set; }
     }
 }
