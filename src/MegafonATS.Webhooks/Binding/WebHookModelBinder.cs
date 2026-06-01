@@ -1,4 +1,4 @@
-﻿using MegafonATS.Webhooks.Models.Requests;
+using MegafonATS.Webhooks.Models.Requests;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Globalization;
 
@@ -20,10 +20,21 @@ namespace MegafonATS.Models.Webhooks.Binding
 
             var cmd = bindingContext.ValueProvider.GetValue("cmd").FirstValue;
 
-            IModelBinder modelBinder;
-            ModelMetadata modelMetadata;
+            if (string.IsNullOrEmpty(cmd))
+            {
+                bindingContext.ModelState.TryAddModelError(bindingContext.ModelName, "Поле cmd обязательно.");
+                return;
+            }
 
-            (modelMetadata, modelBinder) = binders[cmd[..1].ToUpper() + cmd[1..] + "Model"];
+            var key = cmd[..1].ToUpper() + cmd[1..] + "Model";
+
+            if (!binders.TryGetValue(key, out var binderEntry))
+            {
+                bindingContext.ModelState.TryAddModelError(bindingContext.ModelName, $"Неизвестная команда: {cmd}");
+                return;
+            }
+
+            var (modelMetadata, modelBinder) = binderEntry;
 
             var newBindingContext = DefaultModelBindingContext.CreateBindingContext(
                                                             bindingContext.ActionContext,
@@ -37,19 +48,24 @@ namespace MegafonATS.Models.Webhooks.Binding
 
             if (cmd == "history")
             {
+                if (bindingContext.Result.Model is not HistoryModel history)
+                {
+                    bindingContext.ModelState.TryAddModelError(bindingContext.ModelName, "Не удалось получить модель history.");
+                    return;
+                }
 
-                var history = bindingContext.Result.Model as HistoryModel;
                 var start = bindingContext.ValueProvider.GetValue("start").FirstValue;
 
                 if (DateTime.TryParseExact(start, "yyyyMMddTHHmmssZ", DateTimeFormatInfo.InvariantInfo, DateTimeStyles.AdjustToUniversal, out var startDate))
+                {
                     history.Start = startDate;
+                    bindingContext.ModelState.SetModelValue("Start", history.Start, start);
+                    bindingContext.ModelState["Start"].ValidationState = ModelValidationState.Unvalidated;
+                }
                 else
                 {
-                    throw new Exception($"Не удалось преобразавать строку {start} в валидную дату");
+                    bindingContext.ModelState.TryAddModelError("Start", $"Не удалось преобразовать строку '{start}' в валидную дату.");
                 }
-
-                bindingContext.ModelState.SetModelValue("Start", history.Start, start);
-                bindingContext.ModelState["Start"].ValidationState = ModelValidationState.Unvalidated;
             }
         }
     }

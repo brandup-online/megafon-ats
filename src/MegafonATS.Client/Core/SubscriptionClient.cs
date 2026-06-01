@@ -7,27 +7,27 @@ namespace MegafonATS.Client.Core
 {
     public class SubscriptionClient : ClientBase, ISubscriptionClient
     {
-        const string apiEndpont = "/users";
+        const string apiEndpoint = "/users";
 
         public SubscriptionClient(HttpClient httpClient, MegafonAtsOptions options, ILogger<ClientBase> logger) : base(httpClient, options, logger) { }
 
         public async Task<ClientResult> SubscribeUserOnGroupAsync(string login, string groupId, CancellationToken cancellationToken)
         {
-            var endpoint = apiEndpont + "/" + login + "/subscription" + "?" + $"group_id={groupId}";
+            var endpoint = apiEndpoint + "/" + login + "/subscription" + "?" + $"group_id={groupId}";
 
             return await ExecuteAsync(HttpMethod.Post, endpoint, null, cancellationToken);
         }
 
         public async Task<ClientResult> UnsubscribeUserOnGroupAsync(string login, string groupId, CancellationToken cancellationToken)
         {
-            var endpoint = apiEndpont + "/" + login + "/subscription" + "?" + $"group_id={groupId}";
+            var endpoint = apiEndpoint + "/" + login + "/subscription" + "?" + $"group_id={groupId}";
 
             return await ExecuteAsync(HttpMethod.Delete, endpoint, null, cancellationToken);
         }
 
         public async Task<ClientResult<StateResponse>> GetUserSubscriptionAsync(string login, string groupId, CancellationToken cancellationToken)
         {
-            var endpoint = apiEndpont + "/" + login + "/subscription" + "?" + $"group_id={groupId}";
+            var endpoint = apiEndpoint + "/" + login + "/subscription" + "?" + $"group_id={groupId}";
             var result = await ExecuteGetAsync<StateResponse>(endpoint, cancellationToken);
 
             return result;
@@ -35,35 +35,35 @@ namespace MegafonATS.Client.Core
 
         public async Task<ClientResult> SubscribeUserOnAllGroupAsync(string login, CancellationToken cancellationToken)
         {
-            var endpoint = apiEndpont + "/" + login + "/subscription";
+            var endpoint = apiEndpoint + "/" + login + "/subscription";
 
             return await ExecuteAsync(HttpMethod.Post, endpoint, null, cancellationToken);
         }
 
         public async Task<ClientResult> UnsubscribeUserOnAllGroupAsync(string login, CancellationToken cancellationToken)
         {
-            var endpoint = apiEndpont + "/" + login + "/subscription";
+            var endpoint = apiEndpoint + "/" + login + "/subscription";
 
             return await ExecuteAsync(HttpMethod.Delete, endpoint, null, cancellationToken);
         }
 
         public async Task<ClientResult> DoNotDisturbUserAsync(string login, CancellationToken cancellationToken)
         {
-            var endpoint = apiEndpont + "/" + login + "/dnd";
+            var endpoint = apiEndpoint + "/" + login + "/dnd";
 
             return await ExecuteAsync(HttpMethod.Post, endpoint, null, cancellationToken);
         }
 
         public async Task<ClientResult> RevokeDoNotDisturbUserAsync(string login, CancellationToken cancellationToken)
         {
-            var endpoint = apiEndpont + "/" + login + "/dnd";
+            var endpoint = apiEndpoint + "/" + login + "/dnd";
 
             return await ExecuteAsync(HttpMethod.Delete, endpoint, null, cancellationToken);
         }
 
         public async Task<ClientResult<StateResponse>> GetUserDnDStatusAsync(string login, CancellationToken cancellationToken)
         {
-            var endpoint = apiEndpont + "/" + login + "/dnd";
+            var endpoint = apiEndpoint + "/" + login + "/dnd";
 
             return await ExecuteAsync<StateResponse>(HttpMethod.Get, endpoint, null, cancellationToken);
         }

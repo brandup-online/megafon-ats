@@ -14,12 +14,12 @@ namespace MegafonATS.Client.Utility
 
         public override void Write(Utf8JsonWriter writer, DateTime date, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(date.ToString(Format));
+            writer.WriteStringValue(date.ToUniversalTime().ToString(Format) + "Z");
         }
 
         public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            return DateTime.Parse(reader.GetString(), CultureInfo.InvariantCulture).ToUniversalTime();
+            return DateTime.Parse(reader.GetString(), CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
         }
     }
 }

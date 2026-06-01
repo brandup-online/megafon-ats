@@ -21,7 +21,8 @@ namespace MegafonATS.Client
                 throw new ArgumentNullException(nameof(options));
 
             var client = httpClientFactory.CreateClient();
-            return Activator.CreateInstance(typeof(TClient), new object[] { client, options, logger }) as TClient;
+            return Activator.CreateInstance(typeof(TClient), new object[] { client, options, logger }) as TClient
+                ?? throw new InvalidOperationException($"Не удалось создать экземпляр {typeof(TClient).Name}.");
         }
     }
 }

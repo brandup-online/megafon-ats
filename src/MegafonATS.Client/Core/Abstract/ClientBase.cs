@@ -1,11 +1,10 @@
-﻿using MegafonATS.Client.Exceptions;
+using MegafonATS.Client.Exceptions;
 using MegafonATS.Client.Models.Requests;
 using MegafonATS.Client.Results;
 using MegafonATS.Client.Utility;
 using MegafonATS.Models.Utility;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
@@ -27,8 +26,7 @@ namespace MegafonATS.Client.Core.Abstract
         {
             jsonSerializerOptions = new JsonSerializerOptions { PropertyNamingPolicy = SnakeCaseNamingPolicy.Instance, PropertyNameCaseInsensitive = true, DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull };
             jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(SnakeCaseNamingPolicy.Instance));
-            jsonSerializerOptions.Converters.Add(new CustomDateTimeConverter("yyyy-MM-ddTHH:mm:ssZ"));
-
+            jsonSerializerOptions.Converters.Add(new CustomDateTimeConverter("yyyy-MM-ddTHH:mm:ss"));
         }
 
         public ClientBase(HttpClient httpClient, MegafonAtsOptions options, ILogger<ClientBase> logger)
@@ -37,10 +35,10 @@ namespace MegafonATS.Client.Core.Abstract
             this.options = options ?? throw new ArgumentNullException(nameof(options));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-            if (options.Name == null)
-                throw new ArgumentNullException(nameof(options.Name));
-            if (options.Key == null)
-                throw new ArgumentNullException(nameof(options.Key));
+            if (string.IsNullOrEmpty(options.Name))
+                throw new ArgumentException("АТС Name не может быть пустым.", nameof(options.Name));
+            if (string.IsNullOrEmpty(options.Key))
+                throw new ArgumentException("АТС Key не может быть пустым.", nameof(options.Key));
 
             baseUri = $"https://{this.options.Name}.megapbx.ru/crmapi/v1";
         }
@@ -53,8 +51,9 @@ namespace MegafonATS.Client.Core.Abstract
             var getRequest = endpoint;
             if (request != null)
             {
-                var propertiesList = request.GetType().GetProperties();
-                getRequest += "?" + GenerateGetRequestString(propertiesList, request);
+                var query = GenerateGetRequestString(request.GetType().GetProperties(), request);
+                if (!string.IsNullOrEmpty(query))
+                    getRequest += "?" + query;
             }
 
             return await ExecuteAsync<TResponse>(HttpMethod.Get, getRequest, null, cancellationToken);
@@ -62,76 +61,73 @@ namespace MegafonATS.Client.Core.Abstract
 
         protected async Task<ClientResult<TResponse>> ExecuteAsync<TResponse>(HttpMethod method, string endpoint, IRequestModel request, CancellationToken cancellationToken)
         {
-            logger.LogInformation($"Выполняется запрос к атс. Метод: {method}, Адрес: {endpoint}");
+            logger.LogInformation("Выполняется запрос к атс. Метод: {Method}, Адрес: {Endpoint}", method, endpoint);
 
             using var message = ProcessRequest(method, endpoint, request);
             using var response = await httpClient.SendAsync(message, cancellationToken);
 
             var responseString = await response.Content.ReadAsStringAsync(cancellationToken);
-            var jsonString = responseString.Replace("null", "");
 
             if (!response.IsSuccessStatusCode)
             {
-                if ((int)response.StatusCode > 500)
-                {
-                    throw new MegafonAtsClientException("Внутреняя ошибка сервера.");
-                }
+                if ((int)response.StatusCode >= 500)
+                    throw new MegafonAtsClientException("Внутренняя ошибка сервера.");
 
-                logger.LogWarning($"Запрос вернул не успешный статус код.");
+                logger.LogWarning("Запрос вернул не успешный статус код.");
 
-                var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>(jsonSerializerOptions, cancellationToken);
+                var errorResponse = JsonSerializer.Deserialize<ErrorResponse>(responseString, jsonSerializerOptions);
                 return ClientResult<TResponse>.SetError(errorResponse);
             }
 
-            logger.LogInformation($"Запрос вернул успешный статус код.");
-            if (jsonString == string.Empty)
+            logger.LogInformation("Запрос вернул успешный статус код.");
+
+            if (string.IsNullOrEmpty(responseString) || responseString == "null")
                 return ClientResult<TResponse>.Success();
 
-            TResponse deserializeResponse = JsonSerializer.Deserialize<TResponse>(jsonString, jsonSerializerOptions);
+            var deserializeResponse = JsonSerializer.Deserialize<TResponse>(responseString, jsonSerializerOptions);
             return ClientResult<TResponse>.Success(deserializeResponse);
         }
 
         protected async Task<ClientResult> ExecuteAsync(HttpMethod method, string endpoint, IRequestModel request, CancellationToken cancellationToken)
         {
-            logger.LogInformation($"Выполняется запрос к атс. Метод: {method}, Адрес: {endpoint}");
+            logger.LogInformation("Выполняется запрос к атс. Метод: {Method}, Адрес: {Endpoint}", method, endpoint);
 
             using var message = ProcessRequest(method, endpoint, request);
             using var response = await httpClient.SendAsync(message, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
             {
-                if ((int)response.StatusCode > 500)
-                {
-                    throw new MegafonAtsClientException("Внутреняя ошибка сервера.");
-                }
+                if ((int)response.StatusCode >= 500)
+                    throw new MegafonAtsClientException("Внутренняя ошибка сервера.");
 
-                logger.LogWarning($"Запрос вернул не успешный статус код.");
+                logger.LogWarning("Запрос вернул не успешный статус код.");
 
-                var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>(jsonSerializerOptions, cancellationToken);
+                var responseString = await response.Content.ReadAsStringAsync(cancellationToken);
+                var errorResponse = JsonSerializer.Deserialize<ErrorResponse>(responseString, jsonSerializerOptions);
                 return ClientResult.SetError(errorResponse);
             }
 
-            logger.LogInformation($"Запрос вернул успешный статус код.");
-
+            logger.LogInformation("Запрос вернул успешный статус код.");
             return ClientResult.Success();
         }
 
         static string GenerateGetRequestString(PropertyInfo[] properties, IRequestModel request)
         {
-            List<string> parts = new();
+            var parts = new List<string>();
 
-            foreach (PropertyInfo property in properties)
+            foreach (var property in properties)
             {
-                if (property.GetValue(request) != null)
-                    if (property.PropertyType == typeof(DateTime?))
-                    {
-                        var dateTime = (DateTime)property.GetValue(request);
-                        parts.Add(string.Format("{0}={1}", ToSnakeCase(property.Name), dateTime.ToString("yyyy-MM-ddTHH:mm:ssZ")));
-                    }
-                    else
-                    {
-                        parts.Add(string.Format("{0}={1}", ToSnakeCase(property.Name), ToSnakeCase(property.GetValue(request).ToString())));
-                    }
+                var value = property.GetValue(request);
+                if (value == null)
+                    continue;
+
+                string stringValue;
+                if (property.PropertyType == typeof(DateTime?))
+                    stringValue = ((DateTime)value).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
+                else
+                    stringValue = SnakeCaseNamingPolicy.ToSnakeCase(value.ToString());
+
+                parts.Add($"{SnakeCaseNamingPolicy.ToSnakeCase(property.Name)}={Uri.EscapeDataString(stringValue)}");
             }
 
             return string.Join("&", parts);
@@ -159,36 +155,6 @@ namespace MegafonATS.Client.Core.Abstract
         {
             var jsonString = JsonSerializer.Serialize(request, request.GetType(), jsonSerializerOptions);
             return new StringContent(jsonString);
-        }
-
-
-
-        protected static string ToSnakeCase(string text)
-        {
-            if (text == null)
-            {
-                throw new ArgumentNullException(nameof(text));
-            }
-            if (text.Length < 2)
-            {
-                return text;
-            }
-            var sb = new StringBuilder();
-            sb.Append(char.ToLowerInvariant(text[0]));
-            for (int i = 1; i < text.Length; ++i)
-            {
-                char c = text[i];
-                if (char.IsUpper(c))
-                {
-                    sb.Append('_');
-                    sb.Append(char.ToLowerInvariant(c));
-                }
-                else
-                {
-                    sb.Append(c);
-                }
-            }
-            return sb.ToString();
         }
 
         #endregion
